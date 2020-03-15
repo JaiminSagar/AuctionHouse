@@ -129,7 +129,7 @@ STATICFILES_DIRS=[
     STATIC_DIR,
 ]
 
-LOGIN_REDIRECT_URL='test'
+LOGIN_REDIRECT_URL='auctions:userhome'
 LOGOUT_REDIRECT_URL='thanks'
 
 MEDIA_URL='/media/'

@@ -12,6 +12,7 @@ class User(auth.models.User,auth.models.PermissionsMixin):
     birth_date =models.DateField()
     # proof_document= models.FileField()
     image = models.ImageField()
+    profile_setup = models.BooleanField(default=False)
 
     def __str__(self):
         return '@{}'.format(self.username)

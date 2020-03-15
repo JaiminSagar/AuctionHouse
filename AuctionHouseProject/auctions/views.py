@@ -16,8 +16,11 @@ User=get_user_model()
 
 class SignUp(CreateView):
     form_class=forms.UserCreateForm
-    success_url = reverse_lazy('auction:login')
+    success_url = reverse_lazy('auctions:login')
     template_name = 'auctions/signup.html'
+
+# class Welcome(TemplateView):
+#
 
 # class Login()
 
