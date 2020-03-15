@@ -20,7 +20,8 @@ class ProfileSetupForm():
 
 class BecomeAgentForm():
     class Meta():
-        models=models.BecomeAgent
+        models=models.AgentUser
+        fields=('','','','')
 
 class MakeAnOffer():
     class Meta():
