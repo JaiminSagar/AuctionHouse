@@ -18,19 +18,19 @@ class User(auth.models.User,auth.models.PermissionsMixin):
 
 #add became Agent and agentuser model.....
 
-class BecomeAgent(models.Model):
-    email =models.EmailField()
-    address = models.CharField(max_length=255)
-    mobile = models.CharField(max_length=255)
-    proof_document= models.FileField()
-    resume_document =models.FileField()
-    # image = models.ImageField()
-    contacted = models.BooleanField(default=False)
-
-    def migrate_details(self):
-        if self.contacted == True:
-            agent = AgentUser(address=self.address,mobile =self.mobile,proof_document=self.proof_document,resume_document=self.resume_document,contacted=self.contacted)
-            agent.save()
+# class BecomeAgent(models.Model):
+#     email =models.EmailField()
+#     address = models.CharField(max_length=255)
+#     mobile = models.CharField(max_length=255)
+#     proof_document= models.FileField()
+#     resume_document =models.FileField()
+#     # image = models.ImageField()
+#     contacted = models.BooleanField(default=False)
+#
+#     def migrate_details(self):
+#         if self.contacted == True:
+#             agent = AgentUser(address=self.address,mobile =self.mobile,proof_document=self.proof_document,resume_document=self.resume_document,contacted=self.contacted)
+#             agent.save()
 
     # def __str__(self):
     #     return '@{}'.format(self.username)
@@ -38,6 +38,7 @@ class BecomeAgent(models.Model):
 class AgentUser(auth.models.User,auth.models.PermissionsMixin):
     address = models.CharField(max_length=255)
     mobile = models.CharField(max_length=255)
+    birth_date= models.DateField()
     proof_document= models.FileField()
     resume_document =models.FileField()
     # image = models.ImageField()
