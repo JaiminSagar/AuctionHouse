@@ -88,6 +88,7 @@ class BiddingOfProperty(models.Model):
     property_id=models.ForeignKey(PropertyReg,related_name='property_bid',on_delete=models.CASCADE)
     user = models.ForeignKey(User,related_name='user_bid',on_delete=models.CASCADE)
     user_bid_amount =models.IntegerField()
+    bid_time =models.DateTimeField()
 
 
 class RegForAuction(models.Model):
