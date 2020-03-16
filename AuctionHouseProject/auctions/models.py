@@ -37,7 +37,7 @@ class User(auth.models.User,auth.models.PermissionsMixin):
     #     return '@{}'.format(self.username)
 
 class AgentUser(auth.models.User,auth.models.PermissionsMixin):
-    address = models.CharField(max_length=255)
+    address = models.TextField(max_length=255)
     mobile = models.CharField(max_length=255)
     birth_date= models.DateField()
     proof_document= models.FileField()

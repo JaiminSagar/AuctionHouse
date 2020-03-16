@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from . import models
-from django import forms
+# from django import forms
 
 
 class UserCreateForm(UserCreationForm):
@@ -20,23 +20,25 @@ class ProfileSetupForm():
         fields=('image','address','mobile','proof_document')
         models=get_user_model()
 
-class BecomeAgentForm(UserCreationForm, forms.ModelForm):
+class BecomeAgentForm(UserCreationForm):
     class Meta():
+        fields=('first_name','last_name','email','mobile','birth_date','address','image','resume_document','proof_document')
         model = models.AgentUser
-        fields=('username','first_name','last_name','email','mobile','birth_date','address','image','resume_document','proof_document')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].label = 'Username'
+       # self.fields['username'].label = 'Username'
         self.fields['first_name'].label = 'First Name'
         self.fields['last_name'].label = 'Last Name'
         self.fields['email'].label = 'Email Address'
-        self.fields['mobile'].label = 'Mobile Number'
-        self.fields['birth_date'].label = 'Birth Date'
-        self.fields['address'].label = 'Address'
-        self.fields['image'].label = 'Profile Image'
-        self.fields['resume_document'] = 'Resume'
-        self.fields['proof_document'] = 'Any Valid Id Proof'
+        self.fields['mobile'].label = 'Enter Mobile Number'
+        self.fields['birth_date'].label = 'Ente Your Birth Date'
+        self.fields['address'].label = 'Enter Your Address'
+        self.fields['image'].label = 'Select Your Profile Image:'
+        self.fields['resume_document'].label = 'Your Resume:'
+        self.fields['proof_document'].label = 'Any Valid Id Proof:'
+        # self.fields['password1'].disabled =True
+        # self.fields['password1'].type = 'hidden'
 
 
 class MakeAnOffer():
