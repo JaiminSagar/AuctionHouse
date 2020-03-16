@@ -63,6 +63,7 @@ class PropertyReg(models.Model):
     # property_location = models.URLField()
     #property_description will be only edited by agentUser
     property_description =models.TextField(max_length=2000)
+    approved = models.BooleanField(default=True)
 
 
 class MakeAnOffer(models.Model):
@@ -74,7 +75,23 @@ class MakeAnOffer(models.Model):
     offer_amount = models.CharField(max_length=10)
 
 class CurrentAuction(models.Model):
-    property_id= models.ForeignKey(PropertyReg,on_delete=models.CASCADE)
+    property_id= models.ForeignKey(PropertyReg,related_name='property',on_delete=models.CASCADE)
+    registration_fees =models.IntegerField()
+    auction_start_date = models.DateTimeField()
+    auction_end_date = models.DateTimeField()
+    pre_set_amount = models.IntegerField()
+    increment_ratio = models.FloatField()
+    current_amount =models.IntegerField()
+
+
+class BiddingOfProperty(models.Model):
+    property_id=models.ForeignKey(PropertyReg,related_name='property_bid',on_delete=models.CASCADE)
+    user = models.ForeignKey(User,related_name='user_bid',on_delete=models.CASCADE)
+    user_bid_amount =models.IntegerField()
+
+
+class RegForAuction(models.Model):
+    user = models.ForeignKey(User,related_name='register',on_delete=models.CASCADE)
 
 
 #other models like employee wo will schedule the auction
