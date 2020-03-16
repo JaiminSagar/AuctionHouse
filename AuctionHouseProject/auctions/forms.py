@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from . import models
+from django import forms
+
 
 class UserCreateForm(UserCreationForm):
     class Meta():
@@ -10,7 +12,7 @@ class UserCreateForm(UserCreationForm):
     #Custom Label for model that is predefined in auth.
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.fields['username'].label = 'Display Name'
+        self.fields['username'].label = 'Username'
         self.fields['email'].label='Email Address'
 
 class ProfileSetupForm():
@@ -18,9 +20,24 @@ class ProfileSetupForm():
         fields=('image','address','mobile','proof_document')
         models=get_user_model()
 
-class BecomeAgentForm():
+class BecomeAgentForm(UserCreationForm, forms.ModelForm):
     class Meta():
-        models=models.BecomeAgent
+        model = models.AgentUser
+        fields=('username','first_name','last_name','email','mobile','birth_date','address','image','resume_document','proof_document')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = 'Username'
+        self.fields['first_name'].label = 'First Name'
+        self.fields['last_name'].label = 'Last Name'
+        self.fields['email'].label = 'Email Address'
+        self.fields['mobile'].label = 'Mobile Number'
+        self.fields['birth_date'].label = 'Birth Date'
+        self.fields['address'].label = 'Address'
+        self.fields['image'].label = 'Profile Image'
+        self.fields['resume_document'] = 'Resume'
+        self.fields['proof_document'] = 'Any Valid Id Proof'
+
 
 class MakeAnOffer():
     class Meta():
