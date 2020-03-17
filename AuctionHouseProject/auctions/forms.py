@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from . import models
+from django import forms
 # from django import forms
 
 
@@ -20,7 +21,8 @@ class ProfileSetupForm():
         fields=('image','address','mobile','proof_document')
         models=get_user_model()
 
-class BecomeAgentForm(UserCreationForm):
+class BecomeAgentForm(forms.ModelForm):
+    birth_date = forms.DateField(widget=forms.DateInput)
     class Meta():
         fields=('first_name','last_name','email','mobile','birth_date','address','image','resume_document','proof_document')
         model = models.AgentUser
