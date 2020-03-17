@@ -19,7 +19,6 @@ class SignUp(CreateView):
     success_url = reverse_lazy('auctions:login')
     template_name = 'auctions/signup.html'
 
-<<<<<<< HEAD
 class BecomeAgent(CreateView):
     form_class = forms.BecomeAgentForm
     success_url = reverse_lazy('home')
@@ -28,8 +27,6 @@ class BecomeAgent(CreateView):
 class Thanks(TemplateView):
     template_name = 'auctions/thanks.html'
 
-=======
->>>>>>> f27093f459a4e642b248d5417a1d9ce369f828c8
 # class Welcome(TemplateView):
 #
 
