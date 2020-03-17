@@ -22,6 +22,7 @@ class ProfileSetupForm():
 
 class BecomeAgentForm(UserCreationForm):
     class Meta():
+<<<<<<< HEAD
         fields=('first_name','last_name','email','mobile','birth_date','address','image','resume_document','proof_document')
         model = models.AgentUser
 
@@ -40,6 +41,10 @@ class BecomeAgentForm(UserCreationForm):
         # self.fields['password1'].disabled =True
         # self.fields['password1'].type = 'hidden'
 
+=======
+        models=models.AgentUser
+        fields=('','','','')
+>>>>>>> f27093f459a4e642b248d5417a1d9ce369f828c8
 
 class MakeAnOffer():
     class Meta():
