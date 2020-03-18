@@ -95,7 +95,7 @@ class BiddingOfProperty(models.Model):
 
 
 class RegForAuction(models.Model):
-    current_auction_id = models.ForeignKey(CurrentAuction, related_name='property_bid', on_delete=models.CASCADE)
+    current_auction_id = models.ForeignKey(CurrentAuction, related_name='current_auction', on_delete=models.CASCADE)
     payment_status = models.CharField(max_length=12)
     user = models.ForeignKey(User,related_name='register',on_delete=models.CASCADE)
 
