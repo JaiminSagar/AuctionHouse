@@ -63,7 +63,10 @@ class PropertyReg(models.Model):
     # property_location = models.URLField()
     #property_description will be only edited by agentUser
     property_description =models.TextField(max_length=2000)
+    agent_id = models.ForeignKey(AgentUser,related_name='who_approves',on_delete=models.CASCADE)
+    approved_date = models.DateTimeField()
     approved = models.BooleanField(default=True)
+
 
 
 class MakeAnOffer(models.Model):
@@ -85,13 +88,15 @@ class CurrentAuction(models.Model):
 
 
 class BiddingOfProperty(models.Model):
-    property_id=models.ForeignKey(PropertyReg,related_name='property_bid',on_delete=models.CASCADE)
+    current_auction_id=models.ForeignKey(CurrentAuction,related_name='property_bid',on_delete=models.CASCADE)
     user = models.ForeignKey(User,related_name='user_bid',on_delete=models.CASCADE)
     user_bid_amount =models.IntegerField()
     bid_time =models.DateTimeField()
 
 
 class RegForAuction(models.Model):
+    current_auction_id = models.ForeignKey(CurrentAuction, related_name='property_bid', on_delete=models.CASCADE)
+    payment_status = models.CharField(max_length=12)
     user = models.ForeignKey(User,related_name='register',on_delete=models.CASCADE)
 
 

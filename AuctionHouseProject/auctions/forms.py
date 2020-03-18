@@ -26,6 +26,19 @@ class BecomeAgentForm(forms.ModelForm):
     class Meta():
         fields=('first_name','last_name','email','mobile','birth_date','address','image','resume_document','proof_document')
         model = models.AgentUser
+#later work.............
+        # widgets = {
+        #     'first_name': forms.TextInput(attrs={'class': ''}),
+        #     'last_name': forms.TextInput(attrs={'class': ''}),
+        #     'email': forms.TextInput(attrs={'class': ''}),
+        #     'mobile': forms.TextInput(attrs={'class': ''}),
+        #     'birth_date': forms.TextInput(attrs={'class': ''}),
+        #     'address': forms.Textarea(attrs={'class': ''}),
+        #     'image': forms.FileInput(attrs={'class': ''}),
+        #     'resume_document': forms.FileInput(attrs={'class': ''}),
+        #     'proof_document': forms.FileInput(attrs={'class': ''}),
+            # first two classes are predefinead somewhere other two are our class
+        # }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,6 +52,7 @@ class BecomeAgentForm(forms.ModelForm):
         self.fields['image'].label = 'Select Your Profile Image:'
         self.fields['resume_document'].label = 'Your Resume:'
         self.fields['proof_document'].label = 'Any Valid Id Proof:'
+        # self.fields['first_name'].size = 12
         # self.fields['password1'].disabled =True
         # self.fields['password1'].type = 'hidden'
 
