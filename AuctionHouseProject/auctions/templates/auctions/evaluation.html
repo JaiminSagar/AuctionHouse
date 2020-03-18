@@ -1,1 +1,21 @@
-{%%}
+{% extends 'base.html'%}
+{%load bootstrap4%}
+
+{% block title %}
+    BOOK FOR EVALUATION
+{% endblock%}
+
+{% block content %}
+
+<p>Have you got a property for sale? Fill out the form below and a member of the auction team will be in contact to arrange a free no-obligation auction valuation. If you have any questions about property auctions, please contact the Auction House team who are always happy to help with any enquiries.
+</p>
+
+<div class="conatiner">
+    <form method="post">
+        {%csrf_token%}
+        {%bootstrap_form form%}
+        <input type="submit" value="Submit" class="btn btn-Primary">
+    </form>
+</div>
+
+{% endblock %}

@@ -65,3 +65,16 @@ class MakeAnOffer():
 #     class Meta():
 #         fields=('username','email','password1','password2')
 #         model=get_user_model()
+
+
+class Evaluation():
+
+    class Meta():
+        models = models.PropertyReg
+        fields = ('property_type','property_address','property_description')
+
+    def __init__(self, *args,**kwargs):
+        super().__init__(*args, **kwrgs)
+        self.fields['property_type'].label = 'Property Type'
+        self.fields['property_address'].lable = 'Property Address'
+        self.fields['property_description'].label = 'Property Description'
