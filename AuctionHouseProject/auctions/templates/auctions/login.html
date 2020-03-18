@@ -1,14 +1,12 @@
 {%extends 'base.html'%}
 {%load bootstrap4%}
-{%block title%}
-SignUp
-{%endblock%}
+{%block title%}LogIn{%endblock%}
 {%block content%}
 <div class="container">
     <form method="post">
         {%csrf_token%}
         {%bootstrap_form form%}
-        <input type="submit" value="SignUp" class="btn btn-default">
+        <input type="submit" value="LogIn" class="btn btn-default">
     </form>
 </div>
 {%endblock%}

@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from auctions import views
+# from auctions import views as viewer
+from . import views
 
 
 urlpatterns = [
+    path('',views.HomePage.as_view(),name='home'),
     path('admin/', admin.site.urls),
     path('auctions/',include('auctions.urls',namespace='auctions')),
 

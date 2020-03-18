@@ -12,35 +12,37 @@ class User(auth.models.User,auth.models.PermissionsMixin):
     birth_date =models.DateField()
     # proof_document= models.FileField()
     image = models.ImageField()
+    profile_setup = models.BooleanField(default=False)
 
     def __str__(self):
         return '@{}'.format(self.username)
 
 #add became Agent and agentuser model.....
 
-class BecomeAgent(models.Model):
-    email =models.EmailField()
-    address = models.CharField(max_length=255)
-    mobile = models.CharField(max_length=255)
-    proof_document= models.FileField()
-    resume_document =models.FileField()
-    # image = models.ImageField()
-    contacted = models.BooleanField(default=False)
-
-    def migrate_details(self):
-        if self.contacted == True:
-            agent = AgentUser(address=self.address,mobile =self.mobile,proof_document=self.proof_document,resume_document=self.resume_document,contacted=self.contacted)
-            agent.save()
+# class BecomeAgent(models.Model):
+#     email =models.EmailField()
+#     address = models.CharField(max_length=255)
+#     mobile = models.CharField(max_length=255)
+#     proof_document= models.FileField()
+#     resume_document =models.FileField()
+#     # image = models.ImageField()
+#     contacted = models.BooleanField(default=False)
+#
+#     def migrate_details(self):
+#         if self.contacted == True:
+#             agent = AgentUser(address=self.address,mobile =self.mobile,proof_document=self.proof_document,resume_document=self.resume_document,contacted=self.contacted)
+#             agent.save()
 
     # def __str__(self):
     #     return '@{}'.format(self.username)
 
 class AgentUser(auth.models.User,auth.models.PermissionsMixin):
-    address = models.CharField(max_length=255)
+    address = models.TextField(max_length=255)
     mobile = models.CharField(max_length=255)
+    birth_date= models.DateField()
     proof_document= models.FileField()
     resume_document =models.FileField()
-    # image = models.ImageField()
+    image = models.ImageField()
     interview_date =models.DateTimeField()
     interviewed = models.BooleanField(default=False)
     contacted = models.BooleanField(default=True)
@@ -61,6 +63,10 @@ class PropertyReg(models.Model):
     # property_location = models.URLField()
     #property_description will be only edited by agentUser
     property_description =models.TextField(max_length=2000)
+    agent_id = models.ForeignKey(AgentUser,related_name='who_approves',on_delete=models.CASCADE)
+    approved_date = models.DateTimeField()
+    approved = models.BooleanField(default=True)
+
 
 
 class MakeAnOffer(models.Model):
@@ -72,7 +78,26 @@ class MakeAnOffer(models.Model):
     offer_amount = models.CharField(max_length=10)
 
 class CurrentAuction(models.Model):
-    property_id= models.ForeignKey(PropertyReg,on_delete=models.CASCADE)
+    property_id= models.ForeignKey(PropertyReg,related_name='property',on_delete=models.CASCADE)
+    registration_fees =models.IntegerField()
+    auction_start_date = models.DateTimeField()
+    auction_end_date = models.DateTimeField()
+    pre_set_amount = models.IntegerField()
+    increment_ratio = models.FloatField()
+    current_amount =models.IntegerField()
+
+
+class BiddingOfProperty(models.Model):
+    current_auction_id=models.ForeignKey(CurrentAuction,related_name='property_bid',on_delete=models.CASCADE)
+    user = models.ForeignKey(User,related_name='user_bid',on_delete=models.CASCADE)
+    user_bid_amount =models.IntegerField()
+    bid_time =models.DateTimeField()
+
+
+class RegForAuction(models.Model):
+    current_auction_id = models.ForeignKey(CurrentAuction, related_name='property_bid', on_delete=models.CASCADE)
+    payment_status = models.CharField(max_length=12)
+    user = models.ForeignKey(User,related_name='register',on_delete=models.CASCADE)
 
 
 #other models like employee wo will schedule the auction

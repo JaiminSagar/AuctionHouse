@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import  LoginRequiredMixin
 from django.urls import reverse,reverse_lazy
-
 from django.http import Http404
 from django.views import generic
 from braces.views import SelectRelatedMixin
@@ -17,8 +16,19 @@ User=get_user_model()
 
 class SignUp(CreateView):
     form_class=forms.UserCreateForm
-    success_url = reverse_lazy('auction:login')
+    success_url = reverse_lazy('auctions:login')
     template_name = 'auctions/signup.html'
+
+class BecomeAgent(CreateView):
+    form_class = forms.BecomeAgentForm
+    success_url = reverse_lazy('home')
+    template_name = 'auctions/become_agent.html'
+
+class Thanks(TemplateView):
+    template_name = 'auctions/thanks.html'
+
+# class Welcome(TemplateView):
+#
 
 # class Login()
 
