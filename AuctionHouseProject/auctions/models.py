@@ -1,4 +1,4 @@
-from django.db import models
+from djongo import models
 from django.contrib import auth
 from django.views import generic
 from django.utils import timezone
@@ -7,15 +7,18 @@ from django.urls import reverse,reverse_lazy
 # Create your models here.
 
 class User(auth.models.User,auth.models.PermissionsMixin):
-    address = models.CharField(max_length=255)
-    mobile = models.CharField(max_length=13)
-    birth_date =models.DateField()
+    address = models.CharField(max_length=255,default='To be Setup')
+    mobile = models.CharField(max_length=13,default='To be Setup')
+    birth_date =models.DateField(blank=True)
     # proof_document= models.FileField()
-    image = models.ImageField()
+    image = models.ImageField(blank=True)
     profile_setup = models.BooleanField(default=False)
 
     def __str__(self):
         return '@{}'.format(self.username)
+
+    # class Meta:
+    #     lable='agentuser'
 
 #add became Agent and agentuser model.....
 
@@ -40,16 +43,24 @@ class AgentUser(auth.models.User,auth.models.PermissionsMixin):
     address = models.TextField(max_length=255)
     mobile = models.CharField(max_length=255)
     birth_date= models.DateField()
-    proof_document= models.FileField()
-    resume_document =models.FileField()
-    image = models.ImageField()
-    interview_date =models.DateTimeField()
-    interviewed = models.BooleanField(default=False)
+    proof_document= models.FileField(blank=True)
+    resume_document =models.FileField(blank=True)
+    image = models.ImageField(blank=True)
+    interview_date =models.DateTimeField(blank=True)
+    interviewed = models.BooleanField(default=False,blank=True)
     contacted = models.BooleanField(default=True)
     approved =models.BooleanField(default=False)
 
     def agent_approved(self):
         self.approved = True
+
+    def __str__(self):
+        return '@{}'.format(self.username)
+
+    class Meta:
+        verbose_name=('AgentUser')
+        verbose_name_plural =('AgentUsers')
+
 
 class Property(models.Model):
     propery_type  = models.CharField(max_length=50)

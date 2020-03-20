@@ -6,9 +6,10 @@ from django import forms
 
 
 class UserCreateForm(UserCreationForm):
+
     class Meta():
         fields=('username','email','password1','password2')
-        model=get_user_model()
+        model =models.User
 
     #Custom Label for model that is predefined in auth.
     def __init__(self,*args,**kwargs):

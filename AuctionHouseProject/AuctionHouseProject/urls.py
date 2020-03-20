@@ -23,5 +23,6 @@ urlpatterns = [
     path('',views.HomePage.as_view(),name='home'),
     path('admin/', admin.site.urls),
     path('auctions/',include('auctions.urls',namespace='auctions')),
+    path('thanks/', views.ThanksPage.as_view(), name='thanks'),
 
 ]
