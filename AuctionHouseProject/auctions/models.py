@@ -11,7 +11,7 @@ class User(auth.models.User,auth.models.PermissionsMixin):
     mobile = models.CharField(max_length=13,default='To be Setup')
     birth_date =models.DateField(blank=True)
     # proof_document= models.FileField()
-    image = models.ImageField(blank=True)
+    image = models.ImageField(upload_to='profile_pics',blank=True)
     profile_setup = models.BooleanField(default=False)
 
     def __str__(self):

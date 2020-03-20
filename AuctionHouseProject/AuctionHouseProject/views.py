@@ -6,13 +6,14 @@ from auctions.models import User
 class HomePage(TemplateView):
     template_name = 'index.html'
     # context_object_name = 'post_draft_list'
-    # chkuser =User.objects.all()
+    users =User.objects.all()
+    # print(chkuserd)
     #
     #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['user'] = self.chkuser
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = self.users
+        return context
 # class TestPage(TemplateView):
 #     template_name = 'test.html'
 

@@ -10,11 +10,14 @@ Welcome To AuctionHouse
 {%block content%}
     {%if user.is_authenticated%}
     <h1>You are authenticated....</h1>
-        {%if user in chkuser%}
-            {%include 'auctions/profile_form.html'%}
-        {%else%}
-            <h1>Hi there solve the problem</h1>
-        {%endif%}
+        {%for current_user in users%}
+            {%ifequal user.username current_user.username%}
+                <h2>Hi there Finally working{{current_user.username}}</h2>
+                {%ifequal current_user.profile_setup False %}
+                {%include 'auctions/profile_form.html'%}
+                {%endifequal%}
+            {% endifequal %}
+        {%endfor%}
     {%else%}
         <p>Not authenticated....</p>
     {%endif%}
