@@ -10,12 +10,15 @@ class User(auth.models.User,auth.models.PermissionsMixin):
     address = models.CharField(max_length=255,default='To be Setup')
     mobile = models.CharField(max_length=13,default='To be Setup')
     birth_date =models.DateField(blank=True)
-    # proof_document= models.FileField()
+    #proof_document= models.FileField()
     image = models.ImageField(upload_to='profile_pics',blank=True)
     profile_setup = models.BooleanField(default=False)
 
     def __str__(self):
         return '@{}'.format(self.username)
+
+    def get_absolute_url(self):
+        return reverse('home',kwargs={'pk':self.pk})  # This represent after doing Comment Where user should redirect
 
     # class Meta:
     #     lable='agentuser'

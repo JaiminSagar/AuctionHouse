@@ -17,10 +17,22 @@ class UserCreateForm(UserCreationForm):
         self.fields['username'].label = 'Username'
         self.fields['email'].label='Email Address'
 
-class ProfileSetupForm():
+class ProfileSetupForm(forms.ModelForm):
+
     class Meta():
-        fields=('image','address','mobile','proof_document')
-        models=get_user_model()
+        fields=('image','address','mobile','birth_date')
+        model=models.User
+        widgets={
+
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['mobile'].label = 'Enter Mobile Number'
+        self.fields['birth_date'].label = 'Ente Your Birth Date'
+        self.fields['address'].label = 'Enter Your Address'
+        self.fields['image'].label = 'Select Your Profile Image:'
+
 
 class BecomeAgentForm(forms.ModelForm):
     birth_date = forms.DateField(widget=forms.DateInput)

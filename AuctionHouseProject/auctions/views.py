@@ -7,7 +7,7 @@ from django.views import generic
 from braces.views import SelectRelatedMixin
 from . import models
 from . import forms
-from django.views.generic import TemplateView,CreateView
+from django.views.generic import TemplateView,CreateView,UpdateView,DetailView
 from django.contrib import messages
 
 from django.contrib.auth import get_user_model
@@ -19,11 +19,26 @@ class SignUp(CreateView):
     form_class=forms.UserCreateForm
     success_url = reverse_lazy('auctions:login')
     template_name = 'auctions/signup.html'
-
-class ProfileSetup(CreateView,LoginRequiredMixin):
+#
+class ProfileSetup(LoginRequiredMixin,CreateView):
     form_class = forms.ProfileSetupForm
     success_url = reverse_lazy('home')
     template_name = 'auctions/profile_form.html'
+
+class ProfileUpdate(LoginRequiredMixin,UpdateView):
+    login_url = '/login/'
+    redirect_field_name = 'auctions/profile_detail.html'
+    template_name_suffix = '_profile_form'
+    form_class = forms.ProfileSetupForm
+    model = models.User
+
+class ProfileDetail(LoginRequiredMixin,DetailView):
+    model = models.User
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user__username__iexact=self.kwargs.get('username'))
+
 
 class BecomeAgent(CreateView):
     form_class = forms.BecomeAgentForm
