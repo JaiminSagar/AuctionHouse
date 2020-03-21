@@ -14,6 +14,7 @@ urlpatterns=[
     # path('',views.ProfileSetup.as_view(),name='profile_setup'),
     path('profile_detail/<pk>/',views.ProfileDetail.as_view(),name='profile_detail'),
     path('profile_update/<pk>/',views.ProfileUpdate.as_view(),name='update'),
+    path('auction_list/', views.AuctionList.as_view(), name='auction_list')
 
 
 ]

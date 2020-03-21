@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Auction List
+{% endblock title %}
+
+{% block content %}
+    
+    <div class=''>
+
+        {% for li in currentauction_list %}
+            {% if forloop.counter|divisibleby:3 or forloop.counter == 1 %}
+                <div class='row justify-content-between' style='padding-bottom:5%;'>
+            {% endif %}
+                    <div class='col-sm-4'>
+                        <div class="card" style="width: 18rem;">
+                            <img class="card-img-top" src="..." alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Cras justo odio</li>
+                                <li class="list-group-item">Dapibus ac facilisis in</li>
+                                <li class="list-group-item">Vestibulum at eros</li>
+                            </ul>
+                            <div class="card-body">
+                                <a href="#" class="btn btn-primary">Card link</a>
+                                <a href="#" class="btn btn-primary">Another link</a>
+                            </div>
+                        </div>
+                    </div>
+            {% if forloop.counter|divisibleby:3 %} 
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %}
+

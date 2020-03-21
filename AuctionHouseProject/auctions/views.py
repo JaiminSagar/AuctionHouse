@@ -7,7 +7,7 @@ from django.views import generic
 from braces.views import SelectRelatedMixin
 from . import models
 from . import forms
-from django.views.generic import TemplateView,CreateView,UpdateView,DetailView
+from django.views.generic import TemplateView,CreateView,UpdateView,DetailView, ListView
 from django.contrib import messages
 
 from django.contrib.auth import get_user_model
@@ -47,6 +47,11 @@ class BecomeAgent(CreateView):
 
 class Thanks(TemplateView):
     template_name = 'auctions/thanks.html'
+
+
+class AuctionList(ListView, LoginRequiredMixin):
+    model = models.CurrentAuction
+    template_name = 'auctions/auction_list.html'
 
 # class Welcome(TemplateView):
 #
