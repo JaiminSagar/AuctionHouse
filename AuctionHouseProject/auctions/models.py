@@ -9,7 +9,10 @@ from django.urls import reverse,reverse_lazy
 class User(auth.models.User,auth.models.PermissionsMixin):
     address = models.CharField(max_length=255,default='To be Setup')
     mobile = models.CharField(max_length=13,default='To be Setup')
-    birth_date =models.DateField(blank=True)
+    birth_date = models.DateField(blank=True)
+    pincode = models.CharField(blank=True,max_length=6,default='000000')
+    city = models.CharField(max_length=30,default='Place to be Selected.')
+    state = models.CharField(max_length=30,default='To be Selected')
     #proof_document= models.FileField()
     image = models.ImageField(upload_to='profile_pics',blank=True)
     profile_setup = models.BooleanField(default=False)
@@ -19,6 +22,9 @@ class User(auth.models.User,auth.models.PermissionsMixin):
 
     def get_absolute_url(self):
         return reverse('home',kwargs={'pk':self.pk})  # This represent after doing Comment Where user should redirect
+
+    def save(self,*args,**kwargs):
+        super().save(*args,**kwargs)
 
     # class Meta:
     #     lable='agentuser'

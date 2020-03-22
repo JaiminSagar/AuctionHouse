@@ -136,6 +136,7 @@ STATICFILES_DIRS=[
     STATIC_DIR,
 ]
 
+LOGIN_URL='auctions/login'
 LOGIN_REDIRECT_URL='home'
 LOGOUT_REDIRECT_URL='thanks'
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import  LoginRequiredMixin
+# from django.contrib.auth.decorators import login_required
 from django.urls import reverse,reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
@@ -7,8 +8,10 @@ from django.views import generic
 from braces.views import SelectRelatedMixin
 from . import models
 from . import forms
+from django.contrib.auth import views as auth_view,login
 from django.views.generic import TemplateView,CreateView,UpdateView,DetailView
 from django.contrib import messages
+from django.http import HttpResponse
 
 from django.contrib.auth import get_user_model
 User=get_user_model()
@@ -28,12 +31,14 @@ class ProfileSetup(LoginRequiredMixin,CreateView):
 class ProfileUpdate(LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     redirect_field_name = 'auctions/profile_detail.html'
-    template_name_suffix = '_profile_form'
+    template_name= 'user_profile_form'
     form_class = forms.ProfileSetupForm
     model = models.User
 
-class ProfileDetail(LoginRequiredMixin,DetailView):
+class ProfileDetail(LoginRequiredMixin,SelectRelatedMixin,DetailView):
+    template_name = 'profile_detail'
     model = models.User
+    select_related = ('first_name','last_name','mobile','email','address','image','city','state','pincode')
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -48,8 +53,14 @@ class BecomeAgent(CreateView):
 class Thanks(TemplateView):
     template_name = 'auctions/thanks.html'
 
-# class Welcome(TemplateView):
-#
 
-# class Login()
+@login_required
+def profile_setup(request):
+
+    if request.method == "POST":
+        print(request.POST)
+        # if form.is_valid():
+        #     return
+    return HttpResponse("<h1>You will be redirected to profile page.</h1>")
+
 
