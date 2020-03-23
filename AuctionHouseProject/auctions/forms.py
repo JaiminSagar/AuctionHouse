@@ -19,11 +19,11 @@ class UserCreateForm(UserCreationForm):
 
 class ProfileSetupForm(forms.ModelForm):
 
-    def save(self, commit=True):
-        user= models.User()
+    # def save(self, commit=True):
+    #     user= models.User()
 
     class Meta():
-        fields=('image','address','mobile','birth_date')
+        fields=('image','first_name','last_name','address','mobile','birth_date','city','state','pincode')
         model=models.User
         widgets={
 

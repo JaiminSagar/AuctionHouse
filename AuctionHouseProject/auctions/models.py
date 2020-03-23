@@ -10,7 +10,7 @@ class User(auth.models.User,auth.models.PermissionsMixin):
     address = models.CharField(max_length=255,default='To be Setup')
     mobile = models.CharField(max_length=13,default='To be Setup')
     birth_date = models.DateField(blank=True)
-    pincode = models.CharField(blank=True,max_length=6,default='000000')
+    pincode = models.IntegerField(default='000000')
     city = models.CharField(max_length=30,default='Place to be Selected.')
     state = models.CharField(max_length=30,default='To be Selected')
     #proof_document= models.FileField()

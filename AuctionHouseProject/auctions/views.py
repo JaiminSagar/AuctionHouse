@@ -60,9 +60,15 @@ def profile_setup(request):
 
     if request.method == "POST":
         print(request.POST)
-        user= form_class(data=request.POST)
+        user_form= form_class(data=request.POST)
         # image =request.POST['image']
-        print(user)
-    return HttpResponse("<h1>You will be redirected to profile page.</h1>")
+        print(user_form)
+        if user_form.is_valid():
+            user = user_form.save()
+            user.save()
+            return HttpResponse("<h1>You will be redirected to profile page.</h1>")
+        else:
+            print("Not Done")
+            return HttpResponse("Not Done Yet.</h1>")
 
 
