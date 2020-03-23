@@ -136,10 +136,20 @@ STATICFILES_DIRS=[
     STATIC_DIR,
 ]
 
+# login/logout settings....
 LOGIN_REDIRECT_URL='home'
 LOGOUT_REDIRECT_URL='thanks'
 
+
+# media settings.......
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
 INTERNAL_IPS=['127.0.0.1']
+
+# Email settings.......
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'info.auctionhouse.in@gmail.com'
+EMAIL_HOST_PASSWORD = 'abcxyz123#'
+EMAIL_PORT = 587

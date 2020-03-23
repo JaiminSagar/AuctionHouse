@@ -1,9 +1,18 @@
 {%extends 'base.html'%}
+
 {%load bootstrap4%}
-{%block title%}
+
+{% block title %}
 SignUp
-{%endblock%}
-{%block content%}
+{% endblock %}
+
+{% block heading %}
+    <center><h1>SignUp</h1></center>
+    <hr>
+{% endblock heading %}
+
+
+{% block content %}
 <div class="container">
     <form method="post">
         {%csrf_token%}
@@ -11,4 +20,4 @@ SignUp
         <input type="submit" value="SignUp" class="btn btn-default">
     </form>
 </div>
-{%endblock%}
+{% endblock %}
