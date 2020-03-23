@@ -56,11 +56,13 @@ class Thanks(TemplateView):
 
 @login_required
 def profile_setup(request):
+    form_class=forms.ProfileSetupForm
 
     if request.method == "POST":
         print(request.POST)
-        # if form.is_valid():
-        #     return
+        user= form_class(data=request.POST)
+        # image =request.POST['image']
+        print(user)
     return HttpResponse("<h1>You will be redirected to profile page.</h1>")
 
 
