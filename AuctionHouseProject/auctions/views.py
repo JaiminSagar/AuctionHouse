@@ -62,7 +62,7 @@ def profile_setup(request):
         print(request.POST)
         user_form= form_class(data=request.POST)
         # image =request.POST['image']
-        print(user_form)
+        print(user_form.username)
         if user_form.is_valid():
             user = user_form.save()
             user.save()

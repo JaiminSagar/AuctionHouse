@@ -25,9 +25,9 @@ class ProfileSetupForm(forms.ModelForm):
     class Meta():
         fields=('image','first_name','last_name','address','mobile','birth_date','city','state','pincode')
         model=models.User
-        widgets={
-
-        }
+        # widgets={
+        #
+        # }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
