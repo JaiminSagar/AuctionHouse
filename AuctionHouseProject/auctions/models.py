@@ -17,14 +17,18 @@ class User(auth.models.User,auth.models.PermissionsMixin):
     image = models.ImageField(upload_to='profile_pics',blank=True)
     profile_setup = models.BooleanField(default=False)
 
+    def __init__(self):
+        super().__init__()
+
+
     def __str__(self):
         return '@{}'.format(self.username)
 
     def get_absolute_url(self):
         return reverse('home',kwargs={'pk':self.pk})  # This represent after doing Comment Where user should redirect
 
-    def save(self,*args,**kwargs):
-        super().save(*args,**kwargs)
+    # def save(self,request,*args,**kwargs):
+    #     super().save(*args,**kwargs)
 
     # class Meta:
     #     lable='agentuser'

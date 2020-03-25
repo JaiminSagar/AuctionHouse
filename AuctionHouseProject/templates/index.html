@@ -8,26 +8,18 @@ Welcome To AuctionHouse
 
 {%block content%}
     {%if user.is_authenticated%}
-        {%for current_user in users%}
-            {%ifequal user.username current_user.username%}
-                {%ifequal current_user.profile_setup False %}
+<h1>User is Authenticated</h1>>
+
+        {%ifequal user.user.profile_setup False%}
                 <div class="container">
-<!--&lt;!&ndash;                    -->
                     <form method="post" enctype="multipart/form-data">
                     {%csrf_token%}
                     {%bootstrap_form form%}
-                        <input type="hidden" name="user_name" value="{{user.username}}">
                     <input type="submit" value="Set this a Profile"></form>
                  </div>
-                {%endifequal%}
-                {%ifequal current_user.profile_setup True %}
 
+        {%endifequal%}
 
-
-
-                {% endifequal %}
-            {% endifequal %}
-        {%endfor%}
     {%else%}
         <p>Not authenticated....</p>
     {%endif%}
