@@ -8,7 +8,7 @@ from django import forms
 class UserCreateForm(UserCreationForm):
 
     class Meta():
-        fields=('username','email','password1','password2')
+        fields=('username','first_name','last_name','email','password1','password2')
         model =models.User
 
     #Custom Label for model that is predefined in auth.
@@ -23,18 +23,19 @@ class ProfileSetupForm(forms.ModelForm):
     #     user= models.User()
 
     class Meta():
-        fields=('image','first_name','last_name','address','mobile','birth_date','city','state','pincode')
-        model=models.User
+        fields=('image','address','mobile','birth_date','city','state','pincode')
+        model=models.UserDetails
         # widgets={
         #
         # }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['mobile'].label = 'Enter Mobile Number'
-        self.fields['birth_date'].label = 'Ente Your Birth Date'
-        self.fields['address'].label = 'Enter Your Address'
-        self.fields['image'].label = 'Select Your Profile Image:'
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['mobile'].label = 'Enter Mobile Number'
+    #     self.fields['birth_date'].label = 'Ente Your Birth Date'
+    #     self.fields['address'].label = 'Enter Your Address'
+    #     self.fields['image'].label = 'Select Your Profile Image:'
 
 
 class BecomeAgentForm(forms.ModelForm):

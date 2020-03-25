@@ -9,7 +9,7 @@ Welcome To AuctionHouse
 {%block content%}
     {%if user.is_authenticated%}
 <h1>User is Authenticated</h1>>
-
+        {{user.pk}}{{user.user.profile_setup}}
         {%ifequal user.user.profile_setup False%}
                 <div class="container">
                     <form method="post" enctype="multipart/form-data">
