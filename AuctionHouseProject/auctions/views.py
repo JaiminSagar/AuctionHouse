@@ -72,16 +72,12 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('home')
+        return redirect('profile_check')
         #return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
 
 
-class ProfileSetup(LoginRequiredMixin,CreateView):
-    form_class = forms.ProfileSetupForm
-    success_url = reverse_lazy('home')
-    template_name = 'auctions/profile_form.html'
 
 class ProfileUpdate(LoginRequiredMixin,UpdateView):
     login_url = '/login/'
@@ -113,10 +109,8 @@ class AuctionList(ListView, LoginRequiredMixin):
     model = models.CurrentAuction
     template_name = 'auctions/auction_list.html'
 
-# class Welcome(TemplateView):
-#
 
-class ProfileSetup(LoginRequiredMixin,CreateView):
+class ProfileSetup(LoginRequiredMixin, CreateView):
     login_url = '/login/'
     model = models.UserDetails
     template_name = 'auctions/user_profile_form.html'
