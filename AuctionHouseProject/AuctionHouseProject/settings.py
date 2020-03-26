@@ -137,7 +137,7 @@ STATICFILES_DIRS=[
 ]
 
 LOGIN_URL='auctions/login'
-LOGIN_REDIRECT_URL='home'
+LOGIN_REDIRECT_URL='profile_check'
 LOGOUT_REDIRECT_URL='thanks'
 
 MEDIA_URL='/media/'

@@ -19,23 +19,9 @@ class UserCreateForm(UserCreationForm):
 
 class ProfileSetupForm(forms.ModelForm):
 
-    # def save(self, commit=True):
-    #     user= models.User()
-
     class Meta():
         fields=('image','address','mobile','birth_date','city','state','pincode')
         model=models.UserDetails
-        # widgets={
-        #
-        # }
-
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['mobile'].label = 'Enter Mobile Number'
-    #     self.fields['birth_date'].label = 'Ente Your Birth Date'
-    #     self.fields['address'].label = 'Enter Your Address'
-    #     self.fields['image'].label = 'Select Your Profile Image:'
 
 
 class BecomeAgentForm(forms.ModelForm):
@@ -78,6 +64,7 @@ class MakeAnOffer():
     class Meta():
         models =models.MakeAnOffer
         fields=('title','first_name','last_name','email','offer_amount')
+        
 # class AgentCreateFrom(UserCreateForm):
 #     class Meta():
 #         fields=('username','email','password1','password2')

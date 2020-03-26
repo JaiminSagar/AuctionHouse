@@ -25,18 +25,8 @@ class UserDetails(models.Model):
     def __str__(self):
         return '@{}'.format(self.pincode)
 
-    def save(self,*args,**kwargs,):
-        # self.user=User.objects.get(pk=2)
-        super(UserDetails,self).save(*args,**kwargs)
-
     def get_absolute_url(self):
         return reverse('home', kwargs={'pk': self.pk})  # This represent after doing Comment Where user should redirect
-
-    # def save(self,request,*args,**kwargs):
-    #     super().save(*args,**kwargs)
-
-    # class Meta:
-    #     lable='agentuser'
 
 #add became Agent and agentuser model.....
 
