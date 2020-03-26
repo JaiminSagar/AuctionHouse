@@ -30,7 +30,7 @@ class UserDetails(models.Model):
         return '@{}'.format(self.pincode)
 
     def get_absolute_url(self):
-        return reverse('home', kwargs={'pk': self.pk})  # This represent after doing Comment Where user should redirect
+        return reverse('auctions:profile_detail', kwargs={'pk': self.pk})  # This represent after doing Comment Where user should redirect
 
 #add became Agent and agentuser model.....
 

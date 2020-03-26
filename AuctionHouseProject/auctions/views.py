@@ -53,7 +53,7 @@ class ProfileSetup(LoginRequiredMixin,CreateView):
     login_url = '/login/'
     model = models.UserDetails
     template_name = 'auctions/user_profile_form.html'
-    redirect_field_name = 'auctions/profile_detail.html'
+    # redirect_field_name = 'auctions/profile_detail.html'
     form_class = forms.ProfileSetupForm
 
     def form_valid(self, form):
@@ -62,5 +62,5 @@ class ProfileSetup(LoginRequiredMixin,CreateView):
         profile.user=models.User.objects.get(username=self.request.user)
         profile.user.profile_set()
         profile.save()
-        return HttpResponseRedirect(reverse_lazy('home'))
+        return super().form_valid(form)
 
