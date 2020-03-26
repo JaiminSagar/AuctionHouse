@@ -55,9 +55,9 @@ class AgentUser(auth.models.User, auth.models.PermissionsMixin):
     address = models.TextField(max_length=255)
     mobile = models.CharField(max_length=255)
     birth_date= models.DateField(blank=True)
-    proof_document= models.FileField(blank=True)
-    resume_document =models.FileField(blank=True)
-    image = models.ImageField(blank=True)
+    proof_document= models.FileField(blank=True, upload_to='agent_proof_document')
+    resume_document =models.FileField(blank=True, upload_to='agent_resume_document')
+    image = models.ImageField(blank=True, upload_to='agent_image')
     interview_date =models.DateTimeField(blank=True)
     interviewed = models.BooleanField(default=False,blank=True)
     contacted = models.BooleanField(default=True)
@@ -65,6 +65,7 @@ class AgentUser(auth.models.User, auth.models.PermissionsMixin):
 
     def agent_approved(self):
         self.approved = True
+        self.save()
 
     def __str__(self):
         return '@{}'.format(self.username)

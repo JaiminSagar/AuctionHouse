@@ -30,5 +30,6 @@ urlpatterns = [
     path('thanks/', views.ThanksPage.as_view(), name='thanks'),
     path('admin_login/', views.adminLogin, name='admin_login'),
     path('agent_list/', views.AgentList.as_view(), name='agent_list'),
+    path('agent_list/approve/<pk>/', views.approveAgent, name='approve_agent')
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,13 +1,14 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView,CreateView
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import TemplateView, CreateView, ListView
 from auctions.models import User,UserDetails
-from auctions import forms
+from auctions import forms, models
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
 from django.contrib.auth import settings,get_user
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+
 # Create your views here.
 #
 user=get_user_model()
@@ -41,6 +42,15 @@ def adminLogin(request):
             return HttpResponse('Invalid Email or password')
     return render(request, 'auctions/admin_login.html', {})
 
-class AgentList(TemplateView):
+class AgentList(ListView):
+    model = models.AgentUser
     template_name = 'auctions/agent_approve_list.html'
+
+
+def approveAgent(request, pk):
+    agent = get_object_or_404(models.AgentUser, pk=pk)
+    print(agent.email, agent.approved)
+    agent.agent_approved()
+    print(agent.approved)
+    return redirect('agent_list')
 
