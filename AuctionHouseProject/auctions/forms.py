@@ -8,7 +8,7 @@ from django import forms
 class UserCreateForm(UserCreationForm):
 
     class Meta():
-        fields=('username','email','password1','password2')
+        fields=('username','first_name','last_name','email','password1','password2')
         model =models.User
 
     #Custom Label for model that is predefined in auth.
@@ -19,22 +19,9 @@ class UserCreateForm(UserCreationForm):
 
 class ProfileSetupForm(forms.ModelForm):
 
-    # def save(self, commit=True):
-    #     user= models.User()
-
     class Meta():
-        fields=('image','first_name','last_name','address','mobile','birth_date','city','state','pincode')
-        model=models.User
-        # widgets={
-        #
-        # }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['mobile'].label = 'Enter Mobile Number'
-        self.fields['birth_date'].label = 'Ente Your Birth Date'
-        self.fields['address'].label = 'Enter Your Address'
-        self.fields['image'].label = 'Select Your Profile Image:'
+        fields=('image','address','mobile','birth_date','city','state','pincode')
+        model=models.UserDetails
 
 
 class BecomeAgentForm(forms.ModelForm):
@@ -77,6 +64,7 @@ class MakeAnOffer():
     class Meta():
         models =models.MakeAnOffer
         fields=('title','first_name','last_name','email','offer_amount')
+        
 # class AgentCreateFrom(UserCreateForm):
 #     class Meta():
 #         fields=('username','email','password1','password2')

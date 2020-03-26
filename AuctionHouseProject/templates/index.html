@@ -10,17 +10,5 @@ Welcome To AuctionHouse
     {%if user.is_authenticated%}
 <h1>User is Authenticated</h1>>
 
-        {%ifequal user.user.profile_setup False%}
-                <div class="container">
-                    <form method="post" enctype="multipart/form-data">
-                    {%csrf_token%}
-                    {%bootstrap_form form%}
-                    <input type="submit" value="Set this a Profile"></form>
-                 </div>
-
-        {%endifequal%}
-
-    {%else%}
-        <p>Not authenticated....</p>
     {%endif%}
 {%endblock%}

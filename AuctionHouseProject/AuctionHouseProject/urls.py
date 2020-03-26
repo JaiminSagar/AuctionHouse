@@ -22,8 +22,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('',views.HomePage.as_view(),name='home'),
+    path('check/',views.checking,name='profile_check'),
     path('admin/', admin.site.urls),
+    path('',views.HomePage.as_view(),name='home'),
     path('auctions/',include('auctions.urls',namespace='auctions')),
     path('thanks/', views.ThanksPage.as_view(), name='thanks'),
 
