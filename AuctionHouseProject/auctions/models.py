@@ -11,6 +11,10 @@ class User(auth.models.User,auth.models.PermissionsMixin):
     def __str__(self):
         return "{}".format(self.username)
 
+    def profile_set(self):
+        self.profile_setup=True
+        self.save()
+
 class UserDetails(models.Model):
     user =models.OneToOneField(User,on_delete=models.CASCADE)
     address = models.CharField(max_length=255, default='To be Setup')
