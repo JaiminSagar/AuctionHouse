@@ -136,13 +136,12 @@ STATICFILES_DIRS=[
     STATIC_DIR,
 ]
 
-<<<<<<< HEAD
+
 LOGIN_URL='auctions/login'
 LOGIN_REDIRECT_URL='profile_check'
-=======
+
 # login/logout settings....
-LOGIN_REDIRECT_URL='home'
->>>>>>> email_activation
+# LOGIN_REDIRECT_URL='home'
 LOGOUT_REDIRECT_URL='thanks'
 
 
