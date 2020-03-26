@@ -101,6 +101,21 @@ class BecomeAgent(CreateView):
     success_url = reverse_lazy('home')
     template_name = 'auctions/become_agent.html'
 
+    def form_valid(self, form):
+        agent = form.save(commit = False)
+        agent.username = agent.email
+        agent.save()
+        mail_subject = 'AuctionHouse.in | Successfully Appiled '
+        message = render_to_string('auctions/becomeAgent_email.html', {
+            'agent': agent,
+        })
+        to_email = agent.email
+        email = EmailMessage(
+                    mail_subject, message, to=[to_email]
+        )
+        email.send()
+        return super().form_valid(form)
+
 class Thanks(TemplateView):
     template_name = 'auctions/thanks.html'
 

@@ -25,7 +25,7 @@ class ProfileSetupForm(forms.ModelForm):
 
 
 class BecomeAgentForm(forms.ModelForm):
-    birth_date = forms.DateField(widget=forms.DateInput)
+    
     class Meta():
         fields=('first_name','last_name','email','mobile','birth_date','address','image','resume_document','proof_document')
         model = models.AgentUser
@@ -50,7 +50,7 @@ class BecomeAgentForm(forms.ModelForm):
         self.fields['last_name'].label = 'Last Name'
         self.fields['email'].label = 'Email Address'
         self.fields['mobile'].label = 'Enter Mobile Number'
-        self.fields['birth_date'].label = 'Ente Your Birth Date'
+        self.fields['birth_date'].label = 'Enter Your Birth Date'
         self.fields['address'].label = 'Enter Your Address'
         self.fields['image'].label = 'Select Your Profile Image:'
         self.fields['resume_document'].label = 'Your Resume:'

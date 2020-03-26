@@ -21,11 +21,14 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('check/',views.checking,name='profile_check'),
     path('admin/', admin.site.urls),
     path('',views.HomePage.as_view(),name='home'),
     path('auctions/',include('auctions.urls',namespace='auctions')),
     path('thanks/', views.ThanksPage.as_view(), name='thanks'),
+    path('admin_login/', views.adminLogin, name='admin_login'),
+    path('agent_list/', views.AgentList.as_view(), name='agent_list'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

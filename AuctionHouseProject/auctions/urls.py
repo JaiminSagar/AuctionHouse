@@ -17,6 +17,6 @@ urlpatterns=[
     path('profile_update/<pk>/',views.ProfileUpdate.as_view(),name='update'),
     path('profile_setup/',views.ProfileSetup.as_view(),name='setup_profile'),
     path('auction_list/', views.AuctionList.as_view(), name='auction_list'),
-
+    
 
 ]
