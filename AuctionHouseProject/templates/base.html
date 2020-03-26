@@ -32,7 +32,7 @@
                         <a class="nav-link" href="{%url 'auctions:logout'%}">Logout</a>
                       </li>
                           <li class="nav-item">
-                        <a class="nav-link" href="#">Current Auctions</a>
+                        <a class="nav-link" href="{% url 'auctions:auction_list' %}">Current Auctions</a>
                       </li>
                     </ul>
 
@@ -59,8 +59,16 @@
             </nav>
         </div>
         <br/>
-    {%block content%}
+    <div class='container'>
+      {% block heading %}
 
-    {%endblock%}
+      {% endblock heading %}
+
+
+      
+      {% block content %}
+        
+      {% endblock %}
+    </div>
     </body>
 </html>
