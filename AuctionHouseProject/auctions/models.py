@@ -1,4 +1,4 @@
-from django.db import models
+from djongo import models
 from django.contrib import auth
 from django.views import generic
 from django.utils import timezone
@@ -7,15 +7,30 @@ from django.urls import reverse,reverse_lazy
 # Create your models here.
 
 class User(auth.models.User,auth.models.PermissionsMixin):
-    address = models.CharField(max_length=255)
-    mobile = models.CharField(max_length=13)
-    birth_date =models.DateField()
-    # proof_document= models.FileField()
-    image = models.ImageField()
     profile_setup = models.BooleanField(default=False)
+    def __str__(self):
+        return "{}".format(self.username)
+
+    def profile_set(self):
+        self.profile_setup=True
+        self.save()
+
+class UserDetails(models.Model):
+    user =models.OneToOneField(User,on_delete=models.CASCADE)
+    address = models.CharField(max_length=255, default='To be Setup')
+    mobile = models.CharField(max_length=13, default='To be Setup')
+    birth_date = models.DateField(blank=True)
+    pincode = models.IntegerField(default='000000')
+    city = models.CharField(max_length=30, default='Place to be Selected.')
+    state = models.CharField(max_length=30, default='To be Selected')
+    # proof_document= models.FileField()
+    image = models.ImageField(upload_to='profile_pics', blank=True)
 
     def __str__(self):
-        return '@{}'.format(self.username)
+        return '@{}'.format(self.pincode)
+
+    def get_absolute_url(self):
+        return reverse('auctions:profile_detail', kwargs={'pk': self.pk})  # This represent after doing Comment Where user should redirect
 
 #add became Agent and agentuser model.....
 
@@ -40,16 +55,24 @@ class AgentUser(auth.models.User,auth.models.PermissionsMixin):
     address = models.TextField(max_length=255)
     mobile = models.CharField(max_length=255)
     birth_date= models.DateField()
-    proof_document= models.FileField()
-    resume_document =models.FileField()
-    image = models.ImageField()
-    interview_date =models.DateTimeField()
-    interviewed = models.BooleanField(default=False)
+    proof_document= models.FileField(blank=True)
+    resume_document =models.FileField(blank=True)
+    image = models.ImageField(blank=True)
+    interview_date =models.DateTimeField(blank=True)
+    interviewed = models.BooleanField(default=False,blank=True)
     contacted = models.BooleanField(default=True)
     approved =models.BooleanField(default=False)
 
     def agent_approved(self):
         self.approved = True
+
+    def __str__(self):
+        return '@{}'.format(self.username)
+
+    class Meta:
+        verbose_name=('AgentUser')
+        verbose_name_plural =('AgentUsers')
+
 
 class Property(models.Model):
     propery_type  = models.CharField(max_length=50)
@@ -63,7 +86,10 @@ class PropertyReg(models.Model):
     # property_location = models.URLField()
     #property_description will be only edited by agentUser
     property_description =models.TextField(max_length=2000)
+    agent_id = models.ForeignKey(AgentUser,related_name='who_approves',on_delete=models.CASCADE)
+    approved_date = models.DateTimeField()
     approved = models.BooleanField(default=True)
+
 
 
 class MakeAnOffer(models.Model):
@@ -85,13 +111,15 @@ class CurrentAuction(models.Model):
 
 
 class BiddingOfProperty(models.Model):
-    property_id=models.ForeignKey(PropertyReg,related_name='property_bid',on_delete=models.CASCADE)
+    current_auction_id=models.ForeignKey(CurrentAuction,related_name='property_bid',on_delete=models.CASCADE)
     user = models.ForeignKey(User,related_name='user_bid',on_delete=models.CASCADE)
     user_bid_amount =models.IntegerField()
     bid_time =models.DateTimeField()
 
 
 class RegForAuction(models.Model):
+    current_auction_id = models.ForeignKey(CurrentAuction, related_name='current_auction', on_delete=models.CASCADE)
+    payment_status = models.CharField(max_length=12)
     user = models.ForeignKey(User,related_name='register',on_delete=models.CASCADE)
 
 

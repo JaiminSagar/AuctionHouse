@@ -1,0 +1,12 @@
+{%extends 'base.html'%}
+{%load bootstrap4%}
+{%block content%}
+<h1>Here Form will be added.</h1>
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    {%bootstrap_form form%}
+    <input type="submit" class="btn btn-primary btn-large" value="Save">
+</form>
+</div>
+{%endblock%}

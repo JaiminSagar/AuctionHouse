@@ -26,10 +26,13 @@
                         <a class="nav-link" href="#">View Actions</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
+                        <a class="nav-link" href="{%url 'auctions:profile_detail' id=user.id%}">Profile</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="#">Logout</a>
+                        <a class="nav-link" href="{%url 'auctions:logout'%}">Logout</a>
+                      </li>
+                          <li class="nav-item">
+                        <a class="nav-link" href="#">Current Auctions</a>
                       </li>
                     </ul>
 
@@ -38,10 +41,6 @@
                     <ul class="nav navbar ml-auto">
                       <li class="nav-item">
                         <a class="nav-link" href="{% url 'auctions:become_agent' %}">Become Agent</a>
-                      </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="{%url 'auctions:signup'%}">SignUp</a>
-                      </li>
                       <li class="nav-item">
                         <a class="nav-link" href="#">Auction Guide</a>
                       </li>
@@ -61,6 +60,7 @@
         </div>
         <br/>
     {%block content%}
+
     {%endblock%}
     </body>
 </html>

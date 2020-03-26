@@ -1,4 +1,14 @@
 {%extends 'base.html'%}
-{%block content%}
+{%load bootstrap4%}
 
+{%block title%}
+Welcome To AuctionHouse
+{%endblock%}
+
+
+{%block content%}
+    {%if user.is_authenticated%}
+<h1>User is Authenticated</h1>>
+
+    {%endif%}
 {%endblock%}
