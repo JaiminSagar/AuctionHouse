@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'AuctionHouseProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'test',
+        'NAME': 'myauctions',
     }
 }
 
