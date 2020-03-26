@@ -51,7 +51,7 @@ class UserDetails(models.Model):
     # def __str__(self):
     #     return '@{}'.format(self.username)
 
-class AgentUser(auth.models.User,auth.models.PermissionsMixin):
+class AgentUser(auth.models.User, auth.models.PermissionsMixin):
     address = models.TextField(max_length=255)
     mobile = models.CharField(max_length=255)
     birth_date= models.DateField()
