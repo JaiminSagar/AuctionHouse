@@ -1,0 +1,10 @@
+{% autoescape off %}
+Hi {{ agent.first_name }},
+We are very excited to inform you that, you are approved as Agent in AuctionHouse.in
+
+Your username/email for login is given below,
+Username/Email: {{ agent.username }}
+
+Please click on the link to set your password and login,
+http://{{ domain }}{% url 'auctions:agent_password' pk=agent.pk %}
+{% endautoescape %}

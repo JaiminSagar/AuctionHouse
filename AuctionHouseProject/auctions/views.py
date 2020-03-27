@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import  LoginRequiredMixin
 # from django.contrib.auth.decorators import login_required
 from django.urls import reverse,reverse_lazy
@@ -139,4 +139,22 @@ class ProfileSetup(LoginRequiredMixin, CreateView):
         profile.user.profile_set()
         profile.save()
         return super().form_valid(form)
+
+
+def set_agent_password(request, pk):
+    agent = get_object_or_404(models.AgentUser, pk=pk)
+    
+    if agent.password == '':
+        if request.method == "POST":
+            password = request.POST.get('password')
+            confirm_password = request.POST.get('confirm password')
+            print(password, confirm_password)
+
+            if password == confirm_password:
+                agent.password = password
+                agent.save()
+                return HttpResponse('Your password sucessfully saved. Now do Login.')
+        return render(request, 'auctions/set_agent_password.html', {})
+
+    return HttpResponse("Maybe Your password is already there.....")
 

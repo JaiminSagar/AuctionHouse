@@ -9,6 +9,20 @@ from django.contrib.auth import settings,get_user
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 
+
+# email and activation related libraries
+from django.contrib.auth import login, authenticate
+from django.http import HttpResponse
+from django.contrib.sites.shortcuts import get_current_site
+#from django.utils.encoding import force_bytes, force_text
+#from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+#from .tokens import account_activation_token
+#from django.contrib.auth.models import User as Signup_User
+from django.core.mail import EmailMessage
+from django.core.exceptions import ObjectDoesNotExist
+
+
 # Create your views here.
 #
 user=get_user_model()
@@ -49,8 +63,17 @@ class AgentList(ListView):
 
 def approveAgent(request, pk):
     agent = get_object_or_404(models.AgentUser, pk=pk)
-    print(agent.email, agent.approved)
     agent.agent_approved()
-    print(agent.approved)
+    current_site = get_current_site(request)
+    mail_subject = 'AuctionHouse.in | Agent Approved'
+    message = render_to_string('auctions/agent_approved_email.html', {
+        'agent': agent,
+        'domain': current_site.domain,
+    })
+    to_email = agent.email
+    email = EmailMessage(
+                mail_subject, message, to=[to_email]
+    )
+    email.send()
     return redirect('agent_list')
 
