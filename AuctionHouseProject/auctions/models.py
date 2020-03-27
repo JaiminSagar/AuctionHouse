@@ -27,10 +27,10 @@ class UserDetails(models.Model):
     image = models.ImageField(upload_to='profile_pics', blank=True)
 
     def __str__(self):
-        return '@{}'.format(self.pincode)
+        return '@{}'.format(self.user)
 
     def get_absolute_url(self):
-        return reverse('auctions:profile_detail', kwargs={'pk': self.pk})  # This represent after doing Comment Where user should redirect
+        return reverse('auctions:profile_detail', kwargs={'user':self.user,'pk': self.pk})  # This represent after doing Comment Where user should redirect
 
 #add became Agent and agentuser model.....
 

@@ -87,11 +87,11 @@ class ProfileUpdate(LoginRequiredMixin,UpdateView):
 class ProfileDetail(LoginRequiredMixin,SelectRelatedMixin,DetailView):
     template_name = 'auctions/profile_detail.html'
     model = models.UserDetails
-    select_related = ('first_name','last_name','mobile','email','address','image','city','state','pincode')
+    select_related = ('user',)
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(user__username__iexact=self.kwargs.get('username'))
+        return queryset.filter(pk=self.kwargs.get('pk'))
 
 
 class BecomeAgent(CreateView):
