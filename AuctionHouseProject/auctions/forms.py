@@ -27,7 +27,7 @@ class ProfileSetupForm(forms.ModelForm):
 class BecomeAgentForm(forms.ModelForm):
     
     class Meta():
-        fields=('first_name','last_name','email','mobile','birth_date','address','image','resume_document','proof_document')
+        fields=('first_name','last_name','email','mobile','birth_date','address','image','resume_document','proof_document','city','state','pincode')
         model = models.AgentUser
 #later work.............
         # widgets = {

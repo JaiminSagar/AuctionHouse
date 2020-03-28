@@ -21,7 +21,7 @@ class UserDetails(models.Model):
     address = models.CharField(max_length=255, default='To be Setup')
     mobile = models.CharField(max_length=13, default='To be Setup')
     birth_date = models.DateField(blank=True)
-    pincode = models.IntegerField(default='000000')
+    pincode = models.CharField(max_length=6, default='000000')
     city = models.CharField(max_length=30, default='Place to be Selected.')
     state = models.CharField(max_length=30, default='To be Selected')
     # proof_document= models.FileField()
@@ -55,6 +55,9 @@ class UserDetails(models.Model):
 class AgentUser(auth.models.User, auth.models.PermissionsMixin):
     user_type =models.CharField(max_length=10,default="agent")
     address = models.TextField(max_length=255)
+    pincode = models.CharField(max_length=6, default='000000')
+    city = models.CharField(max_length=30, default="")
+    state = models.CharField(max_length=30, default="")
     mobile = models.CharField(max_length=255)
     birth_date= models.DateField(blank=True)
     proof_document= models.FileField(blank=True, upload_to='agent_proof_document')
