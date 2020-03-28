@@ -8,6 +8,7 @@ from django.urls import reverse,reverse_lazy
 
 class User(auth.models.User,auth.models.PermissionsMixin):
     profile_setup = models.BooleanField(default=False)
+    user_type= models.CharField(default="user",max_length=10)
     def __str__(self):
         return "{}".format(self.username)
 
@@ -52,6 +53,7 @@ class UserDetails(models.Model):
     #     return '@{}'.format(self.username)
 
 class AgentUser(auth.models.User, auth.models.PermissionsMixin):
+    user_type =models.CharField(max_length=10,default="agent")
     address = models.TextField(max_length=255)
     mobile = models.CharField(max_length=255)
     birth_date= models.DateField(blank=True)

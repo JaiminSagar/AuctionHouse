@@ -25,18 +25,15 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 #
-user=get_user_model()
 
 def checking(request):
-    if request.user:
         user=get_user(request)
         if user.user.profile_setup == False:
             return HttpResponseRedirect(reverse('auctions:setup_profile'))
+        elif user.agentuser.user_type == 'agent':
+            return HttpResponseRedirect(reverse('auctions:agent_profile'))
         else:
             return HttpResponseRedirect(reverse('home'))
-    else:
-        return HttpResponseRedirect(reverse('home'))
-
 
 class HomePage(TemplateView):
     template_name = 'index.html'

@@ -5,7 +5,7 @@ BecomeAgent
 {%endblock%}
 {%block content%}
 <div class="container">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {%csrf_token%}
         {%bootstrap_form form%}
         <input type="submit" value="Submit" class="btn btn-default">
