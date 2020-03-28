@@ -5,10 +5,11 @@ from auctions import forms, models
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
-from django.contrib.auth import settings,get_user
+from django.contrib.auth import settings,get_user,get_user_model
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 
+USER=get_user_model()
 
 # email and activation related libraries
 from django.contrib.auth import login, authenticate
@@ -28,15 +29,25 @@ from django.core.exceptions import ObjectDoesNotExist
 
 def checking(request):
         user=get_user(request)
-        if user.user.profile_setup == False:
-            return HttpResponseRedirect(reverse('auctions:setup_profile'))
-        elif user.agentuser.user_type == 'agent':
-            return HttpResponseRedirect(reverse('auctions:agent_profile'))
+        if user.is_staff:
+            return HttpResponseRedirect(reverse('agent_home'))
+        elif user.is_staff == False:
+            try:
+                if user.user.profile_setup == False:
+                    print("hi")
+                    return HttpResponseRedirect(reverse('auctions:setup_profile'))
+                else:
+                    return HttpResponseRedirect(reverse('home'))
+            except:
+                return HttpResponseRedirect(reverse('home'))
         else:
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect("<h1>Something went Wrong</h1>")
 
 class HomePage(TemplateView):
     template_name = 'index.html'
+
+class AgentHome(TemplateView):
+    template_name = 'auctions/agent/agent_dashboard.html'
 
 class ThanksPage(TemplateView):
     template_name = 'thanks.html'

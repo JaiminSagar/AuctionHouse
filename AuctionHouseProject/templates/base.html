@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {%load static%}
+{%load bootstrap4%}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -44,28 +45,53 @@
       					</a>
       				</li>
                     {% if user.is_authenticated %}
-                    <li class="dropdown nav-item">
-                      <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
-                          <i class="material-icons">apps</i> Acitvity
-                      </a>
-                      <div class="dropdown-menu dropdown-with-icons">
-                        <a href="#" class="dropdown-item">
-                            <i class="material-icons">person</i> Profile
-                        </a>
+                        {%if user.is_staff%}
+                            <li class="dropdown nav-item">
+                                  <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                                      <i class="material-icons">apps</i> Acitvity
+                                  </a>
+                                  <div class="dropdown-menu dropdown-with-icons">
+                                    <a href="{%url 'auctions:agent_profile' pk=user.pk%}" class="dropdown-item">
+                                        <i class="material-icons">person</i> Profile
+                                    </a>
 
-                         <a href="#" class="dropdown-item">
-                            <i class="material-icons">library_books</i> View Auctions
-                        </a>
+                                     <a href="#" class="dropdown-item">
+                                        <i class="material-icons">library_books</i> View Auctions
+                                    </a>
 
-                        <a href="#" class="dropdown-item">
-                            <i class="material-icons">assignment</i> Wish List
-                        </a>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="material-icons">assignment</i> Evaluation List
+                                    </a>
 
-                          <a href="{%url 'auctions:logout'%}" class="dropdown-item">
-                            <i class="material-icons">exit_to_app</i> Logout
-                        </a>
-                      </div>
-                    </li>
+                                      <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                                        <i class="material-icons">exit_to_app</i> Logout
+                                    </a>
+                                  </div>
+                            </li>
+                        {%else%}
+                            <li class="dropdown nav-item">
+                              <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                                  <i class="material-icons">apps</i> Acitvity
+                              </a>
+                              <div class="dropdown-menu dropdown-with-icons">
+                                <a href="{%url 'auctions:profile_detail' pk=user.pk%}" class="dropdown-item">
+                                    <i class="material-icons">person</i> Profile
+                                </a>
+
+                                 <a href="#" class="dropdown-item">
+                                    <i class="material-icons">library_books</i> View Auctions
+                                </a>
+
+                                <a href="#" class="dropdown-item">
+                                    <i class="material-icons">assignment</i> Wish List
+                                </a>
+
+                                  <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                                    <i class="material-icons">exit_to_app</i> Logout
+                                </a>
+                              </div>
+                            </li>
+                    {%endif%}
                     {% else %}
 
                     <li class="nav-item">
@@ -107,9 +133,6 @@
     <div class="page-header header-filter" data-parallax="true" style="background-image:url('http://wallpapere.org/wp-content/uploads/2012/02/black-and-white-city-night.png');"></div>
     <div class="main main-raised">
 		<div class="profile-content">
-        <br/>
-        <br/>
-        <br/>
         {%block heading%}
 
         {%endblock heading%}
