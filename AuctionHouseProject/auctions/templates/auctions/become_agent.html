@@ -1,10 +1,14 @@
 {%extends 'base.html'%}
 {%load bootstrap4%}
 {%block title%}
-BecomeAgent
+Become Agent
 {%endblock%}
+{%block heading%}
+<center><h1>Become an Agent</h1></center>
+{%endblock heading%}
 {%block content%}
 <div class="container">
+    <p>Please,Fill the details in given form.
     <form method="post" enctype="multipart/form-data">
         {%csrf_token%}
         {%bootstrap_form form%}

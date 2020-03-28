@@ -1,12 +1,32 @@
 {%extends 'base.html'%}
 {%load bootstrap4%}
 {%block title%}LogIn{%endblock%}
+{%block heading%}
+<center><h1>Log In</h1></center>
+{%endblock%}
 {%block content%}
-<div class="container">
+<script>
+    $(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#scroll').offset().top
+    }, 'slow');
+});
+
+</script>
+<div id="scroll" class="container">
     <form method="post">
         {%csrf_token%}
         {%bootstrap_form form%}
         <input type="submit" value="LogIn" class="btn btn-default">
     </form>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
 </div>
 {%endblock%}
