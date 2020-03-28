@@ -147,8 +147,12 @@
 	                <div class="col-md-8 ml-auto mr-auto">
         	           <div class="profile">
 	                        <div class="avatar">
+                                {%if userdetails.iamge.url%}
                                 <img src="{{userdetails.image.url}}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
 <!--	                            <img src="https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTU0NjQzOTk4OTQ4OTkyMzQy/ansel-elgort-poses-for-a-portrait-during-the-baby-driver-premiere-2017-sxsw-conference-and-festivals-on-march-11-2017-in-austin-texas-photo-by-matt-winkelmeyer_getty-imagesfor-sxsw-square.jpg" alt="Circle Image" class="img-raised rounded-circle img-fluid">-->
+                                {%else%}
+                                <img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" alt="Circle Image" class="img-raised rounded-circle img-fluid">
+                                {%endif%}
 	                        </div>
 	                        <div class="name">
 	                            <h3 class="title">{{user.first_name}} {{user.last_name}}</h3>
@@ -157,6 +161,30 @@
                                 <div class="container">
                                 <h1 class="title">Please Setup Your Profile</h1>
                                     <div class="container">
+                                        {%if user.profile.setup%}
+                                        <form method="post" action="{%url 'auctions:profile_detail' pk=user.pk%}">
+                                            {%csrf_token%}
+                                             <div class="file-field input-field">
+                                                <h5 class="title">Select Your New Profile Image:
+                                              <div class="btn">
+                                                <span></span>
+                                                {{form.image}}
+                                              </div>
+<!--                                              <div class="file-path-wrapper">-->
+<!--                                                <input class="file-path validate" type="text">-->
+<!--                                              </div>-->
+                                                </h5>
+                                            </div>
+
+                                            <h5 class="title">Enter Your New Address: {{form.address}}</h5>
+                                            <h5 class="title">Enter Valid Mobile Number: {{form.mobile}}</h5>
+                                            <h5 class="title">Enter Your Birthdate r: {{form.birth_date}}</h5>
+                                            <h5 class="title">Select City: {{form.city}}</h5>
+                                            <h5 class="title">Select State: {{form.state}}</h5>
+                                            <h5 class="title">Enter The Pincode: {{form.pincode}}</h5>
+                                            <input class="waves-effect waves-light btn" type="submit" value="Save Details">
+                                    </form>
+                                        {%else%}
                                         <form method="post">
                                             {%csrf_token%}
                                              <div class="file-field input-field">
@@ -176,8 +204,9 @@
                                             <h5 class="title">Select City: {{form.city}}</h5>
                                             <h5 class="title">Select State: {{form.state}}</h5>
                                             <h5 class="title">Enter The Pincode: {{form.pincode}}</h5>
-                                            <input class="waves-effect waves-light btn" type="submit" value="Update Details">
+                                            <input class="waves-effect waves-light btn" type="submit" value="Save Details">
                                     </form>
+                                    {%endif%}
                                     </div>
                                 </div>
 	                        </div>

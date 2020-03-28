@@ -30,7 +30,8 @@ class UserDetails(models.Model):
         return '@{}'.format(self.user)
 
     def get_absolute_url(self):
-        return reverse('auctions:profile_detail', kwargs={'user':self.user,'pk': self.pk})  # This represent after doing Comment Where user should redirect
+        return reverse_lazy\
+            ('auctions:profile_detail', kwargs={'user':self.user,'pk': self.pk})  # This represent after doing Comment Where user should redirect
 
 #add became Agent and agentuser model.....
 
@@ -108,6 +109,7 @@ class CurrentAuction(models.Model):
     pre_set_amount = models.IntegerField()
     increment_ratio = models.FloatField()
     current_amount =models.IntegerField()
+    #viewinhours....
 
 
 class BiddingOfProperty(models.Model):
