@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import  LoginRequiredMixin
 # from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.urls import reverse,reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.http import Http404,HttpResponseRedirect
@@ -149,9 +150,10 @@ def set_agent_password(request, pk):
             password = request.POST.get('password')
             confirm_password = request.POST.get('confirm password')
             print(password, confirm_password)
+            print(make_password(password), make_password(confirm_password))
 
             if password == confirm_password:
-                agent.password = password
+                agent.password = make_password(password)
                 agent.save()
                 return HttpResponse('Your password sucessfully saved. Now do Login.')
         return render(request, 'auctions/set_agent_password.html', {})
