@@ -79,7 +79,7 @@ def activate(request, uidb64, token):
 
 class ProfileUpdate(LoginRequiredMixin,UpdateView):
     login_url = '/login/'
-    redirect_field_name = 'auctions/profile_detail.html'
+    # redirect_field_name = 'auctions/profile_detail.html'
     template_name= 'auctions/user_profile_form.html'
     form_class = forms.ProfileUpdateForm
     model = models.UserDetails
