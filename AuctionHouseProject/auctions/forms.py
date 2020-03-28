@@ -23,6 +23,12 @@ class ProfileSetupForm(forms.ModelForm):
         fields=('image','address','mobile','birth_date','city','state','pincode')
         model=models.UserDetails
 
+class ProfileUpdateForm(forms.ModelForm):
+
+    class Meta():
+        fields=('image','address','mobile','city','state','pincode')
+        model=models.UserDetails
+
 
 class BecomeAgentForm(forms.ModelForm):
     

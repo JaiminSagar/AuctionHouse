@@ -82,19 +82,19 @@ def activate(request, uidb64, token):
 
 class ProfileUpdate(LoginRequiredMixin,UpdateView):
     login_url = '/login/'
-    redirect_field_name = 'auctions/profile_detail.html'
-    template_name= 'user_profile_form'
-    form_class = forms.ProfileSetupForm
-    model = models.User
+    # redirect_field_name = 'auctions/profile_detail.html'
+    template_name= 'auctions/user_profile_form.html'
+    form_class = forms.ProfileUpdateForm
+    model = models.UserDetails
 
 class ProfileDetail(LoginRequiredMixin,SelectRelatedMixin,DetailView):
-    template_name = 'profile_detail'
-    model = models.User
-    select_related = ('first_name','last_name','mobile','email','address','image','city','state','pincode')
+    template_name = 'auctions/profile_detail.html'
+    model = models.UserDetails
+    select_related = ('user',)
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(user__username__iexact=self.kwargs.get('username'))
+        return queryset.filter(pk=self.kwargs.get('pk'))
 
 
 class BecomeAgent(CreateView):
