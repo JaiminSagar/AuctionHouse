@@ -30,8 +30,8 @@ def checking(request):
         user=get_user(request)
         if user.user.profile_setup == False:
             return HttpResponseRedirect(reverse('auctions:setup_profile'))
-        elif user.agentuser.user_type == 'agent':
-            return HttpResponseRedirect(reverse('auctions:agent_profile'))
+        # elif user.agentuser.user_type == 'agent':
+        #     return HttpResponseRedirect(reverse('auctions:agent_profile'))
         else:
             return HttpResponseRedirect(reverse('home'))
 
