@@ -81,8 +81,8 @@ class ProfileUpdate(LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     redirect_field_name = 'auctions/profile_detail.html'
     template_name= 'auctions/user_profile_form.html'
-    form_class = forms.ProfileSetupForm
-    model = models.User
+    form_class = forms.ProfileUpdateForm
+    model = models.UserDetails
 
 class ProfileDetail(LoginRequiredMixin,SelectRelatedMixin,DetailView):
     template_name = 'auctions/profile_detail.html'

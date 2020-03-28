@@ -82,20 +82,20 @@
                           <i class="material-icons">apps</i> Acitvity
                       </a>
                       <div class="dropdown-menu dropdown-with-icons">
-                        <a href="../index.html" class="dropdown-item">
-                            <i class="material-icons">layers</i> Profile
+                        <a href="#" class="dropdown-item">
+                            <i class="material-icons">person</i> Profile
                         </a>
 
-                         <a href="http://demos.creative-tim.com/material-kit/docs/2.0/getting-started/introduction.html" class="dropdown-item">
-                            <i class="material-icons">content_paste</i> View Auctions
+                         <a href="#" class="dropdown-item">
+                            <i class="material-icons">library_books</i> View Auctions
                         </a>
 
-                        <a href="http://demos.creative-tim.com/material-kit/docs/2.0/getting-started/introduction.html" class="dropdown-item">
-                            <i class="material-icons">content_paste</i> Wish List
+                        <a href="#" class="dropdown-item">
+                            <i class="material-icons">assignment</i> Wish List
                         </a>
 
-                          <a href="http://demos.creative-tim.com/material-kit/docs/2.0/getting-started/introduction.html" class="dropdown-item">
-                            <i class="material-icons">content_paste</i> Logout
+                          <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                            <i class="material-icons">exit_to_app</i> Logout
                         </a>
                       </div>
                     </li>
@@ -107,13 +107,13 @@
       					</a>
       				</li>
                     <li class="nav-item">
-      					<a class="nav-link" href="#">
-      						<i class="material-icons">cloud_download</i> Sign Up
+      					<a class="nav-link" href="{%url 'auctions:signup'%}">
+      						<i class="material-icons">account_box</i> Sign Up
       					</a>
       				</li>
                     <li class="nav-item">
-      					<a class="nav-link" href="#">
-      						<i class="material-icons">cloud_download</i> Log In
+      					<a class="nav-link" href="{%url 'auctions:login'%}">
+      						<i class="material-icons">account_circle</i> Log In
       					</a>
       				</li>
       				<li class="nav-item">
@@ -122,16 +122,16 @@
       					</a>
       				</li>
                       {% endif %}
-      				<li class="nav-item">
-      					<a class="nav-link" href="https://www.facebook.com/CreativeTim" target="_blank">
-      						<i class="fa fa-facebook-square"></i>
-      					</a>
-      				</li>
-      				<li class="nav-item">
-      					<a class="nav-link"  href="https://www.instagram.com/CreativeTimOfficial" target="_blank">
-      						<i class="fa fa-instagram"></i>
-      					</a>
-      				</li>
+<!--      				<li class="nav-item">-->
+<!--      					<a class="nav-link" href="https://www.facebook.com/CreativeTim" target="_blank">-->
+<!--      						<i class="fa fa-facebook-square"></i>-->
+<!--      					</a>-->
+<!--      				</li>-->
+<!--      				<li class="nav-item">-->
+<!--      					<a class="nav-link"  href="https://www.instagram.com/CreativeTimOfficial" target="_blank">-->
+<!--      						<i class="fa fa-instagram"></i>-->
+<!--      					</a>-->
+<!--      				</li>-->
                 </ul>
             </div>
         </div>
@@ -155,32 +155,25 @@
 <!--                                <a href="#pablo" class="btn btn-just-icon btn-link btn-pinterest"><i class="fa fa-pinterest"></i></a>-->
                                 <div class="container">
                                     <center>
-                                        Username:{{userdetails.user.username}}
-                                        Email:{{userdetails.user.email}}
-                                        mobile:{{userdetails.mobile}}
-                                        address:{{userdetails.address}}
-                                        birth_date:{{userdetails.birth_date}}
-                                        city:{{userdetails.city}}
-                                        state:{{userdetails.state}}
-                                        pincode:{{userdetails.pincode}}
-                                    <a href="{%url 'auctions:profile_update' pk=userdetails.pk %}" class="btn btn-primary"></a>
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                            </center>
-
-                                </div>
+                                       <h5 class="title"> Username:{{userdetails.user.username}}</h5>
+                                        <h5 class="title">Email:{{userdetails.user.email}}</h5>
+                                        <h5 class="title">mobile:{{userdetails.mobile}}</h5>
+                                        <h5 class="title">address:{{userdetails.address}}</h5>
+                                        <h5 class="title">birth date:{{userdetails.birth_date}}</h5>
+                                        <h5 class="title">city:{{userdetails.city}}</h5>
+                                        <h5 class="title">state:{{userdetails.state}}</h5>
+                                        <h5 class="title">pincode:{{userdetails.pincode}}</h5>
+                                    </center></div>
 	                        </div>
 	                    </div>
     	            </div>
-                </div>
-                <div class="description text-center">
-                    <p> </p>
                 </div>
 				<div class="row">
 					<div class="col-md-6 ml-auto mr-auto">
                         <div class="profile-tabs">
                           <ul class="nav nav-pills nav-pills-icons justify-content-center" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" href="{%url 'auctions:profile_update' pk=userdetails.pk%}" role="tab" data-toggle="tab">
+                                <a class="nav-link active" href="{%url 'auctions:profile_update' pk=userdetails.pk%}" role="tab" >
                                   <i class="material-icons">create</i>
                                   Edit Profile
                                 </a>
@@ -192,7 +185,7 @@
 	</div>
 
 	<footer class="footer text-center ">
-        <p>Made with <a href="https://demos.creative-tim.com/material-kit/index.html" target="_blank">Material Kit</a> by Creative Tim</p>
+        <p><a href="#" target="_blank">Material Kit</a> By Auction House</p>
     </footer>
 
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
