@@ -1,4 +1,5 @@
-{%extends 'auctions/agent/agent_base.html'%}
+{%extends 'base.html'%}
+
 {%load bootstrap4%}
 
 {% block title %}
@@ -17,7 +18,7 @@ Evaluation List
     }, 'slow');
 });
 </script>
-<center id="scroll"><h1>Approve Evaluation List</h1></center>
+<center id="scroll"><h1>Your Evaluation List</h1></center>
 {% endblock heading %}
 
 
@@ -40,7 +41,6 @@ Evaluation List
     </thead>
     <tbody>
     {% for prop in propertyreg_list %}
-        {% comment %} <a href="{% url 'auctions:property_detail' pk=prop.pk %}"> {% endcomment %}
         <tr>
         <th scope="row">{{ prop.pk }}</th>
         <td>{{ prop.user.email }}</td>
@@ -54,7 +54,6 @@ Evaluation List
             <td>Approved by {{ prop.agent_id.email }}</td>
         {% endif %}
         </tr>
-        </a>
     {% endfor %}
     </tbody>
     </table>

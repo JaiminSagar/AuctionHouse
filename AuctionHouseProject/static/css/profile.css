@@ -308,7 +308,7 @@ img.rounded {
     left: 0;
     z-index: 1000;
     float: left;
-    min-width: 11rem !important;
+    min-width: 15rem !important;
     margin: .125rem 0 0;
     font-size: 1rem;
     color: #212529;

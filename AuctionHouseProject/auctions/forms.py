@@ -75,7 +75,15 @@ class MakeAnOffer():
     class Meta():
         models =models.MakeAnOffer
         fields=('title','first_name','last_name','email','offer_amount')
-        
+
+
+
+class ApplyEvaluationForm(forms.ModelForm):
+    class Meta():
+        model = models.PropertyReg
+        fields = ('property_type', 'property_address','city','state','pincode')
+
+
 # class AgentCreateFrom(UserCreateForm):
 #     class Meta():
 #         fields=('username','email','password1','password2')

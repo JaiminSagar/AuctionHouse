@@ -48,16 +48,15 @@
                           <i class="material-icons">apps</i> Acitvity
                       </a>
                       <div class="dropdown-menu dropdown-with-icons">
+                        <a href="{% url 'auctions:agent_dashboard' %}" class="dropdown-item">
+                            <i class="material-icons">assignment</i> Dashboard
+                        </a>
                         <a href="{%url 'auctions:agent_profile' pk=user.pk%}" class="dropdown-item">
                             <i class="material-icons">person</i> Profile
                         </a>
 
                          <a href="#" class="dropdown-item">
                             <i class="material-icons">library_books</i> View Auctions
-                        </a>
-
-                        <a href="#" class="dropdown-item">
-                            <i class="material-icons">assignment</i> Evaluation List
                         </a>
 
                           <a href="{%url 'auctions:logout'%}" class="dropdown-item">

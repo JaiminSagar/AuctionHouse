@@ -30,7 +30,8 @@ from django.core.exceptions import ObjectDoesNotExist
 def checking(request):
         user=get_user(request)
         if user.is_staff:
-            return HttpResponseRedirect(reverse('agent_home'))
+            # return HttpResponseRedirect(reverse('agent_home'))
+            return HttpResponseRedirect(reverse('auctions:agent_dashboard'))
         elif user.is_staff == False:
             try:
                 if user.user.profile_setup == False:
@@ -46,8 +47,8 @@ def checking(request):
 class HomePage(TemplateView):
     template_name = 'index.html'
 
-class AgentHome(TemplateView):
-    template_name = 'auctions/agent/agent_dashboard.html'
+# class AgentHome(TemplateView):
+#     template_name = 'auctions/agent/agent_dashboard.html'
 
 class ThanksPage(TemplateView):
     template_name = 'thanks.html'

@@ -88,18 +88,24 @@ class AgentUser(auth.models.User, auth.models.PermissionsMixin):
 class Property(models.Model):
     propery_type  = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.propery_type
+
 
 class PropertyReg(models.Model):
     user = models.ForeignKey(User,related_name='owner',on_delete=models.CASCADE)
     property_type = models.ForeignKey(Property,related_name='property',on_delete=models.CASCADE)
     property_address = models.CharField(max_length=255)
+    pincode = models.CharField(max_length=6, default='000000')
+    city = models.CharField(max_length=30, default='Place to be Selected.')
+    state = models.CharField(max_length=30, default='To be Selected')
     #Thia for map implimentation using some api url
     # property_location = models.URLField()
     #property_description will be only edited by agentUser
     property_description =models.TextField(max_length=2000)
     agent_id = models.ForeignKey(AgentUser,related_name='who_approves',on_delete=models.CASCADE)
     approved_date = models.DateTimeField()
-    approved = models.BooleanField(default=True)
+    approved = models.BooleanField(default=False)
 
 
 

@@ -79,8 +79,39 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 
 
-class EvalutionList(LoginRequiredMixin,ListView):
+class ApplyEvaluation(LoginRequiredMixin, CreateView):
     model = models.PropertyReg
+    template_name = 'auctions/user/evaluation.html'
+    #redirect_field_name = 'auctions/user/evaluation_list.html'
+    success_url = reverse_lazy('auctions:user_evaluation_list')
+    form_class = forms.ApplyEvaluationForm
+
+    def form_valid(self, form):
+        prop = form.save(commit = False)
+        prop.user = models.User.objects.get(username=self.request.user)
+        prop.save()
+        return super().form_valid(form)
+    
+
+class UserEvalutionList(LoginRequiredMixin,ListView):
+    model = models.PropertyReg
+    template_name = 'auctions/user/user_evaluation_list.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user__username__iexact=self.request.user.username)
+
+class EvaluationListForAgent(LoginRequiredMixin, ListView):
+    model = models.PropertyReg
+    template_name = 'auctions/agent/agent_dashboard.html'
+    
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
+        print(agent.city)
+        return queryset.filter(city__iexact=agent.city)
+
 
 class ProfileUpdate(LoginRequiredMixin,UpdateView):
     login_url = '/login/'

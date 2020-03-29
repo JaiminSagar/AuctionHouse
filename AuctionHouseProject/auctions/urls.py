@@ -18,10 +18,11 @@ urlpatterns=[
     path('profile_setup/',views.ProfileSetup.as_view(),name='setup_profile'),
     path('auction_list/', views.AuctionList.as_view(), name='auction_list'),
     path('agent/<pk>/set_password/', views.set_agent_password, name='agent_password'),
-    path('evalution_list/', views.EvalutionList.as_view(), name='evaluation_list'),
     path('agent/profile_details/<int:pk>',views.AgentDetailView.as_view(),name='agent_profile'),
     path('agent/profile_update/<pk>/',views.AgentUpdateView.as_view(),name='agent_update'),
+    path('user/apply_evaluation/', views.ApplyEvaluation.as_view(), name='apply_evaluation'),
+    path('user/evalution_list/', views.UserEvalutionList.as_view(), name='user_evaluation_list'),
+    path('agent/evaluation_list/', views.EvaluationListForAgent.as_view(), name='agent_dashboard'),
 
-    
 
 ]
