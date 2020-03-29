@@ -1,74 +1,156 @@
 <!DOCTYPE html>
-{% load static %}
-<html>
-    <head>
-        <title>
-            {%block title%}
-            {%endblock%}
-        </title>
-{#        Bootstrap links#}
-        <link rel="stylesheet" href="{%static 'css/master.css'%}">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <link href='https://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
-    </head>
-    <body>
-        <div class="container-fluid">
-            <nav class="stroke nav navbar navbar-expand-lg">
-              <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                <a class="navbar-brand" href="#">Auction House</a>
-                  {% if user.is_authenticated %}
+{%load static%}
+{%load bootstrap4%}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<title>{%block title%}{%endblock%}</title>
+<head>
 
-                      <ul class="nav navbar ml-auto">
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">View Actions</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auctions:profile_detail' pk=user.pk %}">Profile</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{%url 'auctions:logout'%}">Logout</a>
-                      </li>
-                          <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auctions:auction_list' %}">Current Auctions</a>
-                      </li>
-                    </ul>
+    <link rel="stylesheet" href="{%static 'css/profile.css'%}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+    <link rel="stylesgeet" href="https://rawgit.com/creativetimofficial/material-kit/master/assets/css/material-kit.css">
+    <script src="{%static 'js/profile.js'%}"></script>
 
+</head>
 
-                  {% else %}
-                    <ul class="nav navbar ml-auto">
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auctions:become_agent' %}">Become Agent</a>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Auction Guide</a>
-                      </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="{%url 'auctions:signup'%}">SignUp</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{%url 'auctions:login'%}">LogIn</a>
-                      </li>
-                    </ul>
-                    
+<body class="profile-page">
 
-                  {% endif %}
+    <nav class="navbar navbar-color-on-scroll navbar-transparent    fixed-top  navbar-expand-lg "  color-on-scroll="100"  id="sectionsNav">
+        <div class="container">
+            <div class="navbar-translate">
+                <a class="navbar-brand" href="{%url 'home'%}">Auction House</a>
 
-              </div>
-            </nav>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+      					<a class="nav-link" href="#">
+      						<i class="material-icons">cloud_download</i> Current Auctions
+      					</a>
+      				</li>
+                    <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:become_agent'%}">
+      						<i class="material-icons">cloud_download</i> Become Agent
+      					</a>
+      				</li>
+                    {% if user.is_authenticated %}
+                        {%if user.is_staff%}
+                            <li class="dropdown nav-item">
+                                  <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                                      <i class="material-icons">apps</i> Acitvity
+                                  </a>
+                                  <div class="dropdown-menu dropdown-with-icons">
+                                    <a href="{%url 'auctions:agent_profile' pk=user.pk%}" class="dropdown-item">
+                                        <i class="material-icons">person</i> Profile
+                                    </a>
+
+                                     <a href="#" class="dropdown-item">
+                                        <i class="material-icons">library_books</i> View Auctions
+                                    </a>
+
+                                    <a href="#" class="dropdown-item">
+                                        <i class="material-icons">assignment</i> Evaluation List
+                                    </a>
+
+                                      <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                                        <i class="material-icons">exit_to_app</i> Logout
+                                    </a>
+                                  </div>
+                            </li>
+                        {%else%}
+                            <li class="dropdown nav-item">
+                              <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                                  <i class="material-icons">apps</i> Acitvity
+                              </a>
+                              <div class="dropdown-menu dropdown-with-icons">
+                                <a href="{%url 'auctions:profile_detail' pk=user.pk%}" class="dropdown-item">
+                                    <i class="material-icons">person</i> Profile
+                                </a>
+
+                                 <a href="#" class="dropdown-item">
+                                    <i class="material-icons">library_books</i> View Auctions
+                                </a>
+
+                                <a href="#" class="dropdown-item">
+                                    <i class="material-icons">assignment</i> Wish List
+                                </a>
+
+                                  <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                                    <i class="material-icons">exit_to_app</i> Logout
+                                </a>
+                              </div>
+                            </li>
+                    {%endif%}
+                    {% else %}
+
+                    <li class="nav-item">
+      					<a class="nav-link" href="#">
+      						<i class="material-icons">cloud_download</i> Auction Guide
+      					</a>
+      				</li>
+                    <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:signup'%}">
+      						<i class="material-icons">account_box</i> Sign Up
+      					</a>
+      				</li>
+                    <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:login'%}">
+      						<i class="material-icons">account_circle</i> Log In
+      					</a>
+      				</li>
+<!--      				<li class="nav-item">-->
+<!--      					<a class="nav-link" href="https://twitter.com/CreativeTim" target="_blank">-->
+<!--      						<i class="fa fa-twitter"></i>-->
+<!--      					</a>-->
+<!--      				</li>-->
+                      {% endif %}
+<!--      				<li class="nav-item">-->
+<!--      					<a class="nav-link" href="https://www.facebook.com/CreativeTim" target="_blank">-->
+<!--      						<i class="fa fa-facebook-square"></i>-->
+<!--      					</a>-->
+<!--      				</li>-->
+<!--      				<li class="nav-item">-->
+<!--      					<a class="nav-link"  href="https://www.instagram.com/CreativeTimOfficial" target="_blank">-->
+<!--      						<i class="fa fa-instagram"></i>-->
+<!--      					</a>-->
+<!--      				</li>-->
+                </ul>
+            </div>
         </div>
-        <br/>
-    <div class='container'>
-      {% block heading %}
+    </nav>
 
-      {% endblock%}
+    <div class="page-header header-filter" data-parallax="true" style="background-image:url('http://wallpapere.org/wp-content/uploads/2012/02/black-and-white-city-night.png');"></div>
+    <div class="main main-raised">
+		<div class="profile-content">
+        {%block heading%}
+
+        {%endblock heading%}
+        {%block content%}
 
 
-      
-      {% block content %}
-        
-      {% endblock %}
+        {%endblock%}
+	</div>
+
+	<footer class="footer text-center ">
+        <p><a href="#" target="_blank">Material Kit</a> By Auction House</p>
+    </footer>
+
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+
+        </div>
+
     </div>
-    </body>
+</body>
 </html>

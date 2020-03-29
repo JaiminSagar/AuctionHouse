@@ -75,6 +75,11 @@ class AgentUser(auth.models.User, auth.models.PermissionsMixin):
     def __str__(self):
         return '@{}'.format(self.username)
 
+
+    def get_absolute_url(self):
+        return reverse_lazy('auctions:agent_profile', kwargs={'pk': self.pk})  # This represent after doing Comment Where user should redirect
+
+
     class Meta:
         verbose_name=('AgentUser')
         verbose_name_plural =('AgentUsers')

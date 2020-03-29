@@ -17,7 +17,11 @@ urlpatterns=[
     path('profile_update/<pk>/',views.ProfileUpdate.as_view(),name='profile_update'),
     path('profile_setup/',views.ProfileSetup.as_view(),name='setup_profile'),
     path('auction_list/', views.AuctionList.as_view(), name='auction_list'),
-    path('agent/<pk>/set_password', views.set_agent_password, name='agent_password'),
+    path('agent/<pk>/set_password/', views.set_agent_password, name='agent_password'),
+    path('evalution_list/', views.EvalutionList.as_view(), name='evaluation_list'),
+    path('agent/profile_details/<int:pk>',views.AgentDetailView.as_view(),name='agent_profile'),
+    path('agent/profile_update/<pk>/',views.AgentUpdateView.as_view(),name='agent_update'),
+
     
 
 ]

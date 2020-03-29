@@ -7,12 +7,23 @@ SignUp
 {% endblock %}
 
 {% block heading %}
-    <center><h1>SignUp</h1></center>
-    <hr>
+<br/>
+<br/>
+<br/>
+    <script>
+    $(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#scroll').offset().top
+    }, 'slow');
+});
+</script>
+<center id="scroll"><h1>SignUp</h1></center>
 {% endblock heading %}
 
 
 {% block content %}
+
 <div class="container">
     <form method="post">
         {%csrf_token%}

@@ -79,16 +79,18 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 
 
+class EvalutionList(LoginRequiredMixin,ListView):
+    model = models.PropertyReg
 
 class ProfileUpdate(LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     # redirect_field_name = 'auctions/profile_detail.html'
-    template_name= 'auctions/user_profile_form.html'
+    template_name= 'auctions/user/user_profile_form.html'
     form_class = forms.ProfileUpdateForm
     model = models.UserDetails
 
 class ProfileDetail(LoginRequiredMixin,SelectRelatedMixin,DetailView):
-    template_name = 'auctions/profile_detail.html'
+    template_name = 'auctions/user/profile_detail.html'
     model = models.UserDetails
     select_related = ('user',)
 
@@ -96,14 +98,30 @@ class ProfileDetail(LoginRequiredMixin,SelectRelatedMixin,DetailView):
         queryset = super().get_queryset()
         return queryset.filter(pk=self.kwargs.get('pk'))
 
+class AgentDetailView(LoginRequiredMixin,SelectRelatedMixin,DetailView):
+    template_name = 'auctions/agent/agent_details.html'
+    model = models.AgentUser
+    select_related = ('user_ptr',)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(pk=self.kwargs.get('pk'))
+
+class AgentUpdateView(LoginRequiredMixin,UpdateView):
+    login_url = '/login/'
+    # redirect_field_name = 'auctions/profile_detail.html'
+    template_name = 'auctions/agent/agent_profile_form.html'
+    form_class = forms.AgentProfileForm
+    model = models.AgentUser
 
 class BecomeAgent(CreateView):
     form_class = forms.BecomeAgentForm
     success_url = reverse_lazy('home')
-    template_name = 'auctions/become_agent.html'
+    template_name = 'auctions/agent/become_agent.html'
 
     def form_valid(self, form):
         agent = form.save(commit = False)
+        agent.is_staff=True
         agent.username = agent.email
         agent.save()
         mail_subject = 'AuctionHouse.in | Successfully Appiled '
@@ -129,7 +147,7 @@ class AuctionList(ListView, LoginRequiredMixin):
 class ProfileSetup(LoginRequiredMixin, CreateView):
     login_url = '/login/'
     model = models.UserDetails
-    template_name = 'auctions/user_profile_form.html'
+    template_name = 'auctions/user/user_profile_form.html'
     # redirect_field_name = 'auctions/profile_detail.html'
     form_class = forms.ProfileSetupForm
 
