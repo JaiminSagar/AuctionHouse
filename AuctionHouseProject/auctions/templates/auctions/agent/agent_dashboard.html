@@ -34,27 +34,29 @@ Evaluation List
         <th scope="col">City</th>
         <th scope="col">State</th>
         <th scope="col">Approved</th>
+        <th scope="col"></th>
         {% comment %} <th scope="col">Resume</th>
         <th scope="col">Approve</th> {% endcomment %}
         </tr>
     </thead>
     <tbody>
     {% for prop in propertyreg_list %}
-        {% comment %} <a href="{% url 'auctions:property_detail' pk=prop.pk %}"> {% endcomment %}
-        <tr>
-        <th scope="row">{{ prop.pk }}</th>
-        <td>{{ prop.user.email }}</td>
-        <td>{{ prop.property_type }}</td>
-        <td>{{ prop.property_address }}</td>
-        <td>{{ prop.city }}</td>
-        <td>{{ prop.state }}</td>
-        {% if not prop.approved %}
-            <td>Not Approved</td>
-        {% else %}
-            <td>Approved by {{ prop.agent_id.email }}</td>
-        {% endif %}
-        </tr>
-        </a>
+        <a href="{% url 'auctions:agent_property_details' pk=prop.pk %}">
+            <tr>
+            <th scope="row">{{ prop.pk }}</th>
+            <td>{{ prop.user.email }}</td>
+            <td>{{ prop.property_type }}</td>
+            <td>{{ prop.property_address }}</td>
+            <td>{{ prop.city }}</td>
+            <td>{{ prop.state }}</td>
+            {% if not prop.approved %}
+                <td>Not Approved</td>
+            {% else %}
+                <td>Approved by {{ prop.agent_id.email }}</td>
+            {% endif %}
+            <td><a href="{% url 'auctions:agent_property_details' pk=prop.pk %}" class="btn btn-success">Details</a></td>
+            </tr>
+        
     {% endfor %}
     </tbody>
     </table>

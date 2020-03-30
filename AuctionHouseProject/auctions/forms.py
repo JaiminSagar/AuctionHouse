@@ -84,6 +84,14 @@ class ApplyEvaluationForm(forms.ModelForm):
         fields = ('property_type', 'property_address','city','state','pincode')
 
 
+class PropertyDescriptionForm(forms.ModelForm):
+    #property_description = forms.CharField(widget=forms.Textarea())
+
+    class Meta():
+        model = models.PropertyReg
+        fields = ('property_description',)
+
+
 # class AgentCreateFrom(UserCreateForm):
 #     class Meta():
 #         fields=('username','email','password1','password2')
