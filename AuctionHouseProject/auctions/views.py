@@ -209,3 +209,18 @@ def set_agent_password(request, pk):
 
     return HttpResponse("Maybe Your password is already there.....")
 
+class CurrentAuctionList(ListView):
+    model = models.CurrentAuction
+    template_name = "auctions/auction_list.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(scheduled__iexact=True)
+
+class CurrentAuctionDetails(DetailView):
+    model = models.CurrentAuction
+    template_name = "auctions/auction_details.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(pk=self.kwargs.get('pk'))

@@ -23,6 +23,8 @@ urlpatterns=[
     path('user/apply_evaluation/', views.ApplyEvaluation.as_view(), name='apply_evaluation'),
     path('user/evalution_list/', views.UserEvalutionList.as_view(), name='user_evaluation_list'),
     path('agent/evaluation_list/', views.EvaluationListForAgent.as_view(), name='agent_dashboard'),
+    path('current_auctions/',views.CurrentAuctionList.as_view(),name='current_auction_list'),
+    path('auction_details/',views.CurrentAuctionDetails.as_view(),name='auction_detail')
 
 
 ]

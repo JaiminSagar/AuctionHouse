@@ -5,6 +5,19 @@ from django.utils import timezone
 from django.urls import reverse,reverse_lazy
 
 # Create your models here.
+class  State(models.Model):
+    state_name= models.CharField(max_length=50)
+
+    def __str__(self):
+        return "{}".format(self.state_name)
+
+class City(models.Model):
+    state= models.ForeignKey(State,on_delete=models.CASCADE)
+    city_name =models.CharField(max_length=50)
+
+    def __str__(self):
+        return "{}".format(self.city_name)
+
 
 class User(auth.models.User,auth.models.PermissionsMixin):
     profile_setup = models.BooleanField(default=False)
@@ -22,8 +35,8 @@ class UserDetails(models.Model):
     mobile = models.CharField(max_length=13, default='To be Setup')
     birth_date = models.DateField(blank=True)
     pincode = models.CharField(max_length=6, default='000000')
-    city = models.CharField(max_length=30, default='Place to be Selected.')
-    state = models.CharField(max_length=30, default='To be Selected')
+    city = models.ForeignKey(City,on_delete=models.CASCADE)
+    state = models.ForeignKey(State,on_delete=models.CASCADE)
     # proof_document= models.FileField()
     image = models.ImageField(upload_to='profile_pics', blank=True)
 
@@ -84,12 +97,12 @@ class AgentUser(auth.models.User, auth.models.PermissionsMixin):
         verbose_name=('AgentUser')
         verbose_name_plural =('AgentUsers')
 
-
 class Property(models.Model):
     propery_type  = models.CharField(max_length=50)
 
     def __str__(self):
         return self.propery_type
+
 
 
 class PropertyReg(models.Model):
@@ -106,6 +119,10 @@ class PropertyReg(models.Model):
     agent_id = models.ForeignKey(AgentUser,related_name='who_approves',on_delete=models.CASCADE)
     approved_date = models.DateTimeField()
     approved = models.BooleanField(default=False)
+    pre_set_amount = models.IntegerField()
+    scheduled_status = models.BooleanField(default=False)
+    current_auction_status = models.BooleanField(default=False)
+    viewinghours = models.CharField(max_length=20, default="None2")
 
 
 
@@ -122,10 +139,13 @@ class CurrentAuction(models.Model):
     registration_fees =models.IntegerField()
     auction_start_date = models.DateTimeField()
     auction_end_date = models.DateTimeField()
-    pre_set_amount = models.IntegerField()
+
     increment_ratio = models.FloatField()
     current_amount =models.IntegerField()
+
     #viewinhours....
+    def get_absolute_url(self):
+        return reverse_lazy('auctions:auction_detail', kwargs={'pk': self.pk})
 
 
 class BiddingOfProperty(models.Model):

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import TemplateView, CreateView, ListView
+from django.views.generic import TemplateView, CreateView, ListView,UpdateView
 from auctions.models import User,UserDetails
 from auctions import forms, models
 from django.urls import reverse
@@ -86,3 +86,8 @@ def approveAgent(request, pk):
     email.send()
     return redirect('agent_list')
 
+class AuctionScheduling(UpdateView):
+    model =models.CurrentAuction
+    login_url = '/login/'
+    template_name = 'auctions/auction_approval.html'
+    # form_class = forms.AgentProfileForm
