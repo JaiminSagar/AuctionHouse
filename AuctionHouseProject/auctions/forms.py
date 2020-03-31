@@ -85,11 +85,29 @@ class ApplyEvaluationForm(forms.ModelForm):
 
 
 class PropertyDescriptionForm(forms.ModelForm):
-    #property_description = forms.CharField(widget=forms.Textarea())
+    property_description = forms.CharField(widget=forms.Textarea())
 
     class Meta():
         model = models.PropertyReg
         fields = ('property_description',)
+
+
+class PropertyFilesUploadForm(forms.ModelForm):
+    document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+    class Meta():
+        model = models.PropertyFilesUpload
+        fields = ('document',)
+
+
+class PropertyImagesUploadForm(forms.ModelForm):
+    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+
+    class Meta():
+        model = models.PropertyImagesUpload
+        fields = ('image',)
+
 
 
 # class AgentCreateFrom(UserCreateForm):

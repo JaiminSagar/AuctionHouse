@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'auctions/agent/agent_base.html'%}
 {% load bootstrap4 %}
 
 {% block title %}
@@ -53,29 +53,26 @@ Property Details
                     {{ propertyreg.pincode }}
                 </div>
             </div>
-
-            {% if propertyreg.property_description == '' or propertyreg.agent_id == null %}
-            
             <div class="row">
+            {% if not image_list %}
                 <div class="col">
-                  Upload Photos  
+                  <a href="{% url 'auctions:add_images' pk=propertyreg.pk %}"> Upload Photos</a>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    Upload Files
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <form method="post">
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        <input type="submit" value="Submit" class="btn btn-default">
-                    </form>
-                </div>
-            </div>
             {% endif %}
+
+            {% if not file_list %}              
+                <div class="col">
+                    <a href="{% url 'auctions:add_files' pk=propertyreg.pk %}"> Upload Files</a>
+                </div>
+            {% endif %}
+
+            {% if propertyreg.property_description == '' %}
+                <div class="col">
+                   <a href="{% url 'auctions:add_description' pk=propertyreg.pk %}"> Add Description</a>
+                </div>
+            {% endif %}
+            </div>
+            
             
             {% comment %} <div class="row">
                 <div class="col">
