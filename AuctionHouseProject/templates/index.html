@@ -1,6 +1,6 @@
 {%extends 'base.html'%}
 {%load bootstrap4%}
-
+{%load static%}
 {%block title%}
 Welcome To AuctionHouse
 {%endblock%}
@@ -8,7 +8,16 @@ Welcome To AuctionHouse
 
 {%block content%}
     {%if user.is_authenticated%}
-<h1>User is Authenticated</h1>>
-
+<br/>
+<br/>
+<!--<h1>User is Authenticated</h1>>-->
+ <center><img src="{%static 'Capture1.jpg'%}" width="800"/></center>
+<br/>
+<br/><br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
     {%endif%}
 {%endblock%}
