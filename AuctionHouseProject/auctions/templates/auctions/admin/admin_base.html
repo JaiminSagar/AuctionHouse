@@ -17,6 +17,7 @@
     <script src="{%static 'js/profile.js'%}"></script>
 
 </head>
+
 <body class="profile-page">
 
     <nav class="navbar navbar-color-on-scroll navbar-transparent    fixed-top  navbar-expand-lg "  color-on-scroll="100"  id="sectionsNav">
@@ -43,12 +44,14 @@
       						<i class="material-icons">cloud_download</i> Become Agent
       					</a>
       				</li>
-
+                    {% if user.is_authenticated %}
+                        {%ifequal user.is_staff False%}
                             <li class="dropdown nav-item">
                               <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
                                   <i class="material-icons">apps</i> Acitvity
                               </a>
                               <div class="dropdown-menu dropdown-with-icons">
+                                <div class="dropdown-menu dropdown-with-icons">
                                 <a href="#" class="dropdown-item">
                                     <i class="material-icons">person</i> Auction Approvals
                                 </a>
@@ -56,11 +59,46 @@
                                  <a href="" class="dropdown-item">
                                     <i class="material-icons">assignment</i>Auction Scheduling
                                 </a>
-                                   <a href="" class="dropdown-item">
-                                    <i class="material-icons">exit_to_app</i>Logout
+                                       <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                                    <i class="material-icons">exit_to_app</i> Logout
                                 </a>
+                                </div>
                               </div>
                             </li>
+                        {%endifequal%}
+                    {% else %}
+
+                    <li class="nav-item">
+      					<a class="nav-link" href="#">
+      						<i class="material-icons">cloud_download</i> Auction Guide
+      					</a>
+      				</li>
+                    <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:signup'%}">
+      						<i class="material-icons">account_box</i> Sign Up
+      					</a>
+      				</li>
+                    <li class="nav-item">
+      					<a class="nav-link" href="{%url 'admin_login'%}">
+      						<i class="material-icons">account_circle</i> Log In
+      					</a>
+      				</li>
+<!--      				<li class="nav-item">-->
+<!--      					<a class="nav-link" href="https://twitter.com/CreativeTim" target="_blank">-->
+<!--      						<i class="fa fa-twitter"></i>-->
+<!--      					</a>-->
+<!--      				</li>-->
+                      {% endif %}
+<!--      				<li class="nav-item">-->
+<!--      					<a class="nav-link" href="https://www.facebook.com/CreativeTim" target="_blank">-->
+<!--      						<i class="fa fa-facebook-square"></i>-->
+<!--      					</a>-->
+<!--      				</li>-->
+<!--      				<li class="nav-item">-->
+<!--      					<a class="nav-link"  href="https://www.instagram.com/CreativeTimOfficial" target="_blank">-->
+<!--      						<i class="fa fa-instagram"></i>-->
+<!--      					</a>-->
+<!--      				</li>-->
                 </ul>
             </div>
         </div>
@@ -69,48 +107,22 @@
     <div class="page-header header-filter" data-parallax="true" style="background-image:url('http://wallpapere.org/wp-content/uploads/2012/02/black-and-white-city-night.png');"></div>
     <div class="main main-raised">
 		<div class="profile-content">
-        <div class="container" style="padding-top: 10px">
-            <h1>Agent List</h1>
-            <hr>
+        {%block heading%}
 
-            <table class="table table-striped">
-            <thead class="thead-dark">
-                <tr>
-                <th scope="col">Agent Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Address</th>
-                <th scope="col">Mobile</th>
-                <th scope="col">Email</th>
-                <th scope="col">Photo</th>
-                {% comment %} <th scope="col">Resume</th>
-                <th scope="col">Approve</th> {% endcomment %}
-                </tr>
-            </thead>
-            <tbody>
-            {% for agent in agentuser_list %}
-                {% if not agent.approved %}
-                    <tr>
-                    <th scope="row">{{ agent.pk }}</th>
-                    <td>{{ agent.first_name }}</td>
-                    <td>{{ agent.address }}</td>
-                    <td>{{ agent.mobile }}</td>
-                    <td>{{ agent.email }}</td>
-                    {% comment %} <td><a href="{{ agent.image.url }}" target="_blank" class="btn btn-sm btn-simple">View Photo</a></td>
-                    <td><a href="{{ agent.resume_document.url }}" target="_blank" class="btn btn-sm btn-simple">View Resume</a></td> {% endcomment %}
-                    <td><a href="{% url 'approve_agent' pk=agent.pk %}" class="btn btn-sm btn-danger">approve</a></td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-            </table>
+        {%endblock heading%}
+        {%block content%}
 
-    </div>
-                    <footer class="footer text-center ">
+
+        {%endblock%}
+	</div>
+
+	<footer class="footer text-center ">
         <p><a href="#" target="_blank">Material Kit</a> By Auction House</p>
     </footer>
 
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+
         </div>
 
     </div>

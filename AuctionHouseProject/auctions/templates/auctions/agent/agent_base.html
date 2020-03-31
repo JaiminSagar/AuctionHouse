@@ -51,7 +51,7 @@
                         <a href="{% url 'auctions:agent_dashboard' %}" class="dropdown-item">
                             <i class="material-icons">assignment</i> Dashboard
                         </a>
-                        <a href="{%url 'auctions:agent_profile' pk=user.pk%}" class="dropdown-item">
+                        <a href="{%url 'auctions:agent_profile' pk=user.agentuser.pk%}" class="dropdown-item">
                             <i class="material-icons">person</i> Profile
                         </a>
 

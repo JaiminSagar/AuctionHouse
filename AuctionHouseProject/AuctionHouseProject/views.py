@@ -63,7 +63,7 @@ def adminLogin(request):
             return HttpResponseRedirect(reverse('agent_list'))
         else:
             return HttpResponse('Invalid Email or password')
-    return render(request, 'auctions/admin_login.html', {})
+    return render(request, 'auctions/admin/admin_login.html', {})
 
 class AgentList(ListView):
     model = models.AgentUser
