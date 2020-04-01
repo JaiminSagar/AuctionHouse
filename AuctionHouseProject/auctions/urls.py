@@ -27,4 +27,5 @@ urlpatterns=[
     path('auction_details/',views.CurrentAuctionDetails.as_view(),name='auction_detail')
 
 
+
 ]

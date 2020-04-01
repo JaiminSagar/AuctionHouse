@@ -67,7 +67,7 @@ def adminLogin(request):
 
 class AgentList(ListView):
     model = models.AgentUser
-    template_name = 'auctions/agent_approve_list.html'
+    template_name = 'auctions/admin/agent_approve_list.html'
 
 
 def approveAgent(request, pk):
@@ -91,3 +91,7 @@ class AuctionScheduling(UpdateView):
     login_url = '/login/'
     template_name = 'auctions/auction_approval.html'
     # form_class = forms.AgentProfileForm
+
+class AuctionApprovalList(ListView):
+    model = models.PropertyReg
+    template_name = 'auctions/admin/auctions_approve_list.html'

@@ -1,0 +1,20 @@
+{%extends 'auctions/admin/admin_base.html'%}
+{%load bootstrap4%}
+{%load static%}
+{%block heading%}
+<br/>
+<br/>
+<br/>
+<br/>
+<center><h1>Auction Approval List</h1></center>
+{%endblock%}
+{%block content%}
+<div class="container">
+{%for property in propertyreg_list%}
+    {%if property.approved == False%}
+    <div class="card">
+        hi
+    </div>
+    {%endif%}
+{%endfor%}
+{%endblock%}
