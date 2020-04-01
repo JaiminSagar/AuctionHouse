@@ -253,7 +253,7 @@ img.rounded {
 }
 
 /*buttons*/
-.btn {
+/* .btn {
     position: relative;
     padding: 12px 30px;
     margin: .3125rem 1px;
@@ -295,7 +295,7 @@ img.rounded {
 .btn.btn-link{
     background-color: transparent;
     color: #999;
-}
+} */
 
 /* dropdown */
 

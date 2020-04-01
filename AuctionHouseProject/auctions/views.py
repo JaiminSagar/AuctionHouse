@@ -152,6 +152,16 @@ class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
     #     prop.save()
     #     #return super().form_valid(form)
 
+
+def submit_property(request, pk):
+    prop = get_object_or_404(models.PropertyReg, pk=pk)
+    agent = get_object_or_404(models.AgentUser, pk=request.user.pk)
+    prop.submit()
+    prop.agent_id = agent
+    prop.save()
+    return redirect('auctions:agent_property_details', pk=pk)
+
+
 def add_property_description(request, pk):
     if request.method == 'POST':
         form = forms.PropertyDescriptionForm(request.POST)

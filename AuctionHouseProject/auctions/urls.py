@@ -28,6 +28,6 @@ urlpatterns=[
     path('agent/evaluation_list/property/<pk>/add_description', views.add_property_description, name='add_description'),
     path('agent/evaluation_list/property/<pk>/add_files', views.propertyFilesUploadView, name='add_files'),
     path('agent/evaluation_list/property/<pk>/add_images', views.propertyImagesUploadView, name='add_images'),
-
+    path('agent/evaluation_list/property/<pk>/submit', views.submit_property, name='submit_property'),
 
 ]
