@@ -248,7 +248,21 @@ def propertyImagesUploadView(request, pk):
 class PropertyDetailsForUser(LoginRequiredMixin, DetailView):
     model = models.PropertyReg
     template_name = 'auctions/user/property_details_user.html'
-   
+    
+    def get_context_data(self, **kwargs):
+        context =super().get_context_data()
+
+        if not models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
+            context['file_list'] = []
+        else:    
+            context['file_list'] = models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
+
+
+        if not models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
+            context['image_list'] =[]    
+        else:
+            context['image_list'] = models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
+        return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
