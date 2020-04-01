@@ -110,8 +110,8 @@ class PropertyReg(models.Model):
     property_type = models.ForeignKey(Property,related_name='property',on_delete=models.CASCADE)
     property_address = models.CharField(max_length=255)
     pincode = models.CharField(max_length=6, default='000000')
-    city = models.CharField(max_length=30, default='Place to be Selected.')
-    state = models.CharField(max_length=30, default='To be Selected')
+    city = models.ForeignKey(City,on_delete=models.CASCADE)
+    state = models.ForeignKey(State,on_delete=models.CASCADE)
     #Thia for map implimentation using some api url
     # property_location = models.URLField()
     #property_description will be only edited by agentUser
