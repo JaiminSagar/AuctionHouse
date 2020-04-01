@@ -115,7 +115,7 @@ class PropertyReg(models.Model):
     #Thia for map implimentation using some api url
     # property_location = models.URLField()
     #property_description will be only edited by agentUser
-    property_description =models.TextField(max_length=2000)
+    property_description = models.CharField(max_length=2000, default='')
     agent_id = models.ForeignKey(AgentUser,related_name='who_approves',on_delete=models.CASCADE)
     approved_date = models.DateTimeField()
     approved = models.BooleanField(default=False)
@@ -123,6 +123,29 @@ class PropertyReg(models.Model):
     scheduled_status = models.BooleanField(default=False)
     current_auction_status = models.BooleanField(default=False)
     viewinghours = models.CharField(max_length=20, default="None2")
+
+    def get_absolute_url(self):
+        return reverse_lazy('auctions:agent_property_details', kwargs={'pk': self.pk})
+
+
+
+def generate_filename(self, filename):
+    url = "property/id_%s/files/%s" % (str(self.property_reg.pk), filename)
+    return url
+
+class PropertyFilesUpload(models.Model):
+    property_reg = models.ForeignKey(PropertyReg, related_name='property_files',on_delete=models.CASCADE)
+    document = models.FileField(blank=True, upload_to=generate_filename)
+
+
+def generate_image_name(self, filename):
+    url = "property/id_%s/images/%s" % (str(self.property_reg.pk), filename)
+    return url
+
+class PropertyImagesUpload(models.Model):
+    property_reg = models.ForeignKey(PropertyReg, related_name='property_images',on_delete=models.CASCADE)
+    image = models.FileField(blank=True, upload_to=generate_image_name)
+
 
 
 

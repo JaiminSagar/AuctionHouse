@@ -22,10 +22,15 @@ urlpatterns=[
     path('agent/profile_update/<pk>/',views.AgentUpdateView.as_view(),name='agent_update'),
     path('user/apply_evaluation/', views.ApplyEvaluation.as_view(), name='apply_evaluation'),
     path('user/evalution_list/', views.UserEvalutionList.as_view(), name='user_evaluation_list'),
+    path('user/evaluation_list/property/<pk>/', views.PropertyDetailsForUser.as_view(), name='user_property_details'),
     path('agent/evaluation_list/', views.EvaluationListForAgent.as_view(), name='agent_dashboard'),
+<<<<<<< HEAD
     path('current_auctions/',views.CurrentAuctionList.as_view(),name='current_auction_list'),
     path('auction_details/',views.CurrentAuctionDetails.as_view(),name='auction_detail')
 
+=======
+    path('agent/evaluation_list/property/<pk>/', views.PropertyDetailsForAgent.as_view(), name='agent_property_details'),
+>>>>>>> evaluation_list
 
 
 ]

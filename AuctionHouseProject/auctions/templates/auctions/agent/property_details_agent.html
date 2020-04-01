@@ -1,0 +1,96 @@
+{% extends 'base.html'%}
+{% load bootstrap4 %}
+
+{% block title %}
+Property Details
+{% endblock %}
+
+{% block heading %}
+<br/>
+<br/>
+<br/>
+    <script>
+    $(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#scroll').offset().top
+    }, 'slow');
+});
+</script>
+<center id="scroll"><h1>Property Details</h1></center>
+{% endblock heading %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h6>Property By:</h6>
+                </div>
+                <div class="col">
+                    {{ propertyreg.user.email }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h6>Property Type:</h6>
+                </div>
+                <div class="col">
+                    {{ propertyreg.property_type }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h6>Property Address:</h6>
+                </div>
+                <div class="col">
+                    {{ propertyreg.property_address }}
+                    {{ propertyreg.city }}
+                    {{ propertyreg.state }}
+                    {{ propertyreg.pincode }}
+                </div>
+            </div>
+
+            {% if propertyreg.property_description == '' or propertyreg.agent_id == null %}
+            
+            <div class="row">
+                <div class="col">
+                  Upload Photos  
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Upload Files
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <input type="submit" value="Submit" class="btn btn-default">
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% comment %} <div class="row">
+                <div class="col">
+                    <h6>Property</h6>
+                </div>
+                <div class="col">
+                    {{ propertyreg }}
+                </div>
+            </div> {% endcomment %}
+        </div>
+  </div>
+    {% comment %} <form method="post">
+        {%csrf_token%}
+        {%bootstrap_form form%}
+        <input type="submit" value="SignUp" class="btn btn-default">
+    </form> {% endcomment %}
+</div>
+{% endblock %}

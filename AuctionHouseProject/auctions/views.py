@@ -113,6 +113,74 @@ class EvaluationListForAgent(LoginRequiredMixin, ListView):
         return queryset.filter(city__iexact=agent.city)
 
 
+class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
+    model = models.PropertyReg
+    template_name = 'auctions/agent/property_details_agent.html'
+    form_class = forms.PropertyDescriptionForm
+
+
+    def get_context_data(self, **kwargs):
+        context =super().get_context_data()
+        context['form']=self.form_class
+        # context['detail_pk']=self.pk
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(pk=self.kwargs.get('pk'))
+
+
+    def post(self,*args,**kwargs):
+        form = forms.PropertyDescriptionForm(self.request.POST)
+        if form.is_valid():
+            prop = get_object_or_404(models.PropertyReg,pk=self.kwargs.get('pk'))
+            agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
+            prop.property_description=form.cleaned_data['property_description']
+            prop.agent_id = agent
+            prop.save()
+            return HttpResponseRedirect(reverse_lazy('home'))
+        else:
+            return HttpResponseRedirect("<h1>try again</h1>")
+
+        # def form_valid(self, form):
+        #     # print(self.request.user)
+        #     # request=self.request
+        #     # image= request.FILES['field_name']
+        #     # form.iamge =image
+        #     print("hi")
+        #     prop = form.save(commit=False)
+        #     agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
+        #     prop.agent_id = agent
+        #     prop.save()
+        #     return super().form_valid(form)
+
+
+
+class PropertyDetailsForUser(LoginRequiredMixin, DetailView):
+    model = models.PropertyReg
+    template_name = 'auctions/user/property_details_user.html'
+   
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(pk=self.kwargs.get('pk'))
+
+        
+
+
+# class PropertyDescriptionSetup(LoginRequiredMixin, UpdateView):
+#     model = models.PropertyReg
+#     template_name = 'auctions/agent/property_details_agent.html'
+#     form_class = forms.PropertyDescriptionForm
+
+#     def form_valid(self, form):
+#         # print(self.request.user)
+#         prop =form.save(commit=False)
+#         agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
+#         prop.agent_id = agent 
+#         prop.save()
+#         return super().form_valid(form)
+
 class ProfileUpdate(LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     # redirect_field_name = 'auctions/profile_detail.html'
