@@ -58,7 +58,7 @@ def signup(request):
                         mail_subject, message, to=[to_email]
             )
             email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            return render(request,'auctions/email_confirm.html',{'msg':"Please confirm your email address to complete the registration."})
     else:
         form = forms.UserCreateForm()
     return render(request, 'auctions/signup.html', {'form': form})
@@ -110,7 +110,7 @@ class EvaluationListForAgent(LoginRequiredMixin, ListView):
         queryset = super().get_queryset()
         agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
         print(agent.city)
-        return queryset.filter(city__iexact=agent.city)
+        return queryset.filter(city__city_name__iexact=agent.city)
 
 
 class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
