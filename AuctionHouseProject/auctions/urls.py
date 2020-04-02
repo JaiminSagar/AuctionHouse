@@ -25,6 +25,9 @@ urlpatterns=[
     path('user/evaluation_list/property/<pk>/', views.PropertyDetailsForUser.as_view(), name='user_property_details'),
     path('agent/evaluation_list/', views.EvaluationListForAgent.as_view(), name='agent_dashboard'),
     path('agent/evaluation_list/property/<pk>/', views.PropertyDetailsForAgent.as_view(), name='agent_property_details'),
-
+    path('agent/evaluation_list/property/<pk>/add_description', views.add_property_description, name='add_description'),
+    path('agent/evaluation_list/property/<pk>/add_files', views.propertyFilesUploadView, name='add_files'),
+    path('agent/evaluation_list/property/<pk>/add_images', views.propertyImagesUploadView, name='add_images'),
+    path('agent/evaluation_list/property/<pk>/submit', views.submit_property, name='submit_property'),
 
 ]

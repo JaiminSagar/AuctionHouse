@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'auctions/agent/agent_base.html'%}
 {% load bootstrap4 %}
 
 {% block title %}
@@ -18,13 +18,103 @@ Property Details
 });
 </script>
 <center id="scroll"><h1>Property Details</h1></center>
+<hr>
 {% endblock heading %}
 
 
 {% block content %}
 
 <div class="container">
-    <div class="row">
+
+
+
+
+    <table class="table">
+    <tbody>
+        <tr>
+            <th scope="row">Property By:</th>
+            <td>{{ propertyreg.user.email }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Property Type:</th>
+            <td>{{ propertyreg.property_type }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Property Address:</th>
+            <td>{{ propertyreg.property_address }},<br/>
+                {{ propertyreg.city }},<br/>
+                {{ propertyreg.state }},<br/>
+                {{ propertyreg.pincode }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Property Description:</th>
+            <td>
+                {% if propertyreg.property_description == '' %}
+                    <a href="{% url 'auctions:add_description' pk=propertyreg.pk %}"> Add Description</a>
+                {% else %}
+                    {{ propertyreg.property_description }}
+                {% endif %}
+            </td>
+        </tr>
+         <tr>
+            <th scope="row">
+                {% if not image_list or not propertyreg.submitted %}
+                    <a href="{% url 'auctions:add_images' pk=propertyreg.pk %}"> Upload Photos</a>
+                {% else %}
+                    Uploaded Images:
+                {% endif %}
+            </th>
+            <td>
+                {% if image_list %}
+                    {% for i in image_list %}
+                        <a href="{{ i.image.url }}">{{ i.image.name }}</a><br/>
+                    {% endfor %}
+                {% else %}
+                    Images not Uploaded Yet :(
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                {% if not file_list or not propertyreg.submitted %}
+                    <a href="{% url 'auctions:add_files' pk=propertyreg.pk %}"> Upload Files</a>
+                {% else %}
+                    Uploaded Files:
+                {% endif %}
+            </th>
+            <td>
+                {% if file_list %}
+                    {% for f in file_list %}
+                        <a href="{{ f.document.url }}">{{ f.document.name }}</a><br/>
+                    {% endfor %}
+                {% else %}
+                    Files not Uploaded Yet :(
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            {% if not propertyreg.submitted %}
+                <td>
+                    <a href="{% url 'auctions:submit_property' pk=propertyreg.pk %}" class="btn btn-success">Submit</a>
+                </td>
+            {% else %}
+                <th scope="row">Submitted By:</th>
+                <td>{{ propertyreg.agent_id.email }}</td>
+            {% endif %}
+        </tr>
+    </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+    {% comment %} <div class="row">
         <div class="col">
             <div class="row">
                 <div class="col">
@@ -52,30 +142,27 @@ Property Details
                     {{ propertyreg.state }}
                     {{ propertyreg.pincode }}
                 </div>
-            </div>
-
-            {% if propertyreg.property_description == '' or propertyreg.agent_id == null %}
-            
-            <div class="row">
+            </div> {% endcomment %}
+            {% comment %} <div class="row">
+            {% if not image_list %}
                 <div class="col">
-                  Upload Photos  
+                  <a href="{% url 'auctions:add_images' pk=propertyreg.pk %}"> Upload Photos</a>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    Upload Files
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <form method="post">
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        <input type="submit" value="Submit" class="btn btn-default">
-                    </form>
-                </div>
-            </div>
             {% endif %}
+
+            {% if not file_list %}              
+                <div class="col">
+                    <a href="{% url 'auctions:add_files' pk=propertyreg.pk %}"> Upload Files</a>
+                </div>
+            {% endif %}
+
+            {% if propertyreg.property_description == '' %}
+                <div class="col">
+                   <a href="{% url 'auctions:add_description' pk=propertyreg.pk %}"> Add Description</a>
+                </div>
+            {% endif %}
+            </div> {% endcomment %}
+            
             
             {% comment %} <div class="row">
                 <div class="col">

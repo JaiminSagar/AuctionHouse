@@ -52,7 +52,7 @@ Evaluation List
             {% if not prop.approved %}
                 <td>Not Approved</td>
             {% else %}
-                <td>Approved by {{ prop.agent_id.email }}</td>
+                <td>Approved</td>
             {% endif %}
             <td><a href="{% url 'auctions:agent_property_details' pk=prop.pk %}" class="btn btn-success">Details</a></td>
             </tr>
