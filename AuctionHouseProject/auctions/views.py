@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth.mixins import  LoginRequiredMixin
 # from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
@@ -6,6 +6,7 @@ from django.urls import reverse,reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.http import Http404,HttpResponseRedirect
 from django.views import generic
+from django.views.generic.edit import FormView
 from braces.views import SelectRelatedMixin
 from . import models
 from . import forms
@@ -116,13 +117,24 @@ class EvaluationListForAgent(LoginRequiredMixin, ListView):
 class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
     model = models.PropertyReg
     template_name = 'auctions/agent/property_details_agent.html'
-    form_class = forms.PropertyDescriptionForm
+    # form_class = forms.PropertyDescriptionForm
 
 
     def get_context_data(self, **kwargs):
         context =super().get_context_data()
-        context['form']=self.form_class
+        # context['form']=self.form_class
         # context['detail_pk']=self.pk
+
+        if not models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
+            context['file_list'] = []
+        else:    
+            context['file_list'] = models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
+
+
+        if not models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
+            context['image_list'] =[]    
+        else:
+            context['image_list'] = models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
         return context
 
     def get_queryset(self):
@@ -154,12 +166,130 @@ class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
         #     prop.save()
         #     return super().form_valid(form)
 
+    # def form_valid(self, form):
+    #     # print(self.request.user)
+    #     # request=self.request
+    #     # image= request.FILES['field_name']
+    #     # form.iamge =image
+    #     prop = form.save(commit=False)
+    #     print(prop.pk)
+    #     agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
+    #     prop.agent_id = agent 
+    #     prop.save()
+    #     #return super().form_valid(form)
+
+
+def submit_property(request, pk):
+    prop = get_object_or_404(models.PropertyReg, pk=pk)
+    agent = get_object_or_404(models.AgentUser, pk=request.user.pk)
+    prop.submit()
+    prop.agent_id = agent
+    prop.save()
+    return redirect('auctions:agent_property_details', pk=pk)
+
+
+def add_property_description(request, pk):
+    if request.method == 'POST':
+        form = forms.PropertyDescriptionForm(request.POST)
+        if form.is_valid():
+            prop = get_object_or_404(models.PropertyReg,pk=pk)
+            # agent = get_object_or_404(models.AgentUser, pk=request.user.pk)
+            prop.property_description=form.cleaned_data['property_description']
+            # prop.agent_id = agent
+            prop.save()
+            return redirect('auctions:agent_property_details', pk=prop.pk)
+    else:
+        form = forms.PropertyDescriptionForm()
+    return render(request, 'auctions/agent/add_property_description.html', {'form': form})
+
+
+# class PropertyFilesUploadView(FormView):
+#     form_class = forms.PropertyFilesUploadForm
+#     template_name = 'auctions/agent/add_property_files.html'  # Replace with your template.
+#     # success_url = reverse_lazy('auctions:add_files', kwargs={'pk': })  # Replace with your URL or reverse().
+
+#     def post(self, request, *args, **kwargs):
+#         form_class = self.get_form_class()
+#         form = self.get_form(form_class)
+#         files = request.FILES.getlist('document')
+#         prop = get_object_or_404(models.PropertyReg, pk=self.kwargs.get('pk'))
+#         if form.is_valid():
+#             for f in files:
+#                 doc = models.PropertyFilesUpload(property_reg=prop, document=f)
+#                 print(doc)
+#                 doc.save()
+#             # return redirect('auctions:add_files', pk=self.kwargs.get('pk'))
+#             return redirect('auctions:agent_property_details', pk=self.kwargs.get('pk'))
+
+def propertyFilesUploadView(request, pk):
+    if request.method == 'POST':
+        print("post")
+        form = forms.PropertyFilesUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            print("valid")
+            prop = get_object_or_404(models.PropertyReg, pk=pk)
+            print(prop)
+            for f in request.FILES.getlist('document'):
+                models.PropertyFilesUpload.objects.create(property_reg=prop, document=f)
+            return redirect('auctions:agent_property_details', pk=pk)
+    else:
+        form = forms.PropertyFilesUploadForm()
+    return render(request, 'auctions/agent/add_property_files.html', {'form': form})
+
+
+def propertyImagesUploadView(request, pk):
+    if request.method == 'POST':
+        print("post")
+        form = forms.PropertyImagesUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            print("valid")
+            prop = get_object_or_404(models.PropertyReg, pk=pk)
+            print(prop)
+            for f in request.FILES.getlist('image'):
+                models.PropertyImagesUpload.objects.create(property_reg=prop, image=f)
+            return redirect('auctions:agent_property_details', pk=pk)
+    else:
+        form = forms.PropertyImagesUploadForm()
+    return render(request, 'auctions/agent/add_property_images.html', {'form': form})
+                
+
+# class PropertyImagesUploadView(FormView):
+#     form_class = forms.PropertyImagesUploadForm
+#     template_name = 'auctions/agent/add_property_images.html'  # Replace with your template.
+#     # success_url = '...'  # Replace with your URL or reverse().
+
+#     def post(self, request, *args, **kwargs):
+#         form_class = self.get_form_class()
+#         form = self.get_form(form_class)
+#         files = request.FILES.getlist('image')
+#         prop = get_object_or_404(models.PropertyReg, pk=self.kwargs.get('pk'))
+#         if form.is_valid():
+#             for f in files:
+#                 img = models.PropertyImagesUpload(property_reg=prop, document=f)
+#                 img.save()
+#             #return redirect('auctions:add_images', pk=self.kwargs.get('pk'))
+#             return redirect('auctions:agent_property_details', pk=self.kwargs.get('pk'))
+
 
 
 class PropertyDetailsForUser(LoginRequiredMixin, DetailView):
     model = models.PropertyReg
     template_name = 'auctions/user/property_details_user.html'
-   
+    
+    def get_context_data(self, **kwargs):
+        context =super().get_context_data()
+
+        if not models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
+            context['file_list'] = []
+        else:    
+            context['file_list'] = models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
+
+
+        if not models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
+            context['image_list'] =[]    
+        else:
+            context['image_list'] = models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
+        return context
 
     def get_queryset(self):
         queryset = super().get_queryset()

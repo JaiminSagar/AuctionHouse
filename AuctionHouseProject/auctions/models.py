@@ -119,10 +119,18 @@ class PropertyReg(models.Model):
     agent_id = models.ForeignKey(AgentUser,related_name='who_approves',on_delete=models.CASCADE)
     approved_date = models.DateTimeField()
     approved = models.BooleanField(default=False)
+<<<<<<< HEAD
     pre_set_amount = models.IntegerField(default=0)
     scheduled_status = models.BooleanField(default=False)
     current_auction_status = models.BooleanField(default=False)
     viewinghours = models.CharField(max_length=20, default="None2")
+=======
+    submitted = models.BooleanField(default=False)
+
+    def submit(self):
+        self.submitted = True
+        self.save()
+>>>>>>> evaluation_list
 
     def get_absolute_url(self):
         return reverse_lazy('auctions:agent_property_details', kwargs={'pk': self.pk})

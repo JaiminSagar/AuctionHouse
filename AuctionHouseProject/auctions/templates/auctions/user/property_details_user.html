@@ -1,0 +1,90 @@
+{% extends 'base.html'%}
+{% load bootstrap4 %}
+
+{% block title %}
+Property Details
+{% endblock %}
+
+{% block heading %}
+<br/>
+<br/>
+<br/>
+    <script>
+    $(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#scroll').offset().top
+    }, 'slow');
+});
+</script>
+<center id="scroll"><h1>Property Details</h1></center>
+<hr>
+{% endblock heading %}
+
+
+{% block content %}
+
+<div class="container">
+    <table class="table">
+    <tbody>
+        <tr>
+            <th scope="row">Property By:</th>
+            <td>{{ propertyreg.user.email }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Property Type:</th>
+            <td>{{ propertyreg.property_type }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Property Address:</th>
+            <td>{{ propertyreg.property_address }},<br/>
+                {{ propertyreg.city }},<br/>
+                {{ propertyreg.state }},<br/>
+                {{ propertyreg.pincode }}
+            </td>
+        </tr>
+        {% if not propertyreg.submitted %}
+        <tr>
+            <th scope="row">Submitted?</th>
+            <td>No.</td>
+        </tr>
+        {% else %}
+        <tr>
+            <th scope="row">Property Description:</th>
+            <td>
+                {{ propertyreg.property_description }}
+            </td>
+        </tr>
+         <tr>
+            <th scope="row">
+                    Uploaded Images:
+            </th>
+            <td>
+                {% if image_list %}
+                    {% for i in image_list %}
+                        <a href="{{ i.image.url }}">{{ i.image.name }}</a><br/>
+                    {% endfor %}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                    Uploaded Files:
+            </th>
+            <td>
+                {% if file_list %}
+                    {% for f in file_list %}
+                        <a href="{{ f.document.url }}">{{ f.document.name }}</a><br/>
+                    {% endfor %}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Submitted By:</th>
+            <td>{{ propertyreg.agent_id.email }}</td>
+        </tr>
+        {% endif %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

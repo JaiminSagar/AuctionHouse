@@ -35,6 +35,8 @@ Evaluation List
         <th scope="col">City</th>
         <th scope="col">State</th>
         <th scope="col">Approved</th>
+        <th scope="col">Submitted</th>
+        <th scope="col"></th>
         {% comment %} <th scope="col">Resume</th>
         <th scope="col">Approve</th> {% endcomment %}
         </tr>
@@ -51,8 +53,14 @@ Evaluation List
         {% if not prop.approved %}
             <td>Not Approved</td>
         {% else %}
-            <td>Approved by {{ prop.agent_id.email }}</td>
+            <td>Approved</td>
         {% endif %}
+        {% if not prop.submitted %}
+            <td>Not Submitted</td>
+        {% else %}
+            <td>Submitted By {{ prop.agent_id.email }}</td>
+        {% endif %}
+        <td><a href="{% url 'auctions:user_property_details' pk=prop.pk %}" class="btn btn-success">Details</a></td>
         </tr>
     {% endfor %}
     </tbody>
