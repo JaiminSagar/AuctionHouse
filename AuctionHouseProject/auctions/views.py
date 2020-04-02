@@ -122,10 +122,8 @@ class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context =super().get_context_data()
-<<<<<<< HEAD
-        context['form']=self.form_class
+        # context['form']=self.form_class
         # context['detail_pk']=self.pk
-=======
 
         if not models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
             context['file_list'] = []
@@ -137,7 +135,6 @@ class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
             context['image_list'] =[]    
         else:
             context['image_list'] = models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
->>>>>>> e5879338a14f624de18ce921a23abd0715375cbf
         return context
 
     def get_queryset(self):
@@ -145,7 +142,6 @@ class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
         return queryset.filter(pk=self.kwargs.get('pk'))
 
 
-<<<<<<< HEAD
     def post(self,*args,**kwargs):
         form = forms.PropertyDescriptionForm(self.request.POST)
         if form.is_valid():
@@ -170,7 +166,6 @@ class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
         #     prop.save()
         #     return super().form_valid(form)
 
-=======
     # def form_valid(self, form):
     #     # print(self.request.user)
     #     # request=self.request
@@ -274,7 +269,7 @@ def propertyImagesUploadView(request, pk):
 #                 img.save()
 #             #return redirect('auctions:add_images', pk=self.kwargs.get('pk'))
 #             return redirect('auctions:agent_property_details', pk=self.kwargs.get('pk'))
->>>>>>> e5879338a14f624de18ce921a23abd0715375cbf
+
 
 
 class PropertyDetailsForUser(LoginRequiredMixin, DetailView):
