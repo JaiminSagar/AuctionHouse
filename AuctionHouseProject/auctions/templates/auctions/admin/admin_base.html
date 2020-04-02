@@ -35,6 +35,11 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
+      					<a class="nav-link" href="#">
+      						<i class="material-icons">cloud_download</i> Auction Guide
+      					</a>
+      				</li>
+                    <li class="nav-item">
       					<a class="nav-link" href="{%url 'auctions:current_auction_list'%}">
       						<i class="material-icons">cloud_download</i> Current Auctions
       					</a>
@@ -44,61 +49,24 @@
       						<i class="material-icons">cloud_download</i> Become Agent
       					</a>
       				</li>
-                    {% if user.is_authenticated %}
-                        {%ifequal user.is_staff False%}
                             <li class="dropdown nav-item">
                               <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
                                   <i class="material-icons">apps</i> Acitvity
                               </a>
-                              <div class="dropdown-menu dropdown-with-icons">
+
                                 <div class="dropdown-menu dropdown-with-icons">
                                 <a href="{%url 'auction_approve_list'%}" class="dropdown-item">
                                     <i class="material-icons">person</i> Auction Approvals
                                 </a>
-
-                                 <a href="" class="dropdown-item">
-                                    <i class="material-icons">assignment</i>Auction Scheduling
+                                    <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                                    <i class="material-icons">exit_to_app</i> Auction Scheduling
                                 </a>
-                                       <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                                    <a href="{%url 'auctions:logout'%}" class="dropdown-item">
                                     <i class="material-icons">exit_to_app</i> Logout
                                 </a>
                                 </div>
-                              </div>
-                            </li>
-                        {%endifequal%}
-                    {% else %}
 
-                    <li class="nav-item">
-      					<a class="nav-link" href="#">
-      						<i class="material-icons">cloud_download</i> Auction Guide
-      					</a>
-      				</li>
-                    <li class="nav-item">
-      					<a class="nav-link" href="{%url 'auctions:signup'%}">
-      						<i class="material-icons">account_box</i> Sign Up
-      					</a>
-      				</li>
-                    <li class="nav-item">
-      					<a class="nav-link" href="{%url 'admin_login'%}">
-      						<i class="material-icons">account_circle</i> Log In
-      					</a>
-      				</li>
-<!--      				<li class="nav-item">-->
-<!--      					<a class="nav-link" href="https://twitter.com/CreativeTim" target="_blank">-->
-<!--      						<i class="fa fa-twitter"></i>-->
-<!--      					</a>-->
-<!--      				</li>-->
-                      {% endif %}
-<!--      				<li class="nav-item">-->
-<!--      					<a class="nav-link" href="https://www.facebook.com/CreativeTim" target="_blank">-->
-<!--      						<i class="fa fa-facebook-square"></i>-->
-<!--      					</a>-->
-<!--      				</li>-->
-<!--      				<li class="nav-item">-->
-<!--      					<a class="nav-link"  href="https://www.instagram.com/CreativeTimOfficial" target="_blank">-->
-<!--      						<i class="fa fa-instagram"></i>-->
-<!--      					</a>-->
-<!--      				</li>-->
+                            </li>
                 </ul>
             </div>
         </div>

@@ -2,19 +2,89 @@
 {%load bootstrap4%}
 {%load static%}
 {%block heading%}
+ <script>
+    $(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#scroll').offset().top
+    }, 'slow');
+});
+</script>
 <br/>
 <br/>
 <br/>
+<center><h1 id="scroll">Auction Approval List</h1></center>
 <br/>
-<center><h1>Auction Approval List</h1></center>
+<hr/>
 {%endblock%}
 {%block content%}
 <div class="container">
 {%for property in propertyreg_list%}
+    <br/>
     {%if property.approved == False%}
     <div class="card">
-        hi
-    </div>
+  <h5 class="card-header">Featured</h5>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+
+        <table border="2" class="table">
+    <tbody>
+        <tr>
+            <th scope="row">Property By:</th>
+            <td>{{ property.user.email }}</td>
+            <td rowspan="4" colspan="0">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                  <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  </ol>
+                  <div class="carousel-inner">
+                    <div class="carousel-item">
+                      <img class="d-block w-100" src="..." alt="Third slide">
+                    </div>
+                  </div>
+                  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Property Type:</th>
+            <td>{{ property.property_type }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Property Address:</th>
+            <td>{{ property.property_address }},<br/>
+                {{ property.city }},<br/>
+                {{ property.state }},<br/>
+                {{ property.pincode }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Property Description:</th>
+            <td>
+                    {{ property.property_description }}
+            </td>
+        </tr>
+    </tbody>
+        </table>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="#" class="btn btn-primary">CLICK HERE TO SEE DOCUMENTS</a>
+  </div>
+</div>
+
+
     {%endif%}
+    <hr/>
 {%endfor%}
+
+</div>
 {%endblock%}

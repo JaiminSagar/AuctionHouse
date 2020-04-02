@@ -95,3 +95,11 @@ class AuctionScheduling(UpdateView):
 class AuctionApprovalList(ListView):
     model = models.PropertyReg
     template_name = 'auctions/admin/auctions_approve_list.html'
+
+    def get_context_data(self, **kwargs):
+        context =super().get_context_data()
+        if not models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
+            context['image_list'] =[]
+        else:
+            context['image_list'] = models.PropertyImagesUpload.objects.all()
+        return context

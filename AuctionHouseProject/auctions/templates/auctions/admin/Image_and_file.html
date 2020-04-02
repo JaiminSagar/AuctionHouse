@@ -1,0 +1,56 @@
+{%extends 'auctions/admin/admin_base.html'%}
+{%load bootstrap4%}
+{%load static%}
+{%block heading%}
+ <script>
+    $(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#scroll').offset().top
+    }, 'slow');
+});
+</script>
+<br/>
+<br/>
+<br/>
+<center><h1 id="scroll">Auction Approval List</h1></center>
+<br/>
+<hr/>
+{%endblock%}
+{%block content%}
+<div class="container">
+
+    {%if property.approved == False%}
+    <table class="table">
+        <tbody>
+    <tr>
+            <th scope="row">
+                    Uploaded Images:
+                {% endif %}
+            </th>
+            <td>
+                {% if image_list %}
+                    {% for i in image_list %}
+                        <a href="{{ i.image.url }}">{{ i.image.name }}</a><br/>
+                    {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                    Uploaded Files:
+            </th>
+            <td>
+                {% for f in file_list %}
+                <a href="{{ f.document.url }}">{{ f.document.name }}</a><br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Submitted By:</th>
+            <td>{{ property.agent_id.email }}</td>
+        </tr>
+    </tbody>
+    </table>
+    {%endif%}
+</div>
+{%endblock%}

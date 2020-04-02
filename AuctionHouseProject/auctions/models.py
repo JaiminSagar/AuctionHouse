@@ -189,4 +189,8 @@ class RegForAuction(models.Model):
     user = models.ForeignKey(User,related_name='register',on_delete=models.CASCADE)
 
 
+
+# class AuctionAdmin(auth.models.User,auth.models.PermissionsMixin):
+
+
 #other models like employee wo will schedule the auction
