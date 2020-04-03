@@ -13,16 +13,16 @@
 <br/>
 <br/>
 <br/>
-<center><h1 id="scroll">Auction Approval List</h1></center>
+<center><h1 id="scroll">Auction Scheduling</h1></center>
 <br/>
 <hr/>
 {%endblock%}
 {%block content%}
 <div class="container">
-    {%if propertyreg_list%}
-    {%for property in propertyreg_list%}
+    {%if currentauction_list%}
+    {%for property in currentauction_list%}
     <br/>
-    {%if property.approved == False%}
+    {%if property.property_id.approved == True%}
     <div class="card">
      <h5 class="card-header">Featured</h5>
     <div class="card-body">
@@ -32,7 +32,7 @@
     <tbody>
         <tr>
             <th scope="row">Property By:</th>
-            <td>{{ property.user.email }}</td>
+            <td>{{ property.property_id.user.email }}</td>
             <td rowspan="5" class="carousel slide title">
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" >
                   <div class="carousel-inner">
@@ -57,31 +57,31 @@
                   </a>
                 </div>
             </td>
+            </td>
         </tr>
         <tr>
             <th scope="row">Property Type:</th>
-            <td>{{ property.property_type }}</td>
+            <td>{{ property.property_id.property_type }}</td>
         </tr>
         <tr>
             <th scope="row">Property Address:</th>
-            <td>{{ property.property_address }},<br/>
-                {{ property.city }},<br/>
-                {{ property.state }},<br/>
-                {{ property.pincode }}
+            <td>{{ property.property_id.property_address }},<br/>
+                {{ property.property_id.city }},<br/>
+                {{ property.property_id.state }},<br/>
+                {{ property.property_id.pincode }}
             </td>
         </tr>
         <tr>
             <th scope="row">Property Description:</th>
             <td>
-                    {{ property.property_description }}
+                    {{ property.property_id.property_description }}
             </td>
         </tr>
     </tbody>
         </table>
-
     <p class="card-text">Options:</p>
             <a href="#" class="btn btn-primary">CLICK HERE TO SEE DOCUMENTS</a>
-       <a href="{%url 'approve_auction' propertyid=property.pk%}" class="btn btn-primary">APPROVE</a>
+        <a href="{%url 'schedule_auction' propertyid=property.pk%}" class="btn btn-primary">SCHEDULE THE AUCTION</a>
   </div>
 </div>
 
@@ -89,7 +89,7 @@
     <hr/>
 {%endfor%}
     {%else%}
-    <center> <h1>No Auctions are available to Approve</h1></center>
+    <center> <h1>No Auctions are available to Schedule</h1></center>
 {%endif%}
 </div>
 {%endblock%}

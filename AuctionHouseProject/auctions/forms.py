@@ -108,9 +108,8 @@ class PropertyImagesUploadForm(forms.ModelForm):
         model = models.PropertyImagesUpload
         fields = ('image',)
 
+class SchedulAuctionForm(forms.ModelForm):
 
+    class Meta():
+        models.PropertyReg
 
-# class AgentCreateFrom(UserCreateForm):
-#     class Meta():
-#         fields=('username','email','password1','password2')
-#         model=get_user_model()

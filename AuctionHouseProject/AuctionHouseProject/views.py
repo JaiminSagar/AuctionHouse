@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import TemplateView, CreateView, ListView,UpdateView
+from django.views.generic import TemplateView, CreateView, ListView,UpdateView,View
 from auctions.models import User,UserDetails
 from auctions import forms, models
 from django.urls import reverse
@@ -87,10 +87,16 @@ def approveAgent(request, pk):
     return redirect('agent_list')
 
 class AuctionScheduling(UpdateView):
-    model =models.CurrentAuction
-    login_url = '/login/'
-    template_name = 'auctions/auction_approval.html'
-    # form_class = forms.AgentProfileForm
+    model = models.CurrentAuction
+    template_name = 'auctions/admin/auction_scheduler.html'
+    form_class = forms.SchedulAuctionForm
+
+    def form_valid(self, form):
+        prop = get_object_or_404(models.PropertyReg,pk=self.kwargs.get('propertyid'))
+        prop = self.request.POST['']
+        prop.save()
+        return super().form_valid(form)
+
 
 class AuctionApprovalList(ListView):
     model = models.PropertyReg
@@ -98,8 +104,25 @@ class AuctionApprovalList(ListView):
 
     def get_context_data(self, **kwargs):
         context =super().get_context_data()
-        if not models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
-            context['image_list'] =[]
-        else:
-            context['image_list'] = models.PropertyImagesUpload.objects.all()
+        context['propertyreg_list']=context['propertyreg_list'].filter(approved=False,submitted=True)
+        context['image_list']= models.PropertyImagesUpload.objects.all()
         return context
+
+
+class AuctionScheduleList(ListView):
+    model = models.CurrentAuction
+    template_name = 'auctions/admin/schedule_list.html'
+
+    def get_context_data(self, **kwargs):
+        context =super().get_context_data()
+        context['currentauction_list']=context['currentauction_list'].filter(scheduled_status=False)
+        context['image_list']= models.PropertyImagesUpload.objects.all()
+        return context
+
+def approve_auction(request,propertyid):
+    propertyreg=get_object_or_404(models.PropertyReg,pk=propertyid)
+    propertyreg.approved_auction()
+    current_auction=models.CurrentAuction.objects.create(property_id=propertyreg)
+    current_auction.save()
+    propertyreg.save()
+    return HttpResponseRedirect(reverse_lazy('auction_approve_list'))

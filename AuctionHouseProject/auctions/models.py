@@ -120,8 +120,6 @@ class PropertyReg(models.Model):
     approved_date = models.DateTimeField()
     approved = models.BooleanField(default=False)
     pre_set_amount = models.IntegerField(default=0)
-    scheduled_status = models.BooleanField(default=False)
-    current_auction_status = models.BooleanField(default=False)
     viewinghours = models.CharField(max_length=20, default="None2")
     submitted = models.BooleanField(default=False)
 
@@ -129,8 +127,16 @@ class PropertyReg(models.Model):
         self.submitted = True
         self.save()
 
+    def approved_auction(self):
+        self.approved=True
+
+    def scheduled(self):
+        self.scheduled_status=True
+
     def get_absolute_url(self):
         return reverse_lazy('auctions:agent_property_details', kwargs={'pk': self.pk})
+
+
 
 
 
@@ -167,7 +173,8 @@ class CurrentAuction(models.Model):
     registration_fees =models.IntegerField()
     auction_start_date = models.DateTimeField()
     auction_end_date = models.DateTimeField()
-
+    scheduled_status = models.BooleanField(default=False)
+    current_auction_status = models.BooleanField(default=False)
     increment_ratio = models.FloatField()
     current_amount =models.IntegerField()
 
