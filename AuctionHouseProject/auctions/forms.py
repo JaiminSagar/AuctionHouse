@@ -109,7 +109,9 @@ class PropertyImagesUploadForm(forms.ModelForm):
         fields = ('image',)
 
 class SchedulAuctionForm(forms.ModelForm):
-
+    auction_start_date=forms.DateTimeField(widget=forms.DateTimeInput())
+    auction_end_date=forms.DateTimeField(widget=forms.DateTimeInput())
     class Meta():
         models.PropertyReg
+        fields=('auction_start_date','auction_end_date')
 

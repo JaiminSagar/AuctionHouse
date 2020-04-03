@@ -175,10 +175,16 @@ class CurrentAuction(models.Model):
     auction_end_date = models.DateTimeField()
     scheduled_status = models.BooleanField(default=False)
     current_auction_status = models.BooleanField(default=False)
-    increment_ratio = models.FloatField()
-    current_amount =models.IntegerField()
+    increment_ratio = models.FloatField(default=0.05)
+    current_amount =models.IntegerField(default=property_id.pre_set_amount)
 
-    #viewinhours....
+    def set_ref_fees(self):
+        self.registration_fees=self.property_id.pre_set_amount*(0.01)
+        self.save()
+
+    def bidding(self):
+        self.current_amount=self.current_amount+(self.current_amount*self.increment_ratio)
+
     def get_absolute_url(self):
         return reverse_lazy('auctions:auction_detail', kwargs={'pk': self.pk})
 
