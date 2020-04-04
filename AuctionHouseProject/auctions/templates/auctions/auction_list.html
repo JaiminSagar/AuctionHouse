@@ -3,12 +3,20 @@
 {% block title %}
     Auction List
 {% endblock title %}
-
+{%block heading%}
+<br/>
+<br/>
+<center><h1 id="scroll">Assets Available For Auction</h1></center>
+<br/>
+<br/>
+<hr>
+{%endblock%}
 {% block content %}
-    
-    <div class=''>
+<br/>
+    <div class='container'>
 
         {% for auction in currentauction_list %}
+        {%if auction%}
             {% if forloop.counter|divisibleby:3 or forloop.counter == 1 %}
                 <div class='row justify-content-between' style='padding-bottom:5%;'>
             {% endif %}

@@ -130,8 +130,6 @@ class PropertyReg(models.Model):
     def approved_auction(self):
         self.approved=True
 
-    def scheduled(self):
-        self.scheduled_status=True
 
     def get_absolute_url(self):
         return reverse_lazy('auctions:agent_property_details', kwargs={'pk': self.pk})
@@ -176,10 +174,9 @@ class CurrentAuction(models.Model):
     scheduled_status = models.BooleanField(default=False)
     current_auction_status = models.BooleanField(default=False)
     increment_ratio = models.FloatField(default=0.05)
-    current_amount =models.IntegerField(default=property_id.pre_set_amount)
-
-    def set_ref_fees(self):
-        self.registration_fees=self.property_id.pre_set_amount*(0.01)
+    # current_amount =models.IntegerField(default=property_id.pre_set_amount)
+    def scheduled(self):
+        self.scheduled_status=True
         self.save()
 
     def bidding(self):

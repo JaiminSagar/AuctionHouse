@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from bootstrap_datepicker_plus import DatePickerInput,DateTimePickerInput
 from . import models
 from django import forms
+from datetimepicker.widgets import DateTimePicker
 # from django import forms
 
 
@@ -89,7 +91,7 @@ class PropertyDescriptionForm(forms.ModelForm):
 
     class Meta():
         model = models.PropertyReg
-        fields = ('property_description',)
+        fields = ('property_description','pre_set_amount')
 
 
 class PropertyFilesUploadForm(forms.ModelForm):
@@ -109,9 +111,12 @@ class PropertyImagesUploadForm(forms.ModelForm):
         fields = ('image',)
 
 class SchedulAuctionForm(forms.ModelForm):
-    auction_start_date=forms.DateTimeField(widget=forms.DateTimeInput())
-    auction_end_date=forms.DateTimeField(widget=forms.DateTimeInput())
+    auction_start_date=forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type':'date'}))
+    auction_end_date = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type':'date'}))
     class Meta():
-        models.PropertyReg
         fields=('auction_start_date','auction_end_date')
-
+        model = models.CurrentAuction
+        # widgets = {
+        #     'auction_start_date': DateTimePickerInput(),
+        #     'auction_end_date': DateTimePickerInput(),
+        # }

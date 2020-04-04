@@ -41,9 +41,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
+    'bootstrap_datepicker_plus',
+    'datetimepicker',
     'auctions'
 
 ]
+
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -167,7 +174,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'info.auctionhouse.in@gmail.com'
 EMAIL_HOST_PASSWORD = 'abcxyz123#'
 EMAIL_PORT = 587
-
 
 
 

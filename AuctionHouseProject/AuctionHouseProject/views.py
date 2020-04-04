@@ -92,9 +92,8 @@ class AuctionScheduling(UpdateView):
     form_class = forms.SchedulAuctionForm
 
     def form_valid(self, form):
-        prop = get_object_or_404(models.PropertyReg,pk=self.kwargs.get('propertyid'))
-        prop = self.request.POST['']
-        prop.save()
+        prop=form.save(commit=False)
+        prop.scheduled()
         return super().form_valid(form)
 
 
@@ -123,6 +122,7 @@ def approve_auction(request,propertyid):
     propertyreg=get_object_or_404(models.PropertyReg,pk=propertyid)
     propertyreg.approved_auction()
     current_auction=models.CurrentAuction.objects.create(property_id=propertyreg)
+    current_auction.registration_fees = current_auction.property_id.pre_set_amount * (0.01)
     current_auction.save()
     propertyreg.save()
     return HttpResponseRedirect(reverse_lazy('auction_approve_list'))

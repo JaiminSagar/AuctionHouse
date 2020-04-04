@@ -195,6 +195,7 @@ def add_property_description(request, pk):
             prop = get_object_or_404(models.PropertyReg,pk=pk)
             # agent = get_object_or_404(models.AgentUser, pk=request.user.pk)
             prop.property_description=form.cleaned_data['property_description']
+            prop.pre_set_amount = int(form.cleaned_data['pre_set_amount'])
             # prop.agent_id = agent
             prop.save()
             return redirect('auctions:agent_property_details', pk=prop.pk)
@@ -413,7 +414,7 @@ class CurrentAuctionList(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(scheduled__iexact=True)
+        return queryset.filter(current_auction_status=True)
 
 class CurrentAuctionDetails(DetailView):
     model = models.CurrentAuction

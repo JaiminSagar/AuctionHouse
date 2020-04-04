@@ -48,12 +48,12 @@ Property Details
             </td>
         </tr>
         <tr>
-            <th scope="row">Property Description:</th>
+            <th scope="row">Property Description & Evaluation Value:</th>
             <td>
                 {% if propertyreg.property_description == '' %}
-                    <a href="{% url 'auctions:add_description' pk=propertyreg.pk %}"> Add Description</a>
+                    <a href="{% url 'auctions:add_description' pk=propertyreg.pk %}"> Add Description and Property Value</a>
                 {% else %}
-                    {{ propertyreg.property_description }}
+                {{ propertyreg.property_description }}  <br/><b>Value:</b>{{propertyreg.pre_set_amount}}
                 {% endif %}
             </td>
         </tr>
@@ -154,7 +154,7 @@ Property Details
 
             {% if propertyreg.property_description == '' %}
                 <div class="col">
-                   <a href="{% url 'auctions:add_description' pk=propertyreg.pk %}"> Add Description</a>
+                   <a href="{% url 'auctions:add_description' pk=propertyreg.pk %}"> Add Description & Property Value</a>
                 </div>
             {% endif %}
             </div> {% endcomment %}

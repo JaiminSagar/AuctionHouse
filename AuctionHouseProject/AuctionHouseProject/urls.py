@@ -34,7 +34,7 @@ urlpatterns = [
     path('agent_list/approve/<pk>/', views.approveAgent, name='approve_agent'),
     path('auction_approval_list/',views.AuctionApprovalList.as_view(),name='auction_approve_list'),
     path('schedule_list/',views.AuctionScheduleList.as_view(),name='schedule_list'),
-    path('schedule_auction/<int:propertyid>/', views.AuctionScheduling.as_view(),name='schedule_auction'),
+    path('schedule_auction/<pk>/', views.AuctionScheduling.as_view(),name='schedule_auction'),
     path('approve_auction/<int:propertyid>/',views.approve_auction,name='approve_auction'),
 
 
