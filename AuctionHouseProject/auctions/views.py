@@ -412,6 +412,11 @@ class CurrentAuctionList(ListView):
     model = models.CurrentAuction
     template_name = "auctions/auction_list.html"
 
+    def get(self, request, *args, **kwargs):
+        current_auction_all=models.CurrentAuction.objects.all().filter(current_auction_status=False)
+        for auction in current_auction_all:
+            # if auction.auction_start_date == t
+            pass
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(current_auction_status=True)
@@ -432,24 +437,48 @@ class CurrentAuctionDetails(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form']=forms.MakeAnOffer
+        auction_bid=models.BiddingOfProperty.objects.all().filter(current_auction_id=self.kwargs.get('pk')).order_by('-user_bid_amount')
+        context['past_bids']=auction_bid
         return context
 
 class AuctionBid(LoginRequiredMixin,View):
     login_url = '/login/'
 
     def post(self,*args,**kwargs):
-        print('abc')
         current_auction_data =get_object_or_404(models.CurrentAuction,pk=self.kwargs.get('pk'))
         user = get_object_or_404(models.User, pk=int(self.request.POST['user']))
-        if current_auction_data.next_bid<=float(self.request.POST['user_bid']):
-            bid_of_user = models.BiddingOfProperty.objects.create(current_auction_id=current_auction_data, user=user)
-            bid_of_user.user_bid_amount =float(self.request.POST['user_bid'])
-            current_auction_data.current_amount=float(self.request.POST['user_bid'])
-            current_auction_data.bidding()
-            current_auction_data.save()
-            bid_of_user.save()
-            return HttpResponseRedirect(reverse_lazy('auctions:auction_detail',kwargs={'pk':current_auction_data.pk}))
-        else:
-            messages.error(self.request,"Please Enter the correct amount based on increment ratio.")
-            return HttpResponseRedirect(reverse_lazy('auctions:auction_detail',kwargs={'pk':current_auction_data.pk}))
+        register= models.RegForAuction.objects.all().filter(current_auction_id=self.kwargs.get('pk'))
+        for entry in register:
+            if entry.user_id == user.pk:
+                if current_auction_data.next_bid <= float(self.request.POST['user_bid']):
+                    bid_of_user = models.BiddingOfProperty.objects.create(current_auction_id=current_auction_data,user=user)
+                    bid_of_user.user_bid_amount = float(self.request.POST['user_bid'])
+                    current_auction_data.current_amount = float(self.request.POST['user_bid'])
+                    current_auction_data.highest_bidder=user
+                    current_auction_data.bidding()
+                    current_auction_data.save()
+                    bid_of_user.save()
+                    return HttpResponseRedirect(
+                        reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
+                else:
+                    messages.error(self.request, "Please Enter the correct amount based on increment ratio.")
+                    return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
+            else:
+                messages.error(self.request, "You have to register for participating in auction. Click on the Register for participating.")
+                return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
 
+        messages.error(self.request,"You have to register for participating in auction. Click on the Register for participating.")
+        return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
+
+class UpcommingAuctionList(ListView):
+    model = models.CurrentAuction
+    template_name = "auctions/up_comming_auction_list.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(current_auction_status=False)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['image_list'] = models.PropertyImagesUpload.objects.all()
+        return context

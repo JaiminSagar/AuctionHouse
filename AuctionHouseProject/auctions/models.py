@@ -168,6 +168,10 @@ class MakeAnOffer(models.Model):
     enquiry= models.TextField(default="NONE")
     # offer_amount = models.CharField(max_length=10)
 
+# class AuctionManager(models.Manager):
+#     def upcomming(self):
+#         return super().get_queryset().filter(currnet_auction_status=False)
+
 class CurrentAuction(models.Model):
     property_id= models.ForeignKey(PropertyReg,related_name='property',on_delete=models.CASCADE)
     registration_fees =models.IntegerField()
@@ -178,17 +182,20 @@ class CurrentAuction(models.Model):
     increment_ratio = models.FloatField(default=0.05)
     current_amount =models.IntegerField(default=0)
     next_bid= models.FloatField(default=0)
+    highest_bidder=models.ForeignKey(User,related_name='highest_bid',default=0,on_delete=models.CASCADE)
 
     def scheduled(self):
         self.scheduled_status=True
         self.save()
-
 
     def bidding(self):
         self.next_bid= self.current_amount+(self.current_amount*self.increment_ratio)
 
     def get_absolute_url(self):
         return reverse_lazy('auctions:auction_detail', kwargs={'pk': self.pk})
+
+    # objects=models.Manager()
+    # AuctionManager = AuctionManager()
 
 
 class BiddingOfProperty(models.Model):
