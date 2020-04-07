@@ -164,7 +164,9 @@ class MakeAnOffer(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField()
-    offer_amount = models.CharField(max_length=10)
+    mobile =models.CharField(default="0000000000",max_length=13)
+    enquiry= models.TextField(default="NONE")
+    # offer_amount = models.CharField(max_length=10)
 
 class CurrentAuction(models.Model):
     property_id= models.ForeignKey(PropertyReg,related_name='property',on_delete=models.CASCADE)
@@ -174,13 +176,16 @@ class CurrentAuction(models.Model):
     scheduled_status = models.BooleanField(default=False)
     current_auction_status = models.BooleanField(default=False)
     increment_ratio = models.FloatField(default=0.05)
-    # current_amount =models.IntegerField(default=property_id.pre_set_amount)
+    current_amount =models.IntegerField(default=0)
+    next_bid= models.FloatField(default=0)
+
     def scheduled(self):
         self.scheduled_status=True
         self.save()
 
+
     def bidding(self):
-        self.current_amount=self.current_amount+(self.current_amount*self.increment_ratio)
+        self.next_bid= self.current_amount+(self.current_amount*self.increment_ratio)
 
     def get_absolute_url(self):
         return reverse_lazy('auctions:auction_detail', kwargs={'pk': self.pk})
@@ -190,7 +195,7 @@ class BiddingOfProperty(models.Model):
     current_auction_id=models.ForeignKey(CurrentAuction,related_name='property_bid',on_delete=models.CASCADE)
     user = models.ForeignKey(User,related_name='user_bid',on_delete=models.CASCADE)
     user_bid_amount =models.IntegerField()
-    bid_time =models.DateTimeField()
+    bid_time =models.DateTimeField(default=timezone.now())
 
 
 class RegForAuction(models.Model):

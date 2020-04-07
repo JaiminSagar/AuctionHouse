@@ -120,3 +120,8 @@ class SchedulAuctionForm(forms.ModelForm):
         #     'auction_start_date': DateTimePickerInput(),
         #     'auction_end_date': DateTimePickerInput(),
         # }
+
+class MakeAnOffer(forms.ModelForm):
+    class Meta():
+        fields=('title','first_name','last_name','email','mobile','enquiry')
+        model = models.MakeAnOffer

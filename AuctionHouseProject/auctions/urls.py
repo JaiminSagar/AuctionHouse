@@ -31,6 +31,6 @@ urlpatterns=[
     path('agent/evaluation_list/property/<pk>/add_files', views.propertyFilesUploadView, name='add_files'),
     path('agent/evaluation_list/property/<pk>/add_images', views.propertyImagesUploadView, name='add_images'),
     path('agent/evaluation_list/property/<pk>/submit', views.submit_property, name='submit_property'),
-
+    path('current_auctions/auction_bid/<int:pk>/',views.AuctionBid.as_view(),name='auction_bid'),
 
 ]

@@ -11,7 +11,7 @@ from braces.views import SelectRelatedMixin
 from . import models
 from . import forms
 from django.contrib.auth import views as auth_view,login
-from django.views.generic import TemplateView,CreateView,UpdateView,DetailView, ListView
+from django.views.generic import TemplateView,CreateView,UpdateView,DetailView, ListView,View
 from django.contrib import messages
 from django.http import HttpResponse
 
@@ -416,6 +416,11 @@ class CurrentAuctionList(ListView):
         queryset = super().get_queryset()
         return queryset.filter(current_auction_status=True)
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['image_list'] = models.PropertyImagesUpload.objects.all()
+        return context
+
 class CurrentAuctionDetails(DetailView):
     model = models.CurrentAuction
     template_name = "auctions/auction_details.html"
@@ -424,5 +429,27 @@ class CurrentAuctionDetails(DetailView):
         queryset = super().get_queryset()
         return queryset.filter(pk=self.kwargs.get('pk'))
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form']=forms.MakeAnOffer
+        return context
 
-# class PropDetai
+class AuctionBid(LoginRequiredMixin,View):
+    login_url = '/login/'
+
+    def post(self,*args,**kwargs):
+        print('abc')
+        current_auction_data =get_object_or_404(models.CurrentAuction,pk=self.kwargs.get('pk'))
+        user = get_object_or_404(models.User, pk=int(self.request.POST['user']))
+        if current_auction_data.next_bid<=float(self.request.POST['user_bid']):
+            bid_of_user = models.BiddingOfProperty.objects.create(current_auction_id=current_auction_data, user=user)
+            bid_of_user.user_bid_amount =float(self.request.POST['user_bid'])
+            current_auction_data.current_amount=float(self.request.POST['user_bid'])
+            current_auction_data.bidding()
+            current_auction_data.save()
+            bid_of_user.save()
+            return HttpResponseRedirect(reverse_lazy('auctions:auction_detail',kwargs={'pk':current_auction_data.pk}))
+        else:
+            messages.error(self.request,"Please Enter the correct amount based on increment ratio.")
+            return HttpResponseRedirect(reverse_lazy('auctions:auction_detail',kwargs={'pk':current_auction_data.pk}))
+

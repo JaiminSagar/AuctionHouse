@@ -123,6 +123,7 @@ def approve_auction(request,propertyid):
     propertyreg.approved_auction()
     current_auction=models.CurrentAuction.objects.create(property_id=propertyreg)
     current_auction.registration_fees = current_auction.property_id.pre_set_amount * (0.01)
+    current_auction.current_amount =current_auction.property_id.pre_set_amount
     current_auction.save()
     propertyreg.save()
     return HttpResponseRedirect(reverse_lazy('auction_approve_list'))
