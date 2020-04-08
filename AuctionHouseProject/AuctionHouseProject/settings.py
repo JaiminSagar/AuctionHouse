@@ -159,7 +159,7 @@ LOGIN_REDIRECT_URL='profile_check'
 
 # login/logout settings....
 # LOGIN_REDIRECT_URL='home'
-LOGOUT_REDIRECT_URL='thanks'
+LOGOUT_REDIRECT_URL='home'
 
 
 # media settings.......

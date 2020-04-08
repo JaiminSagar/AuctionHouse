@@ -28,10 +28,10 @@
     <div class="card-body">
     <h5 class="card-title">Property Details</h5>
 
-        <table border="2" class="table">
-    <tbody>
+        <table  class="table">
+        <tbody>
         <tr>
-            <th scope="row">Property By:</th>
+            <th scope="col">Property By:</th>
             <td>{{ property.user.email }}</td>
             <td rowspan="5" class="carousel slide title">
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" >
@@ -59,11 +59,11 @@
             </td>
         </tr>
         <tr>
-            <th scope="row">Property Type:</th>
+            <th scope="col">Property Type:</th>
             <td>{{ property.property_type }}</td>
         </tr>
         <tr>
-            <th scope="row">Property Address:</th>
+            <th scope="col">Property Address:</th>
             <td>{{ property.property_address }},<br/>
                 {{ property.city }},<br/>
                 {{ property.state }},<br/>
@@ -71,7 +71,7 @@
             </td>
         </tr>
         <tr>
-            <th scope="row">Property Description:</th>
+            <th scope="col">Property Description:</th>
             <td>
                     {{ property.property_description }}
             </td>

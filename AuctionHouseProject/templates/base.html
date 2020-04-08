@@ -50,8 +50,7 @@
       					</a>
       				</li>
                     {% if user.is_authenticated %}
-                        {%ifequal user.is_staff False%}
-                            {%ifequal user.user.profile_setup True%}
+                        {%ifequal user.user.profile_setup True%}
                             <li class="dropdown nav-item">
                               <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
                                   <i class="material-icons">apps</i> Acitvity
@@ -115,8 +114,47 @@
                               </div>
                             </li>
                             {%endifequal%}
-                        {%endifequal%}
-                    {% else %}
+                        {%ifequal user.is_staff True%}
+                            <li class="nav-item">
+      					<a class="nav-link" href="#">
+      						<i class="material-icons">cloud_download</i> Auction Guide
+      					</a>
+      				</li>
+                    <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:signup'%}">
+      						<i class="material-icons">account_box</i> Sign Up
+      					</a>
+      				</li>
+                    <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:login'%}">
+      						<i class="material-icons">account_circle</i> Log In
+      					</a>
+      				</li>
+                    {%endifequal%}
+                    {%if user.agentuser.user_type == 'agent'%}
+                    <li class="dropdown nav-item">
+                      <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                          <i class="material-icons">apps</i> Acitvity
+                      </a>
+                      <div class="dropdown-menu dropdown-with-icons">
+                        <a href="{% url 'auctions:agent_dashboard' %}" class="dropdown-item">
+                            <i class="material-icons">assignment</i> Dashboard
+                        </a>
+                        <a href="{%url 'auctions:agent_profile' pk=user.agentuser.pk%}" class="dropdown-item">
+                            <i class="material-icons">person</i> Profile
+                        </a>
+
+                         <a href="#" class="dropdown-item">
+                            <i class="material-icons">library_books</i> View Auctions
+                        </a>
+
+                          <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                            <i class="material-icons">exit_to_app</i> Logout
+                         </a>
+                         </div>
+                        </li>
+                        {%endif%}
+                 {% else %}
 
                     <li class="nav-item">
       					<a class="nav-link" href="#">
@@ -133,22 +171,7 @@
       						<i class="material-icons">account_circle</i> Log In
       					</a>
       				</li>
-<!--      				<li class="nav-item">-->
-<!--      					<a class="nav-link" href="https://twitter.com/CreativeTim" target="_blank">-->
-<!--      						<i class="fa fa-twitter"></i>-->
-<!--      					</a>-->
-<!--      				</li>-->
                       {% endif %}
-<!--      				<li class="nav-item">-->
-<!--      					<a class="nav-link" href="https://www.facebook.com/CreativeTim" target="_blank">-->
-<!--      						<i class="fa fa-facebook-square"></i>-->
-<!--      					</a>-->
-<!--      				</li>-->
-<!--      				<li class="nav-item">-->
-<!--      					<a class="nav-link"  href="https://www.instagram.com/CreativeTimOfficial" target="_blank">-->
-<!--      						<i class="fa fa-instagram"></i>-->
-<!--      					</a>-->
-<!--      				</li>-->
                 </ul>
             </div>
         </div>

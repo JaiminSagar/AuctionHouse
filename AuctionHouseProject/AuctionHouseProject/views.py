@@ -29,16 +29,18 @@ from django.core.exceptions import ObjectDoesNotExist
 
 def checking(request):
         user=get_user(request)
-        if user.is_staff:
+        try:
+            if user.agentuser.user_type == 'agent':
             # return HttpResponseRedirect(reverse('agent_home'))
-            return HttpResponseRedirect(reverse('auctions:agent_dashboard'))
-        elif user.is_staff == False:
+                return HttpResponseRedirect(reverse('auctions:agent_dashboard'))
+        except:
             try:
-                if user.user.profile_setup == False:
-                    print("hi")
-                    return HttpResponseRedirect(reverse('auctions:setup_profile'))
-                else:
-                    return HttpResponseRedirect(reverse('home'))
+                if user.user.user_type == 'user':
+                    if user.user.profile_setup == False:
+                        print("hi")
+                        return HttpResponseRedirect(reverse('auctions:setup_profile'))
+                    else:
+                        return HttpResponseRedirect(reverse('home'))
             except:
                 return HttpResponseRedirect(reverse('home'))
         else:
@@ -50,8 +52,8 @@ class HomePage(TemplateView):
 # class AgentHome(TemplateView):
 #     template_name = 'auctions/agent/agent_dashboard.html'
 
-class ThanksPage(TemplateView):
-    template_name = 'thanks.html'
+# class ThanksPage(TemplateView):
+#     template_name = 'thanks.html'
 
 def adminLogin(request):
     if request.method == "POST":
@@ -105,6 +107,7 @@ class AuctionApprovalList(ListView):
         context =super().get_context_data()
         context['propertyreg_list']=context['propertyreg_list'].filter(approved=False,submitted=True)
         context['image_list']= models.PropertyImagesUpload.objects.all()
+        print(context['image_list'])
         return context
 
 

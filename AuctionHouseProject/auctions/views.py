@@ -157,29 +157,6 @@ class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
         else:
             return HttpResponseRedirect("<h1>try again</h1>")
 
-        # def form_valid(self, form):
-        #     # print(self.request.user)
-        #     # request=self.request
-        #     # image= request.FILES['field_name']
-        #     # form.iamge =image
-        #     print("hi")
-        #     prop = form.save(commit=False)
-        #     agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
-        #     prop.agent_id = agent
-        #     prop.save()
-        #     return super().form_valid(form)
-
-    # def form_valid(self, form):
-    #     # print(self.request.user)
-    #     # request=self.request
-    #     # image= request.FILES['field_name']
-    #     # form.iamge =image
-    #     prop = form.save(commit=False)
-    #     print(prop.pk)
-    #     agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
-    #     prop.agent_id = agent 
-    #     prop.save()
-    #     #return super().form_valid(form)
 
 
 def submit_property(request, pk):
@@ -354,7 +331,6 @@ class BecomeAgent(CreateView):
 
     def form_valid(self, form):
         agent = form.save(commit = False)
-        agent.is_staff=True
         agent.username = agent.email
         agent.save()
         mail_subject = 'AuctionHouse.in | Successfully Appiled '

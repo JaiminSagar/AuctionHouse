@@ -28,7 +28,7 @@
     <div class="card-body">
     <h5 class="card-title">Property Details</h5>
 
-        <table border="2" class="table">
+        <table class="table">
     <tbody>
         <tr>
             <th scope="row">Property By:</th>
@@ -60,11 +60,11 @@
             </td>
         </tr>
         <tr>
-            <th scope="row">Property Type:</th>
+            <th scope="col">Property Type:</th>
             <td>{{ property.property_id.property_type }}</td>
         </tr>
         <tr>
-            <th scope="row">Property Address:</th>
+            <th scope="col">Property Address:</th>
             <td>{{ property.property_id.property_address }},<br/>
                 {{ property.property_id.city }},<br/>
                 {{ property.property_id.state }},<br/>
@@ -72,13 +72,14 @@
             </td>
         </tr>
         <tr>
-            <th scope="row">Property Description:</th>
+            <th scope="col">Property Description:</th>
             <td>
                     {{ property.property_id.property_description }}
             </td>
         </tr>
     </tbody>
         </table>
+        <hr>
     <p class="card-text">Options:</p>
             <a href="#" class="btn btn-primary">CLICK HERE TO SEE DOCUMENTS</a>
         <a href="{%url 'schedule_auction' pk=property.pk%}" class="btn btn-primary">SCHEDULE THE AUCTION</a>
