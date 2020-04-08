@@ -73,10 +73,10 @@ class BecomeAgentForm(forms.ModelForm):
         # self.fields['password1'].type = 'hidden'
 
 
-class MakeAnOffer():
-    class Meta():
-        models =models.MakeAnOffer
-        fields=('title','first_name','last_name','email','offer_amount')
+# class MakeAnOffer():
+#     class Meta():
+#         models =models.MakeAnOffer
+#         fields=('title','first_name','last_name','email','offer_amount')
 
 
 
