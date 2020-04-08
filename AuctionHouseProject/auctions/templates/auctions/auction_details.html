@@ -230,7 +230,7 @@
                     <div class="jumbotron">
                 <center><h5>The auction has not yet started</h5></center>
                     <center>Minimum Opening Bid</center>
-                    <center>₹. {{currentauction.property_id.pre_set_amount}}<br>{%if user.is_authenticated%}<a class="btn btn-primary">Register</a>{%else%}<a  class="btn">Login</a>{%endif%} </center>
+                    <center>₹. {{currentauction.property_id.pre_set_amount}}<br>{%if user.is_authenticated%}<a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>{%else%}<a  class="btn">Login</a>{%endif%} </center>
                     <hr>
                     <div class="row" align="center">
                         <div class="col">Bidding Opens On<br/>{{currentauction.auction_start_date}}</div>

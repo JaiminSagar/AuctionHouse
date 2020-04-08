@@ -28,7 +28,7 @@ SECRET_KEY = 'ou_s_(fy)2hou+&y(tabc1_pnz=r-_n!s)%=&42sx#pkkfmz5-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'bootstrap_datepicker_plus',
     'datetimepicker',
+    'paypal.standard.ipn',
     'auctions'
 
 ]
@@ -174,6 +175,13 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'info.auctionhouse.in@gmail.com'
 EMAIL_HOST_PASSWORD = 'abcxyz123#'
 EMAIL_PORT = 587
+
+
+# Paypal settings
+
+PAYPAL_RECEIVER_EMAIL = 'sb-vp49431331712@business.example.com'
+
+PAYPAL_TEST = True
 
 
 
