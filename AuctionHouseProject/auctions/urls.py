@@ -32,5 +32,7 @@ urlpatterns=[
     path('agent/evaluation_list/property/<pk>/add_images', views.propertyImagesUploadView, name='add_images'),
     path('agent/evaluation_list/property/<pk>/submit', views.submit_property, name='submit_property'),
     path('current_auctions/auction_bid/<int:pk>/',views.AuctionBid.as_view(),name='auction_bid'),
+    path('upcomming_auctions/',views.UpcommingAuctionList.as_view(),name='upcomming_auction_list'),
+    path('checking_auction_status/<pk>/',views.CheckingAuctionStatus.as_view(),name='check_auction_status'),
 
 ]

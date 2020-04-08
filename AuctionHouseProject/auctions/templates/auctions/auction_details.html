@@ -12,40 +12,10 @@
  <hr/>
 {%endblock%}
 {%block content%}
-<script>
-// Set the date we're counting down to
-var countDownDate = new Date("{{currentauction.auction_end_date|cut:""}}").getTime();
-console.log(countDownDate)
-// Update the count down every 1 second
-var x = setInterval(function() {
 
-  // Get today's date and time
-  var now = new Date().getTime();
-
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
-
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  // Output the result in an element with id="demo"
-  document.getElementById("demo").innerHTML = "<h5>"+days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s "+"</h5>";
-
-  // If the count down is over, write some text
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("demo").innerHTML = "EXPIRED";
-    document.getElementById("place_bid_btn").disabled =True;
-  }
-}, 1000);
-</script>
 <div class="container">
     <div class="row">
-    <div class="col-sm-7">
+    <div class="col-sm-7 align-self-center">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -74,6 +44,7 @@ var x = setInterval(function() {
     </div>
 
         <br/>
+        {%if currentauction.current_auction_status%}
         <div class="jumbotron">
             <div style="overflow:scroll; height:130px;">
             <center><h6 class=>
@@ -94,11 +65,43 @@ var x = setInterval(function() {
                  </table>
             </h6></center></div>
         </div>
+        {%endif%}
     </div>
     <div class="col-sm-5">
         <div class="row">
             <div class="col">
                 {%if currentauction.current_auction_status%}
+                <script>
+                    // Set the date we're counting down to
+                    var countDownDate = new Date("{{currentauction.auction_end_date|cut:""}}").getTime();
+                    console.log(countDownDate)
+                    // Update the count down every 1 second
+                    var x = setInterval(function() {
+
+                      // Get today's date and time
+                      var now = new Date().getTime();
+
+                      // Find the distance between now and the count down date
+                      var distance = countDownDate - now;
+
+                      // Time calculations for days, hours, minutes and seconds
+                      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                      // Output the result in an element with id="demo"
+                      document.getElementById("demo").innerHTML = "<h5>"+days + "d " + hours + "h "
+                      + minutes + "m " + seconds + "s "+"</h5>";
+
+                      // If the count down is over, write some text
+                      if (distance < 0) {
+                        clearInterval(x);
+                        document.getElementById("demo").innerHTML = "EXPIRED";
+                        document.getElementById("place_bid_btn").disabled =True;
+                      }
+                    }, 1000);
+                    </script>
                     {%if user.user.user_type == 'user'%}
                         <div class="jumbotron">
                     <center><h5>The auction has started.</h5></center>
@@ -193,6 +196,37 @@ var x = setInterval(function() {
                         </div>
                     {%endif%}
                 {%else%}
+                    <script>
+                        // Set the date we're counting down to
+                        var countDownDate = new Date("{{currentauction.auction_start_date|cut:""}}").getTime();
+                        console.log(countDownDate)
+                        // Update the count down every 1 second
+                        var x = setInterval(function() {
+
+                          // Get today's date and time
+                          var now = new Date().getTime();
+
+                          // Find the distance between now and the count down date
+                          var distance = countDownDate - now;
+
+                          // Time calculations for days, hours, minutes and seconds
+                          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                          // Output the result in an element with id="demo"
+                          document.getElementById("demo").innerHTML = "<h5>"+days + "d " + hours + "h "
+                          + minutes + "m " + seconds + "s "+"</h5>";
+
+                          // If the count down is over, write some text
+                          if (distance < 0) {
+                            clearInterval(x);
+                            document.getElementById("demo").innerHTML = "EXPIRED";
+                            document.getElementById("place_bid_btn").disabled =True;
+                          }
+                        }, 1000);
+                        </script>
                     <div class="jumbotron">
                 <center><h5>The auction has not yet started</h5></center>
                     <center>Minimum Opening Bid</center>
@@ -202,10 +236,13 @@ var x = setInterval(function() {
                         <div class="col">Bidding Opens On<br/>{{currentauction.auction_start_date}}</div>
                         <div class="col">End Date<br/>{{currentauction.auction_end_date}}</div>
                     </div>
+                        <center><p class="title">Auction Starts In<br/><a  id="demo" class="btn btn-primary"></a></p></center>
+
                 </div>
                 {%endif%}
             </div>
         </div>
+</div>
     <div class="row">
     <div class="col-sm-7 jumbotron">
         <h5 class="title">Proprty Details</h5>
@@ -233,6 +270,9 @@ var x = setInterval(function() {
     <div class="col-sm-5">
         <div class="row">
             <div class="col">
+                {%for message in messages%}
+                    <h6 style="color:green;">{{message}}</h6>
+                {%endfor%}
                 <h5 class="title">Make An Enquiry</h5>
                 <hr>
                 <p>Submit an enquiry for this lot and someone will be in contact shortly.</p>

@@ -18,6 +18,9 @@
 
 </script>
 <div id="scroll" class="container">
+    {%for message in messages%}
+    <h6 style="color:red;">{{message}}</h6>
+    {%endfor%}
     <form method="post">
         {%csrf_token%}
         {%bootstrap_form form%}

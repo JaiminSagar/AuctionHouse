@@ -14,6 +14,8 @@ from django.contrib.auth import views as auth_view,login
 from django.views.generic import TemplateView,CreateView,UpdateView,DetailView, ListView,View
 from django.contrib import messages
 from django.http import HttpResponse
+import datetime
+from django.utils import timezone
 
 from django.contrib.auth import get_user_model
 User=get_user_model()
@@ -59,7 +61,8 @@ def signup(request):
                         mail_subject, message, to=[to_email]
             )
             email.send()
-            return render(request,'auctions/email_confirm.html',{'msg':"Please confirm your email address to complete the registration."})
+            messages.success(request, "Please confirm your email address to complete the registration.")
+            return HttpResponseRedirect(reverse_lazy('auctions:login'))
     else:
         form = forms.UserCreateForm()
     return render(request, 'auctions/signup.html', {'form': form})
@@ -77,7 +80,7 @@ def activate(request, uidb64, token):
         return redirect('profile_check')
         #return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return HttpResponse('<h1>Activation link is invalid!</h1')
 
 
 class ApplyEvaluation(LoginRequiredMixin, CreateView):
@@ -403,7 +406,9 @@ def set_agent_password(request, pk):
             if password == confirm_password:
                 agent.password = make_password(password)
                 agent.save()
-                return HttpResponse('Your password sucessfully saved. Now do Login.')
+                messages.success(request, "Your password sucessfully saved. Now do Login.")
+                return HttpResponseRedirect(reverse_lazy('auctions:login'))
+
         return render(request, 'auctions/set_agent_password.html', {})
 
     return HttpResponse("Maybe Your password is already there.....")
@@ -412,11 +417,6 @@ class CurrentAuctionList(ListView):
     model = models.CurrentAuction
     template_name = "auctions/auction_list.html"
 
-    def get(self, request, *args, **kwargs):
-        current_auction_all=models.CurrentAuction.objects.all().filter(current_auction_status=False)
-        for auction in current_auction_all:
-            # if auction.auction_start_date == t
-            pass
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(current_auction_status=True)
@@ -441,6 +441,19 @@ class CurrentAuctionDetails(DetailView):
         context['past_bids']=auction_bid
         return context
 
+    def post(self, request, *args, **kwargs):
+        current_auction=get_object_or_404(models.CurrentAuction,pk=self.kwargs.get('pk'))
+        title=self.request.POST['title']
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        email=name=request.POST['email']
+        mobile=request.POST['mobile']
+        enquiry=request.POST['enquiry']
+        enquiry_obj=models.MakeAnOffer.objects.create(property_id=current_auction.property_id,title=title,first_name=first_name,last_name=last_name,email=email,mobile=mobile,enquiry=enquiry)
+        messages.success(self.request,"Enquiry is Submitted, We will contact you soon via email.")
+        return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction.pk}))
+
+
 class AuctionBid(LoginRequiredMixin,View):
     login_url = '/login/'
 
@@ -458,8 +471,8 @@ class AuctionBid(LoginRequiredMixin,View):
                     current_auction_data.bidding()
                     current_auction_data.save()
                     bid_of_user.save()
-                    return HttpResponseRedirect(
-                        reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
+                    messages.success(self.request, "Your Bid is Submitted Successfully,Pls checkout the table to see your entry.")
+                    return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
                 else:
                     messages.error(self.request, "Please Enter the correct amount based on increment ratio.")
                     return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
@@ -482,3 +495,17 @@ class UpcommingAuctionList(ListView):
         context=super().get_context_data(**kwargs)
         context['image_list'] = models.PropertyImagesUpload.objects.all()
         return context
+
+
+class CheckingAuctionStatus(View):
+
+    def get(self, request, *args, **kwargs):
+        current_auction=get_object_or_404(models.CurrentAuction,pk=self.kwargs.get('pk'))
+        current_auction_all=models.CurrentAuction.objects.all().filter(current_auction_status=False)
+        for auction in current_auction_all:
+            if auction.auction_start_date < timezone.now():
+                auction.current_auction_status=True
+                auction.save()
+            else:
+                continue
+        return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction.pk}))
