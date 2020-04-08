@@ -30,7 +30,7 @@
                       </div>
                       {%for images in auction.property_id.property_images.all%}
                       <div class="carousel-item" >
-                          <img class="card-img-top" src="{{images.image.url}}" alt="Card image cap">
+                          <img class="card-img-top" src="{{images.image.url}}" alt="Card image cap" width="100px" height="250px">
                       </div>
                       {%endfor%}
                   </div>
@@ -49,7 +49,7 @@
                             <div class="card-body">
                                 <a href="{%url 'auctions:auction_detail' pk=auction.pk%}" class="btn btn-primary">View AUction</a>
                                 {%if user.is_authenticated%}
-                                    {%if user.user_type == 'user' %}
+                                    {%if user.user.user_type == 'user' %}
                                     <a href="#" class="btn btn-primary">Register Your Self</a>
                                     {%else%}
                                     <a href="{%url 'auctions:login'%}" class="btn btn-primary">Login</a>
