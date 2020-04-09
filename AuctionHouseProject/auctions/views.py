@@ -524,8 +524,8 @@ class CheckingAuctionStatus(View):
 def process_payment(request, pk):
     current_auction = get_object_or_404(models.CurrentAuction, pk=pk)
     user = get_object_or_404(models.User, pk=request.user.pk)
-    register_auc = models.RegForAuction.objects.create(current_auction_id=current_auction, user=user)
-    # register_auc, created = models.RegForAuction.objects.get_or_create(current_auction_id=current_auction, user=user)
+    # register_auc = models.RegForAuction.objects.create(current_auction_id=current_auction, user=user)
+    register_auc, created = models.RegForAuction.objects.get_or_create(current_auction_id=current_auction, user=user)
     register_auc.save()
     host = request.get_host()
  

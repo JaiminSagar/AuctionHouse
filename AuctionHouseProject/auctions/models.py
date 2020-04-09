@@ -76,8 +76,8 @@ class AgentUser(auth.models.User, auth.models.PermissionsMixin):
     proof_document= models.FileField(blank=True, upload_to='agent_proof_document')
     resume_document =models.FileField(blank=True, upload_to='agent_resume_document')
     image = models.ImageField(blank=True, upload_to='agent_image')
-    interview_date =models.DateTimeField(blank=True)
-    interviewed = models.BooleanField(default=False,blank=True)
+    interview_date =models.DateTimeField(blank=True, null=True)
+    interviewed = models.BooleanField(default=False, blank=True)
     contacted = models.BooleanField(default=True)
     approved =models.BooleanField(default=False)
 
@@ -116,8 +116,8 @@ class PropertyReg(models.Model):
     # property_location = models.URLField()
     #property_description will be only edited by agentUser
     property_description = models.CharField(max_length=2000, default='')
-    agent_id = models.ForeignKey(AgentUser,related_name='who_approves',on_delete=models.CASCADE)
-    approved_date = models.DateTimeField()
+    agent_id = models.ForeignKey(AgentUser,related_name='who_approves',on_delete=models.CASCADE, null=True)
+    approved_date = models.DateTimeField(null=True)
     approved = models.BooleanField(default=False)
     pre_set_amount = models.IntegerField(default=0)
     viewinghours = models.CharField(max_length=20, default="None2")
@@ -173,16 +173,16 @@ class MakeAnOffer(models.Model):
 #         return super().get_queryset().filter(currnet_auction_status=False)
 
 class CurrentAuction(models.Model):
-    property_id= models.ForeignKey(PropertyReg,related_name='property',on_delete=models.CASCADE)
-    registration_fees =models.IntegerField()
-    auction_start_date = models.DateTimeField()
-    auction_end_date = models.DateTimeField()
+    property_id = models.ForeignKey(PropertyReg, related_name='property', on_delete=models.CASCADE)
+    registration_fees =models.IntegerField(default=0)
+    auction_start_date = models.DateTimeField(null=True)
+    auction_end_date = models.DateTimeField(null=True)
     scheduled_status = models.BooleanField(default=False)
     current_auction_status = models.BooleanField(default=False)
     increment_ratio = models.FloatField(default=0.05)
     current_amount =models.IntegerField(default=0)
     next_bid= models.FloatField(default=0)
-    highest_bidder=models.ForeignKey(User,related_name='highest_bid',default=0,on_delete=models.CASCADE)
+    # highest_bidder=models.ForeignKey(User,related_name='highest_bid',default=0, on_delete=models.CASCADE, null=True)
 
     def scheduled(self):
         self.scheduled_status=True
