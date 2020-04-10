@@ -179,6 +179,8 @@ class CurrentAuction(models.Model):
     auction_end_date = models.DateTimeField(null=True)
     scheduled_status = models.BooleanField(default=False)
     current_auction_status = models.BooleanField(default=False)
+    auction_finished_status= models.BooleanField(default=False)
+    # auction_end_time=models.DateTimeField()
     increment_ratio = models.FloatField(default=0.05)
     current_amount =models.IntegerField(default=0)
     next_bid= models.FloatField(default=0)
@@ -208,7 +210,7 @@ class BiddingOfProperty(models.Model):
 class RegForAuction(models.Model):
     current_auction_id = models.ForeignKey(CurrentAuction, related_name='current_auction', on_delete=models.CASCADE)
     payment_status = models.CharField(max_length=12, default='Not Paid')
-    user = models.ForeignKey(User,related_name='register',on_delete=models.CASCADE)
+    user = models.ForeignKey(User,related_name='registered',on_delete=models.CASCADE)
 
 
 

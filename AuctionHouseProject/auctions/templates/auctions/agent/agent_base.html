@@ -37,9 +37,14 @@
       						<i class="material-icons">cloud_download</i> Auction Guide
       					</a>
       				</li>
-                    <li class="nav-item">
-      					<a class="nav-link" href="auctions:current_auction_list">
+                      <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:current_auction_list'%}">
       						<i class="material-icons">cloud_download</i> Current Auctions
+      					</a>
+      				</li>
+                    <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:upcomming_auction_list'%}">
+      						<i class="material-icons">cloud_download</i> UpComming Auctions
       					</a>
       				</li>
                     {%if user.is_authenticated%}

@@ -68,6 +68,7 @@ CURRENT AUCTION DETAIL
         <div class="row">
             <div class="col">
                 {%if currentauction.current_auction_status%}
+            <!--  script for counting down on ending date-->
                 <script>
                     // Set the date we're counting down to
                     var countDownDate = new Date("{{currentauction.auction_end_date|cut:""}}").getTime();
@@ -99,6 +100,7 @@ CURRENT AUCTION DETAIL
                       }
                     }, 1000);
                     </script>
+
                     {%if user.user.user_type == 'user'%}
                         <div class="jumbotron">
                     <center><h5>The auction has started.</h5></center>
@@ -146,8 +148,35 @@ CURRENT AUCTION DETAIL
                     </div>
                     <center><h5 class="title">Bidding Ends In<br/><a  id="demo" class="btn btn-primary"></a></h5></center>
                 </div>
+              <h3>  Redirecting to duckdev.com after <span id="countdown">10</span> seconds </h3>
+                    <!--user_loged in ,redirect script current auction statuse true -->
+                        <script type="text/javascript">
+
+                                // Total seconds to wait
+                                var seconds12 = new Date("{{currentauction.auction_end_date|cut:""}}").getTime()/1000;
+                                var now12 = new Date().getTime()/1000;
+                                var distance12 = seconds12 - now12;
+
+                                function countdown() {
+                                    distance12 = distance12 - 1;
+                                    if (distance12< 0) {
+                                        // Chnage your redirection link here
+                                        window.location = "../../../auctions/checking_auction_status/{{currentauction.pk}}/";
+                                    } else {
+                                        // Update remaining seconds
+                                        document.getElementById("countdown").innerHTML = distance12;
+                                        // Count down using javascript
+                                        window.setTimeout("countdown()", 1000);
+                                    }
+                                }
+
+                                // Run countdown function
+                                countdown();
+
+                            </script>
                         </div>
                     {%else%}
+                        {%if currentauction.%}
                         <div class="jumbotron">
                     <center><h5>The auction has started.</h5></center>
                     <center>Minimum Opening Bid</center>
@@ -194,9 +223,36 @@ CURRENT AUCTION DETAIL
                     </div>
                     <center><h5 class="title">Bidding Ends In<br/><a  id="demo" class="btn btn-primary"></a></h5></center>
                 </div>
+                         <h3>  Redirecting to duckdev.com after <span id="countdown">10</span> seconds</h3>
+                    <!--  user not logged in, redirect script current auction status true-->
+                        <script type="text/javascript">
+
+                                // Total seconds to wait
+                                var seconds123 = new Date("{{currentauction.auction_end_date|cut:""}}").getTime()/1000;
+                                var now123 = new Date().getTime()/1000;
+                                var distance123 = seconds123 - now123;
+
+                                function countdown() {
+                                    distance123 = distance123 - 1;
+                                    if (distance123< 0) {
+                                        // Chnage your redirection link here
+                                        window.location = "../../../auctions/checking_auction_status/{{currentauction.pk}}/";
+                                    } else {
+                                        // Update remaining seconds
+                                        document.getElementById("countdown").innerHTML = distance123;
+                                        // Count down using javascript
+                                        window.setTimeout("countdown()", 1000);
+                                    }
+                                }
+
+                                // Run countdown function
+                                countdown();
+
+                            </script>
                         </div>
                     {%endif%}
                 {%else%}
+            <!--        Script for counting down on startdate-->
                     <script>
                         // Set the date we're counting down to
                         var countDownDate = new Date("{{currentauction.auction_start_date|cut:""}}").getTime();
@@ -223,15 +279,69 @@ CURRENT AUCTION DETAIL
                           // If the count down is over, write some text
                           if (distance < 0) {
                             clearInterval(x);
-                            document.getElementById("demo").innerHTML = "EXPIRED";
+                            document.getElementById("demo").innerHTML = "Auction Has Started. Refresh The Page.";
                             document.getElementById("place_bid_btn").disabled =True;
                           }
                         }, 1000);
                         </script>
+
                     <div class="jumbotron">
-                <center><h5>The auction has not yet started</h5></center>
+                    <center><h5>The auction has not yet started</h5></center>
                     <center>Minimum Opening Bid</center>
-                    <center>₹. {{currentauction.property_id.pre_set_amount}}<br>{%if user.is_authenticated%}<a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>{%else%}<a  class="btn">Login</a>{%endif%} </center>
+                    <center>₹. {{currentauction.property_id.pre_set_amount}}
+                        <br>
+                        {%if user.is_authenticated%}
+                        <a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>
+                        {%else%}
+                        <a  class="btn">Login</a>
+                        {%endif%}
+                    </center>
+                    <hr>
+                    <div class="row" align="center">
+                        <div class="col">Bidding Opens On<br/>{{currentauction.auction_start_date}}</div>
+                        <div class="col">End Date<br/>{{currentauction.auction_end_date}}</div>
+                    </div>
+                        <center><p class="title">Auction Starts In<br/><a  id="demo" class="btn btn-primary"></a></p></center>
+     <h3>
+    Redirecting to duckdev.com after <span id="countdown">10</span> seconds</h3>
+                        <!--  user not logged in, redirect script current auction status false-->
+                        <script type="text/javascript">
+
+                                // Total seconds to wait
+                                var seconds1 = new Date("{{currentauction.auction_start_date|cut:""}}").getTime()/1000;
+                                var now1 = new Date().getTime()/1000;
+                                var distance1 = seconds1 - now1;
+
+                                function countdown() {
+                                    distance1 = distance1 - 1;
+                                    if (distance1< 0) {
+                                        // Chnage your redirection link here
+                                        window.location = "../../../auctions/checking_auction_status/{{currentauction.pk}}/";
+                                    } else {
+                                        // Update remaining seconds
+                                        document.getElementById("countdown").innerHTML = distance1;
+                                        // Count down using javascript
+                                        window.setTimeout("countdown()", 1000);
+                                    }
+                                }
+
+                                // Run countdown function
+                                countdown();
+
+                            </script>
+                </div>
+                {%else%}
+                        <div class="jumbotron">
+                <center><h5>The auction has Ended.</h5></center>
+                    <center>Minimum Opening Bid</center>
+                    <center>₹. {{currentauction.property_id.pre_set_amount}}
+                        <br>
+                        {%if user.is_authenticated%}
+                        <a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>
+                        {%else%}
+                        <a  class="btn">Login</a>
+                        {%endif%}
+                    </center>
                     <hr>
                     <div class="row" align="center">
                         <div class="col">Bidding Opens On<br/>{{currentauction.auction_start_date}}</div>
@@ -239,6 +349,32 @@ CURRENT AUCTION DETAIL
                     </div>
                         <center><p class="title">Auction Starts In<br/><a  id="demo" class="btn btn-primary"></a></p></center>
 
+   <h3> Redirecting to duckdev.com after <span id="countdown">10</span> seconds</h3>
+                        <!--  user not logged in, redirect script current auction status false-->
+                        <script type="text/javascript">
+
+                                // Total seconds to wait
+                                var seconds1 = new Date("{{currentauction.auction_start_date|cut:""}}").getTime()/1000;
+                                var now1 = new Date().getTime()/1000;
+                                var distance1 = seconds1 - now1;
+
+                                function countdown() {
+                                    distance1 = distance1 - 1;
+                                    if (distance1< 0) {
+                                        // Chnage your redirection link here
+                                        window.location = "../../../auctions/checking_auction_status/{{currentauction.pk}}/";
+                                    } else {
+                                        // Update remaining seconds
+                                        document.getElementById("countdown").innerHTML = distance1;
+                                        // Count down using javascript
+                                        window.setTimeout("countdown()", 1000);
+                                    }
+                                }
+
+                                // Run countdown function
+                                countdown();
+
+                            </script>
                 </div>
                 {%endif%}
             </div>
@@ -291,4 +427,7 @@ CURRENT AUCTION DETAIL
 </div>
 
 <br/>
+
+<!-- JavaScript part -->
+
 {%endblock%}

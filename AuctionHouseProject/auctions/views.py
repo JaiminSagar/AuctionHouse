@@ -370,11 +370,14 @@ class ProfileSetup(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         # print(self.request.user)
-        profile =form.save(commit=False)
-        profile.user=models.User.objects.get(username=self.request.user)
-        profile.user.profile_set()
-        profile.save()
-        return super().form_valid(form)
+        if form.cleaned_data['image']:
+            profile =form.save(commit=False)
+            profile.user=models.User.objects.get(username=self.request.user)
+            profile.user.profile_set()
+            profile.save()
+            return super().form_valid(form)
+        else:
+            return HttpResponseRedirect(reverse('home'))
 
 
 def set_agent_password(request, pk):
@@ -408,11 +411,19 @@ class CurrentAuctionList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data(**kwargs)
         context['image_list'] = models.PropertyImagesUpload.objects.all()
+        context['registered_user'] = models.RegForAuction.objects.all()
         return context
 
 class CurrentAuctionDetails(DetailView):
     model = models.CurrentAuction
     template_name = "auctions/auction_details.html"
+
+    # def get(self,request,*args,**kwargs):
+    #     current_auction = get_object_or_404(models.CurrentAuction, pk=self.kwargs.get('pk'))
+    #     if current_auction.auction_start_date < timezone.now():
+    #         current_auction.current_auction_status = True
+    #         current_auction.save()
+    #         return render(request,self.template_name,{})
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -483,6 +494,7 @@ class UpcommingAuctionList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data(**kwargs)
         context['image_list'] = models.PropertyImagesUpload.objects.all()
+        context['registered_user']=models.RegForAuction.objects.all()
         return context
 
 
@@ -492,6 +504,8 @@ class CheckingAuctionStatus(View):
         current_auction=get_object_or_404(models.CurrentAuction,pk=self.kwargs.get('pk'))
         current_auction_all=models.CurrentAuction.objects.all().filter(current_auction_status=False)
         for auction in current_auction_all:
+            print(auction.auction_start_date)
+            print(timezone.now())
             if auction.auction_start_date < timezone.now():
                 auction.current_auction_status=True
                 auction.save()
@@ -502,6 +516,7 @@ class CheckingAuctionStatus(View):
 
 
 # Views For Payments......
+
 def process_payment(request, pk):
     current_auction = get_object_or_404(models.CurrentAuction, pk=pk)
     user = get_object_or_404(models.User, pk=request.user.pk)

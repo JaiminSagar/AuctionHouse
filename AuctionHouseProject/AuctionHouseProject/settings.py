@@ -40,15 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap_datepicker_plus',
-<<<<<<< HEAD
     'bootstrap4',
-    'tempus_dominus',
-=======
-    'datetimepicker',
     'paypal.standard.ipn',
->>>>>>> payment_setup
-    'auctions'
+    'auctions',
 
 ]
 
@@ -140,7 +134,7 @@ PASSWORD_HASHERS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE =  'Asia/Kolkata'
 
 USE_I18N = True
 

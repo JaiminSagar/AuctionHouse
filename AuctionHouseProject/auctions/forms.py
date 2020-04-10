@@ -3,8 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from bootstrap_datepicker_plus import DatePickerInput,DateTimePickerInput
 from . import models
 from django import forms
-from datetimepicker.widgets import DateTimePicker
-from tempus_dominus.widgets import DateTimePicker
 from django.forms import DateTimeInput
 
 
@@ -112,33 +110,18 @@ class PropertyImagesUploadForm(forms.ModelForm):
         fields = ('image',)
 
 class SchedulAuctionForm(forms.ModelForm):
-    # auction_start_date=forms.DateTimeField(widget=forms.DateTimeInput())
-    # auction_end_date = forms.DateTimeField(widget=DateTimePicker())
+    auction_start_date=forms.DateTimeField(widget=DateTimeInput(attrs={'class':'datetimepicker'},format='%Y-%m-%d %H:%M:%S'))
+    auction_end_date = forms.DateTimeField(widget=DateTimeInput(attrs={'class':'datetimepicker'},format='%Y-%m-%d %H:%M:%S'))
     class Meta():
         fields=('auction_start_date','auction_end_date')
         model = models.CurrentAuction
-        widgets = {
-            'auction_start_date': forms.DateTimeInput(attrs={'class':'datetimepicker '}),
-            'auction_end_date': forms.DateTimeInput(attrs={'class':'datetimepicker'}),
-        }
+        # widgets = {
+        #     'auction_start_date': forms.DateTimeInput(),
+        #     'auction_end_date': forms.DateTimeInput(attrs={'class':'datetimepicker',}),
+        # }
 
 class MakeAnOffer(forms.ModelForm):
     class Meta():
         fields=('title','first_name','last_name','email','mobile','enquiry')
         model = models.MakeAnOffer
 
-
-class CustomDatePickerInput(DateTimeInput):
-    template_name = "auctions/widgets/custom_datepicker.html"
-
-    class Media:
-        css = {
-            "all": (
-                "https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css",
-            )
-        }
-        js = (
-            "https://code.jquery.com/jquery-3.4.1.min.js",
-            "https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js",
-            "https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/i18n/datepicker.es-ES.min.js",
-        )

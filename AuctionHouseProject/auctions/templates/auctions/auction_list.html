@@ -46,7 +46,20 @@ Assets Available For Auction
                                 <a href="{%url 'auctions:auction_detail' pk=auction.pk%}" class="btn btn-primary">View AUction</a>
                                 {%if user.is_authenticated%}
                                     {%if user.user.user_type == 'user' %}
-                                    <a href="#" class="btn btn-primary">Register Your Self</a>
+                                         {% for users in registered_user %}
+                                            {%if user.user == users.user%}
+                                                {%if auction == users.auction%}
+                                                    {%ifequal users.payment_status "Completed"%}
+                                                        <a class="btn btn-success">You are alredy Registered</a>
+                                                    {%endifequal%}
+                                                    {%ifequal users.payment_status "Pending"%}
+                                                        <a class="btn btn-success">Your payment is pending</a>
+                                                    {%endifequal%}
+                                                {%else%}
+                                                <a class="btn btn-danger">Register Your Self</a>
+                                                {%endif%}
+                                            {%endif%}
+                                        {%endfor%}
                                     {%else%}
                                     <a href="{%url 'auctions:login'%}" class="btn btn-primary">Login</a>
                                     {%endif%}

@@ -94,6 +94,7 @@ class AuctionScheduling(UpdateView):
     form_class = forms.SchedulAuctionForm
 
     def form_valid(self, form):
+        print('abc')
         prop=form.save(commit=False)
         prop.scheduled()
         return super().form_valid(form)
