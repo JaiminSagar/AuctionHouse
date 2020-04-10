@@ -33,6 +33,14 @@ from django.core.mail import EmailMessage
 from django.core.exceptions import ObjectDoesNotExist
 
 
+# paypal imports.....
+from django.conf import settings
+#from decimal import Decimal
+from paypal.standard.forms import PayPalPaymentsForm
+from django.views.decorators.csrf import csrf_exempt
+
+
+
 # Create your views here.
 
 
@@ -490,3 +498,41 @@ class CheckingAuctionStatus(View):
             else:
                 continue
         return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction.pk}))
+
+
+
+# Views For Payments......
+def process_payment(request, pk):
+    current_auction = get_object_or_404(models.CurrentAuction, pk=pk)
+    user = get_object_or_404(models.User, pk=request.user.pk)
+    # register_auc = models.RegForAuction.objects.create(current_auction_id=current_auction, user=user)
+    register_auc, created = models.RegForAuction.objects.get_or_create(current_auction_id=current_auction, user=user)
+    register_auc.save()
+    host = request.get_host()
+ 
+    paypal_dict = {
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': current_auction.registration_fees,
+        'item_name': 'Register For Auction: {}'.format(register_auc.id),
+        'invoice': str(register_auc.id),
+        'currency_code': 'INR',
+        'notify_url': 'http://{}{}'.format(host,
+                                           reverse('paypal-ipn')),
+        'return_url': 'http://{}{}'.format(host,
+                                           reverse('auctions:payment_done')),
+        'cancel_return': 'http://{}{}'.format(host,
+                                              reverse('auctions:payment_cancelled')),
+    }
+ 
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    return render(request, 'auctions/process_payment.html', {'register_for_auction': register_auc, 'form': form})
+
+
+@csrf_exempt
+def payment_done(request):
+    return render(request, 'auctions/payment_done.html')
+ 
+ 
+@csrf_exempt
+def payment_canceled(request):
+    return render(request, 'auctions/payment_cancelled.html')

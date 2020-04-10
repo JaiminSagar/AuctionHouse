@@ -24,8 +24,6 @@ urlpatterns=[
     path('user/evalution_list/', views.UserEvalutionList.as_view(), name='user_evaluation_list'),
     path('user/evaluation_list/property/<pk>/', views.PropertyDetailsForUser.as_view(), name='user_property_details'),
     path('agent/evaluation_list/', views.EvaluationListForAgent.as_view(), name='agent_dashboard'),
-    path('current_auctions/',views.CurrentAuctionList.as_view(),name='current_auction_list'),
-    path('auction_details/<int:pk>/',views.CurrentAuctionDetails.as_view(),name='auction_detail'),
     path('agent/evaluation_list/property/<pk>/', views.PropertyDetailsForAgent.as_view(), name='agent_property_details'),
     path('agent/evaluation_list/property/<pk>/add_description', views.add_property_description, name='add_description'),
     path('agent/evaluation_list/property/<pk>/add_files', views.propertyFilesUploadView, name='add_files'),
@@ -34,5 +32,10 @@ urlpatterns=[
     path('current_auctions/auction_bid/<int:pk>/',views.AuctionBid.as_view(),name='auction_bid'),
     path('upcomming_auctions/',views.UpcommingAuctionList.as_view(),name='upcomming_auction_list'),
     path('checking_auction_status/<pk>/',views.CheckingAuctionStatus.as_view(),name='check_auction_status'),
+    path('current_auctions/',views.CurrentAuctionList.as_view(),name='current_auction_list'),
+    path('auction_details/<int:pk>/',views.CurrentAuctionDetails.as_view(),name='auction_detail'),
+    path('auction-details/<int:pk>/process_payment/', views.process_payment, name='process_payment'),
+    path('payment-done/', views.payment_done, name='payment_done'),
+    path('payment-cancelled/', views.payment_canceled, name='payment_cancelled'),
 
 ]

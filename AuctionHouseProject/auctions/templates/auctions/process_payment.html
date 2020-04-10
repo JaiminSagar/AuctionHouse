@@ -1,0 +1,50 @@
+{%extends 'base.html'%}
+
+{%load bootstrap4%}
+
+{% block title %}
+Process Payment
+{% endblock %}
+
+{% block heading %}
+<br/>
+<br/>
+<br/>
+    <script>
+    $(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#scroll').offset().top
+    }, 'slow');
+});
+</script>
+<center id="scroll"><h1>Make Payment with Paypal</h1></center><hr>
+{% endblock heading %}
+
+
+{% block content %}
+
+<div class="container">
+   <h3>Payment Details</h3>
+   <hr>
+   <table class="table">
+    <tbody>
+        <tr>
+        <th scope="row">Current Auction Id:</th>
+        <td>{{register_for_auction.current_auction_id.pk}}</td>
+        </tr>
+        <tr>
+        <th scope="row">Your Id:</th>
+        <td>{{register_for_auction.user.pk}}</td>
+        </tr>
+        <tr>
+        <th scope="row">Payment Amount:</th>
+        <td>{{register_for_auction.current_auction_id.registration_fees}}</td>
+        </tr>
+    </tbody>
+    </table>
+    <center>
+        {{ form.render }}
+    </center>
+</div>
+{% endblock %}

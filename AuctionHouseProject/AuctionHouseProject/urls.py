@@ -36,6 +36,7 @@ urlpatterns = [
     path('schedule_list/',views.AuctionScheduleList.as_view(),name='schedule_list'),
     path('schedule_auction/<pk>/', views.AuctionScheduling.as_view(),name='schedule_auction'),
     path('approve_auction/<int:propertyid>/',views.approve_auction,name='approve_auction'),
+    path('paypal/', include('paypal.standard.ipn.urls')),
 
 
 

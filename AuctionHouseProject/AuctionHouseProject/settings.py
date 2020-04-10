@@ -28,7 +28,7 @@ SECRET_KEY = 'ou_s_(fy)2hou+&y(tabc1_pnz=r-_n!s)%=&42sx#pkkfmz5-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,8 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap_datepicker_plus',
+<<<<<<< HEAD
     'bootstrap4',
     'tempus_dominus',
+=======
+    'datetimepicker',
+    'paypal.standard.ipn',
+>>>>>>> payment_setup
     'auctions'
 
 ]
@@ -86,19 +91,19 @@ WSGI_APPLICATION = 'AuctionHouseProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-#
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'myauctions',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'myauctions',
+#     }
+# }
 
 
 # Password validation
@@ -174,6 +179,13 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'info.auctionhouse.in@gmail.com'
 EMAIL_HOST_PASSWORD = 'abcxyz123#'
 EMAIL_PORT = 587
+
+
+# Paypal settings
+
+PAYPAL_RECEIVER_EMAIL = 'sb-vp49431331712@business.example.com'
+
+PAYPAL_TEST = True
 
 
 
