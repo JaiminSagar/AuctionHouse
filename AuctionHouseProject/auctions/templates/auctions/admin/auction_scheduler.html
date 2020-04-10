@@ -1,28 +1,15 @@
 {%extends 'auctions/admin/admin_base.html'%}
 {%load static%}
 {%load bootstrap4%}
-{% bootstrap_css %}
-{% bootstrap_javascript jquery='full' %}
-{% include "bootstrap_datepicker_plus/input.html" %}
 {%block heading%}
-<br/>
-<br/>
-<br/>
-<center><h1 id="scroll">Auction Schedule</h1></center>
-<br/>
+Schedule Auction
 {%endblock%}
 {%block content%}
-
- {{ form.media }}
-<br/>
-
-<div class="container">
-<form method="post">
-    {%csrf_token%}
-    {%bootstrap_form form%}
-    <input type="submit" value="Schedule This" class="btn btn-danger">
-</form>
+<div>
+    <form method="post">
+        {%csrf_token%}
+        {%bootstrap_form form%}
+        <input type="submit" value="Schedule This Auction" class="btn btn-danger">
+    </form>
 </div>
-<br/>
-
 {%endblock%}

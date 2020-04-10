@@ -38,4 +38,5 @@ urlpatterns = [
     path('approve_auction/<int:propertyid>/',views.approve_auction,name='approve_auction'),
 
 
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,26 +1,11 @@
 {%extends 'auctions/agent/agent_base.html'%}
 {%load bootstrap4%}
-
 {% block title %}
 Evaluation List
 {% endblock %}
-
 {% block heading %}
-<br/>
-<br/>
-<br/>
-    <script>
-    $(document).ready(function () {
-    // Handler for .ready() called.
-    $('html, body').animate({
-        scrollTop: $('#scroll').offset().top
-    }, 'slow');
-});
-</script>
-<center id="scroll"><h1>Approve Evaluation List</h1></center>
+Approve Evaluation List
 {% endblock heading %}
-
-
 {% block content %}
 
 <div class="container">
@@ -41,7 +26,7 @@ Evaluation List
     </thead>
     <tbody>
     {% for prop in propertyreg_list %}
-        <a href="{% url 'auctions:agent_property_details' pk=prop.pk %}">
+    <a href="{% url 'auctions:agent_property_details' pk=prop.pk %}"></a>
             <tr>
             <th scope="row">{{ prop.pk }}</th>
             <td>{{ prop.user.email }}</td>
@@ -56,7 +41,6 @@ Evaluation List
             {% endif %}
             <td><a href="{% url 'auctions:agent_property_details' pk=prop.pk %}" class="btn btn-success">Details</a></td>
             </tr>
-        
     {% endfor %}
     </tbody>
     </table>

@@ -426,7 +426,7 @@ class CurrentAuctionDetails(DetailView):
         mobile=request.POST['mobile']
         enquiry=request.POST['enquiry']
         enquiry_obj=models.MakeAnOffer.objects.create(property_id=current_auction.property_id,title=title,first_name=first_name,last_name=last_name,email=email,mobile=mobile,enquiry=enquiry)
-        messages.success(self.request,"Enquiry is Submitted, We will contact you soon via email.")
+        messages.success(self.request,"Enquiry is Submitted, We will contact you soon via email.",extra_tags='form_submitted')
         return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction.pk}))
 
 
@@ -435,7 +435,12 @@ class AuctionBid(LoginRequiredMixin,View):
 
     def post(self,*args,**kwargs):
         current_auction_data =get_object_or_404(models.CurrentAuction,pk=self.kwargs.get('pk'))
-        user = get_object_or_404(models.User, pk=int(self.request.POST['user']))
+        try:
+            user = get_object_or_404(models.User, pk=self.request.POST['user'])
+        except:
+            messages.error(self.request, "You Need to Register for auction in order to participate.",extra_tags='problem')
+            return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
+
         register= models.RegForAuction.objects.all().filter(current_auction_id=self.kwargs.get('pk'))
         for entry in register:
             if entry.user_id == user.pk:
@@ -447,16 +452,16 @@ class AuctionBid(LoginRequiredMixin,View):
                     current_auction_data.bidding()
                     current_auction_data.save()
                     bid_of_user.save()
-                    messages.success(self.request, "Your Bid is Submitted Successfully,Pls checkout the table to see your entry.")
+                    messages.success(self.request, "Your Bid is Submitted Successfully,Pls checkout the table to see your entry.",extra_tags='bid_done')
                     return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
                 else:
-                    messages.error(self.request, "Please Enter the correct amount based on increment ratio.")
+                    messages.error(self.request, "Please Enter the correct amount based on increment ratio.",extra_tags='problem')
                     return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
             else:
-                messages.error(self.request, "You have to register for participating in auction. Click on the Register for participating.")
+                messages.error(self.request, "You have to register for participating in auction. Click on the Register for participating.",extra_tags='problem')
                 return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
 
-        messages.error(self.request,"You have to register for participating in auction. Click on the Register for participating.")
+        messages.error(self.request,"You have to register for participating in auction. Click on the Register for participating.",extra_tags='problem')
         return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
 
 class UpcommingAuctionList(ListView):
@@ -465,7 +470,7 @@ class UpcommingAuctionList(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(current_auction_status=False)
+        return queryset.filter(current_auction_status=False,scheduled_status=True)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data(**kwargs)

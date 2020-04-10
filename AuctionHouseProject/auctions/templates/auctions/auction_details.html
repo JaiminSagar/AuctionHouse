@@ -3,13 +3,10 @@
 {%load bootstrap4%}
 
 {%block heading%}
+CURRENT AUCTION DETAIL
 <br/>
 <br/>
-<br/>
-<center><h1 id="scroll">CURRENT AUCTION DETAIL</h1></center>
-<br/>
-<br/>
- <hr/>
+<hr/>
 {%endblock%}
 {%block content%}
 
@@ -28,7 +25,7 @@
       </div>
       {%for image in currentauction.property_id.property_images.all%}
     <div class="carousel-item ">
-      <img src="{{image.image.url}}" class="d-block w-100" alt="..." height="370" >
+      <img src="{{image.image.url}}" class="d-block w-100" alt="..." height="356" >
     </div>
       {%endfor%}
   </div>
@@ -141,7 +138,9 @@
                                 <button type="submit" id="place_bid_btn" class="btn btn-primary"  name="place_bid_btn">Bid Now</button></center>
                         </form>
                         {%for message in messages%}
-                        <h6 style="color:red;">{{message}}</h6>
+                        {%if 'bid_done' in message.tags%}
+                        <h6 style="color:green;">{{message}}</h6>
+                        {%endif%}
                         {%endfor%}
 
                     </div>
@@ -183,11 +182,13 @@
 
                             <center><h5 class="title">Next Bid</h5><span class="doller">₹</span>
                              <input type="text" id="user_bid" name="user_bid" placeholder="Your Bid Comes Here" value="{{currentauction.next_bid}}" autocomplete="off">
-                                <input type="hidden" value="{{user.user.pk}}" name="user">
+                                <input type="hidden" value="{{user.pk}}" name="user">
                                 <button type="submit" id="place_bid_btn" class="btn btn-primary"  name="place_bid_btn" disabled>Bid Now</button></center>
                         </form>
                         {%for message in messages%}
+                        {%if 'problem' in message.tags%}
                         <h6 style="color:red;">{{message}}</h6>
+                        {%endif%}
                         {%endfor%}
 
                     </div>
@@ -246,23 +247,23 @@
     <div class="row">
     <div class="col-sm-7 jumbotron">
         <h5 class="title">Proprty Details</h5>
-    <table class="table">
-        <tbody>
+    <table class="table" >
+        <tbody align="left">
         <tr>
-            <td colspan="5"><h5 > Property Type:</h5></td>
+            <td width="100"><h5 > Property Type:</h5></td>
             <td ><h5 > {{currentauction.property_id.property_type}}</h5></td>
         </tr>
         <tr>
-            <td colspan="5"><h5 >Address:</h5></td>
+            <td ><h5 >Address:</h5></td>
             <td><h5 > {{currentauction.property_id.property_address}}<br/>{{currentauction.property_id.city}},{{currentauction.property_id.state}}<br/>{{currentauction.property_id.city}}-{{currentauction.property_id.pincode}}</h5></td>
         </tr>
         <tr>
-            <td colspan="5"><h5 >Auction Initial Value:</h5></td>
+            <td ><h5 >Auction Initial Value:</h5></td>
             <td><h5 > {{currentauction.property_id.pre_set_amount}}</h5></td>
         </tr>
         <tr>
-            <td colspan="5"><h5 >Property Description:</h5></td>
-            <td><h5 > {{currentauction.property_id.property_description}}</h5></td>
+            <td><h5 >Property Description:</h5></td>
+            <td width="400"><h5 > {{currentauction.property_id.property_description}}</h5></td>
         </tr>
         </tbody>
     </table>
@@ -271,9 +272,11 @@
         <div class="row">
             <div class="col">
                 {%for message in messages%}
+                    {%if 'form_submitted' in message.tags%}
                     <h6 style="color:green;">{{message}}</h6>
+                {%endif%}
                 {%endfor%}
-                <h5 class="title">Make An Enquiry</h5>
+                <center><h5 class="title">Make An Enquiry</h5></center>
                 <hr>
                 <p>Submit an enquiry for this lot and someone will be in contact shortly.</p>
                 <form method="post">

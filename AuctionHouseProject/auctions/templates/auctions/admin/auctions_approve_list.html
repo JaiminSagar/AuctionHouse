@@ -2,20 +2,7 @@
 {%load bootstrap4%}
 {%load static%}
 {%block heading%}
- <script>
-    $(document).ready(function () {
-    // Handler for .ready() called.
-    $('html, body').animate({
-        scrollTop: $('#scroll').offset().top
-    }, 'slow');
-});
-</script>
-<br/>
-<br/>
-<br/>
-<center><h1 id="scroll">Auction Approval List</h1></center>
-<br/>
-<hr/>
+Auction Approval List
 {%endblock%}
 {%block content%}
 <div class="container">
@@ -34,7 +21,7 @@
             <th scope="col">Property By:</th>
             <td>{{ property.user.email }}</td>
             <td rowspan="5" class="carousel slide title">
-                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" >
+                <div id="carouselExampleControls{{property.id}}" class="carousel slide" data-ride="carousel" >
                   <div class="carousel-inner">
                       <div class="carousel-item active " >
                           <img src="https://www.luc.edu/media/lucedu/law-dev/images-misc/fho-gavel.jpg" width="598" height="250">
@@ -47,11 +34,11 @@
                       {%endif%}
                       {%endfor%}
                   </div>
-                  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                  <a class="carousel-control-prev" href="#carouselExampleControls{{property.id}}" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                   </a>
-                  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                  <a class="carousel-control-next" href="#carouselExampleControls{{property.id}}" role="button" data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                   </a>
@@ -72,7 +59,7 @@
         </tr>
         <tr>
             <th scope="col">Property Description:</th>
-            <td>
+            <td width="30%">
                     {{ property.property_description }}
             </td>
         </tr>
@@ -80,7 +67,7 @@
         </table>
 
     <p class="card-text">Options:</p>
-            <a href="#" class="btn btn-primary">CLICK HERE TO SEE DOCUMENTS</a>
+            <a href="{%url 'auctions:agent_property_details' pk=property.pk%}" class="btn btn-primary">CLICK HERE TO SEE DOCUMENTS</a>
        <a href="{%url 'approve_auction' propertyid=property.pk%}" class="btn btn-primary">APPROVE</a>
   </div>
 </div>

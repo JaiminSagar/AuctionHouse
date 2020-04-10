@@ -2,21 +2,10 @@
 {%load bootstrap4%}
 {%block title%}LogIn{%endblock%}
 {%block heading%}
-<br/>
-<br/>
-<br/>
-<center><h1>Log In</h1></center>
+Log In
 {%endblock%}
 {%block content%}
-<script>
-    $(document).ready(function () {
-    // Handler for .ready() called.
-    $('html, body').animate({
-        scrollTop: $('#scroll').offset().top
-    }, 'slow');
-});
 
-</script>
 <div id="scroll" class="container">
     {%for message in messages%}
     <h6 style="color:red;">{{message}}</h6>
