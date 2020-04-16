@@ -31,7 +31,6 @@ Assets Available For Auction
                       {%endfor%}
                   </div>
                 </div>
-
                             <div class="card-body">
                                 <h5>Property Type:</h5><h5 class="card-title">{{auction.property_id.property_type}}</h5>
                                 <p class="card-text"> </p>
@@ -43,21 +42,20 @@ Assets Available For Auction
 <!--                                <li class="list-group-item">Vestibulum at eros</li>-->
 <!--                            </ul>-->
                             <div class="card-body">
-                                <a href="{%url 'auctions:auction_detail' pk=auction.pk%}" class="btn btn-primary">View AUction</a>
+                                <a href="{%url 'auctions:check_auction_status' pk=auction.pk%}" class="btn btn-primary">View AUction</a>
                                 {%if user.is_authenticated%}
                                     {%if user.user.user_type == 'user' %}
                                          {% for users in registered_user %}
-                                            {%if user.user == users.user%}
-                                                {%if auction == users.auction%}
+
+                                            {%if auction == users.current_auction_id%}
                                                     {%ifequal users.payment_status "Completed"%}
                                                         <a class="btn btn-success">You are alredy Registered</a>
                                                     {%endifequal%}
                                                     {%ifequal users.payment_status "Pending"%}
                                                         <a class="btn btn-success">Your payment is pending</a>
                                                     {%endifequal%}
-                                                {%else%}
+                                            {%else%}
                                                 <a class="btn btn-danger">Register Your Self</a>
-                                                {%endif%}
                                             {%endif%}
                                         {%endfor%}
                                     {%else%}

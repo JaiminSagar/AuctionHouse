@@ -10,6 +10,14 @@ def cut(value):
         args='a.m.'
     return value.replace(args,'')
 
-@register.filter(name='multiply')
-def multiply(value,arg):
-    return math.ceil(float(value)*float(arg))
+# @register.filter(name='first')
+# def first(value,arg):
+#     if arg == "firstname":
+#         return value[0].first_name
+#     if arg == "lastname":
+#         return value[0].last_name
+#     if arg == "user_bid_amount":
+#         return value[0].user_bid_amount
+#     if arg == "bid_time":
+#         return value[0].bid_time
+#     return value

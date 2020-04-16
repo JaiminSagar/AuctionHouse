@@ -10,6 +10,7 @@ from django.views.generic.edit import FormView
 from braces.views import SelectRelatedMixin
 from . import models
 from . import forms
+import math
 from django.contrib.auth import views as auth_view,login
 from django.views.generic import TemplateView,CreateView,UpdateView,DetailView, ListView,View
 from django.contrib import messages
@@ -411,19 +412,12 @@ class CurrentAuctionList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data(**kwargs)
         context['image_list'] = models.PropertyImagesUpload.objects.all()
-        context['registered_user'] = models.RegForAuction.objects.all()
+        context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
         return context
 
 class CurrentAuctionDetails(DetailView):
     model = models.CurrentAuction
     template_name = "auctions/auction_details.html"
-
-    # def get(self,request,*args,**kwargs):
-    #     current_auction = get_object_or_404(models.CurrentAuction, pk=self.kwargs.get('pk'))
-    #     if current_auction.auction_start_date < timezone.now():
-    #         current_auction.current_auction_status = True
-    #         current_auction.save()
-    #         return render(request,self.template_name,{})
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -433,7 +427,12 @@ class CurrentAuctionDetails(DetailView):
         context = super().get_context_data(**kwargs)
         context['form']=forms.MakeAnOffer
         auction_bid=models.BiddingOfProperty.objects.all().filter(current_auction_id=self.kwargs.get('pk')).order_by('-user_bid_amount')
+        context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
         context['past_bids']=auction_bid
+        try:
+            context['highest_bidder']=auction_bid[0]
+        except:
+            return context
         return context
 
     def post(self, request, *args, **kwargs):
@@ -455,18 +454,22 @@ class AuctionBid(LoginRequiredMixin,View):
     def post(self,*args,**kwargs):
         current_auction_data =get_object_or_404(models.CurrentAuction,pk=self.kwargs.get('pk'))
         try:
-            user = get_object_or_404(models.User, pk=self.request.POST['user'])
+            user = get_object_or_404(models.User, pk=self.request.user)
         except:
+            print('not user')
             messages.error(self.request, "You Need to Register for auction in order to participate.",extra_tags='problem')
             return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
 
+
         register= models.RegForAuction.objects.all().filter(current_auction_id=self.kwargs.get('pk'))
+        user = get_object_or_404(models.User, pk=self.request.user)
         for entry in register:
-            if entry.user_id == user.pk:
+            if entry.user_id == user.user.pk:
                 if current_auction_data.next_bid <= float(self.request.POST['user_bid']):
                     bid_of_user = models.BiddingOfProperty.objects.create(current_auction_id=current_auction_data,user=user)
                     bid_of_user.user_bid_amount = float(self.request.POST['user_bid'])
-                    current_auction_data.current_amount = float(self.request.POST['user_bid'])
+                    bid_of_user.bid_time=timezone.now()
+                    current_auction_data.current_amount = math.ceil(float(self.request.POST['user_bid']))
                     current_auction_data.highest_bidder=user
                     current_auction_data.bidding()
                     current_auction_data.save()
@@ -474,11 +477,9 @@ class AuctionBid(LoginRequiredMixin,View):
                     messages.success(self.request, "Your Bid is Submitted Successfully,Pls checkout the table to see your entry.",extra_tags='bid_done')
                     return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
                 else:
+                    print("happend")
                     messages.error(self.request, "Please Enter the correct amount based on increment ratio.",extra_tags='problem')
                     return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
-            else:
-                messages.error(self.request, "You have to register for participating in auction. Click on the Register for participating.",extra_tags='problem')
-                return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
 
         messages.error(self.request,"You have to register for participating in auction. Click on the Register for participating.",extra_tags='problem')
         return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
@@ -489,12 +490,12 @@ class UpcommingAuctionList(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(current_auction_status=False,scheduled_status=True)
+        return queryset.filter(current_auction_status=False,scheduled_status=True,auction_finished_status=False)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data(**kwargs)
         context['image_list'] = models.PropertyImagesUpload.objects.all()
-        context['registered_user']=models.RegForAuction.objects.all()
+        context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
         return context
 
 
@@ -503,14 +504,22 @@ class CheckingAuctionStatus(View):
     def get(self, request, *args, **kwargs):
         current_auction=get_object_or_404(models.CurrentAuction,pk=self.kwargs.get('pk'))
         current_auction_all=models.CurrentAuction.objects.all().filter(current_auction_status=False)
+        if current_auction.current_ending_time <timezone.now():
+            current_auction.auction_finished_status=True
+            current_auction.current_auction_status=False
+            print(current_auction.current_auction_status)
+            current_auction.save()
         for auction in current_auction_all:
             print(auction.auction_start_date)
             print(timezone.now())
-            if auction.auction_start_date < timezone.now():
+            if auction.auction_start_date < timezone.now() and auction.auction_finished_status==False:
                 auction.current_auction_status=True
                 auction.save()
             else:
                 continue
+        # if self.kwargs.get('finished') == 1:
+        #     current_auction.auction_finished_status=True
+        #     current_auction.save()
         return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction.pk}))
 
 

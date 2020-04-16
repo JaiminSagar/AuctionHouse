@@ -3,6 +3,7 @@ from django.contrib import auth
 from django.views import generic
 from django.utils import timezone
 from django.urls import reverse,reverse_lazy
+from datetime import timedelta
 
 # Create your models here.
 class  State(models.Model):
@@ -180,18 +181,22 @@ class CurrentAuction(models.Model):
     scheduled_status = models.BooleanField(default=False)
     current_auction_status = models.BooleanField(default=False)
     auction_finished_status= models.BooleanField(default=False)
-    # auction_end_time=models.DateTimeField()
     increment_ratio = models.FloatField(default=0.05)
     current_amount =models.IntegerField(default=0)
+    current_ending_time=models.DateTimeField(null=True)
     next_bid= models.FloatField(default=0)
     # highest_bidder=models.ForeignKey(User,related_name='highest_bid',default=0, on_delete=models.CASCADE, null=True)
 
     def scheduled(self):
         self.scheduled_status=True
+        self.current_ending_time=self.auction_end_date
         self.save()
 
     def bidding(self):
         self.next_bid= self.current_amount+(self.current_amount*self.increment_ratio)
+        if self.current_ending_time.minute-timezone.now().minute<=3:
+            self.current_ending_time=self.current_ending_time + timedelta(minutes=3)
+        self.save()
 
     def get_absolute_url(self):
         return reverse_lazy('auctions:auction_detail', kwargs={'pk': self.pk})
@@ -203,8 +208,8 @@ class CurrentAuction(models.Model):
 class BiddingOfProperty(models.Model):
     current_auction_id=models.ForeignKey(CurrentAuction,related_name='property_bid',on_delete=models.CASCADE)
     user = models.ForeignKey(User,related_name='user_bid',on_delete=models.CASCADE)
-    user_bid_amount =models.IntegerField()
-    bid_time =models.DateTimeField(default=timezone.now())
+    user_bid_amount =models.IntegerField(null=True)
+    bid_time =models.DateTimeField(null=True)
 
 
 class RegForAuction(models.Model):

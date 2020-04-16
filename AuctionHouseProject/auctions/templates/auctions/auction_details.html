@@ -41,219 +41,246 @@ CURRENT AUCTION DETAIL
     </div>
 
         <br/>
-        {%if currentauction.current_auction_status%}
-        <div class="jumbotron">
-            <div style="overflow:scroll; height:130px;">
-            <center><h6 class=>
-                 <table class="table">
-                      <thead align="center">
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Bid_amount</th>
-                          <th scope="col">Time</th>
-                        </tr>
-                      </thead>
-                     <tbody>
-                 {%for bids in past_bids%}
-                 <tr align="center"><td></td><td>{{bids.user.first_name}} {{bids.user.last_name}}</td><td>{{bids.user_bid_amount}}</td><td>{{bids.bid_time}}</td></tr>
-                {%endfor%}
-                     </tbody>
-                 </table>
-            </h6></center></div>
-        </div>
-        {%endif%}
+
+                    {%if currentauction.current_auction_status%}
+                        <div class="jumbotron">
+                            <div style="overflow:scroll; height:130px;">
+                            <center><h6 class=>
+                                 <table class="table">
+                                      <thead align="center">
+                                        <tr>
+                                          <th scope="col">#</th>
+                                          <th scope="col">Name</th>
+                                          <th scope="col">Bid_amount</th>
+                                          <th scope="col">Time</th>
+                                        </tr>
+                                      </thead>
+                                     <tbody>
+                                 {%for bids in past_bids%}
+                                 <tr align="center"><td></td><td>{{bids.user.first_name}} {{bids.user.last_name}}</td><td>{{bids.user_bid_amount}}</td><td>{{bids.bid_time}}</td></tr>
+                                {%endfor%}
+                                     </tbody>
+                                 </table>
+                            </h6></center></div>
+                        </div>
+                    {%endif%}
     </div>
     <div class="col-sm-5">
         <div class="row">
             <div class="col">
-                {%if currentauction.current_auction_status%}
-            <!--  script for counting down on ending date-->
-                <script>
-                    // Set the date we're counting down to
-                    var countDownDate = new Date("{{currentauction.auction_end_date|cut:""}}").getTime();
-                    console.log(countDownDate)
-                    // Update the count down every 1 second
-                    var x = setInterval(function() {
+                {%if currentauction.auction_finished_status%}
 
-                      // Get today's date and time
-                      var now = new Date().getTime();
+                              <div class="jumbotron">
 
-                      // Find the distance between now and the count down date
-                      var distance = countDownDate - now;
+                                  <center><h5><b>The auction has Ended.</b></h5></center>
+                                                    <center>Minimum Opening Bid Was</center>
+                                                    <center>₹. {{currentauction.property_id.pre_set_amount}}
+                                                        <br>
+                                                    </center>
+                                            <center><p class="title">Auction Winner Is:<br/></p>
 
-                      // Time calculations for days, hours, minutes and seconds
-                      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                               <a  id="demo" class="btn btn-primary">{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}}</a><br/>
+                                              <a  id="demo" class="btn btn-primary"> ₹. {{highest_bidder.user_bid_amount}}</a>
 
-                      // Output the result in an element with id="demo"
-                      document.getElementById("demo").innerHTML = "<h5>"+days + "d " + hours + "h "
-                      + minutes + "m " + seconds + "s "+"</h5>";
 
-                      // If the count down is over, write some text
-                      if (distance < 0) {
-                        clearInterval(x);
-                        document.getElementById("demo").innerHTML = "EXPIRED";
-                        document.getElementById("place_bid_btn").disabled =True;
-                      }
-                    }, 1000);
-                    </script>
+                                                </center>
+                                </div>
 
-                    {%if user.user.user_type == 'user'%}
-                        <div class="jumbotron">
-                    <center><h5>The auction has started.</h5></center>
-                    <center>Minimum Opening Bid</center>
-                    <center>₹ {{currentauction.property_id.pre_set_amount}}</center>
-                            <br/>
-                    <div class="login-text">To place a bid, <a href="#">Register</a> for Bidding this Property</div>
-                    <br/>
-                    <div>
-                        <ul >
-                            <li>
-                                <strong>Current Bid:</strong>
-                                    <strong>
-                                       ₹{{currentauction.current_amount}}
-                                    </strong>
-                                <hr>
-                            </li>
-                            <li>
-                                Bid Increments:
-                                {{currentauction.increment_ratio}}%
-                                <hr>
-                            </li>
-                            <li>
-                                Bid Deposit:
-                                ₹ {{currentauction.registration_fees}}
-                                <hr>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="event-detail-list">
-                        <form method="post" action="{%url 'auctions:auction_bid' pk=currentauction.pk%}">
-                            {%csrf_token%}
-
-                            <center><h5 class="title">Next Bid</h5><span class="doller">₹</span>
-                             <input type="text" id="user_bid" name="user_bid" placeholder="Your Bid Comes Here" value="{{currentauction.next_bid}}" autocomplete="off">
-                                <input type="hidden" value="{{user.user.pk}}" name="user">
-                                <button type="submit" id="place_bid_btn" class="btn btn-primary"  name="place_bid_btn">Bid Now</button></center>
-                        </form>
-                        {%for message in messages%}
-                        {%if 'bid_done' in message.tags%}
-                        <h6 style="color:green;">{{message}}</h6>
-                        {%endif%}
-                        {%endfor%}
-
-                    </div>
-                    <center><h5 class="title">Bidding Ends In<br/><a  id="demo" class="btn btn-primary"></a></h5></center>
-                </div>
-              <h3>  Redirecting to duckdev.com after <span id="countdown">10</span> seconds </h3>
-                    <!--user_loged in ,redirect script current auction statuse true -->
-                        <script type="text/javascript">
-
-                                // Total seconds to wait
-                                var seconds12 = new Date("{{currentauction.auction_end_date|cut:""}}").getTime()/1000;
-                                var now12 = new Date().getTime()/1000;
-                                var distance12 = seconds12 - now12;
-
-                                function countdown() {
-                                    distance12 = distance12 - 1;
-                                    if (distance12< 0) {
-                                        // Chnage your redirection link here
-                                        window.location = "../../../auctions/checking_auction_status/{{currentauction.pk}}/";
-                                    } else {
-                                        // Update remaining seconds
-                                        document.getElementById("countdown").innerHTML = distance12;
-                                        // Count down using javascript
-                                        window.setTimeout("countdown()", 1000);
-                                    }
-                                }
-
-                                // Run countdown function
-                                countdown();
-
-                            </script>
-                        </div>
-                    {%else%}
-                        {%if currentauction.%}
-                        <div class="jumbotron">
-                    <center><h5>The auction has started.</h5></center>
-                    <center>Minimum Opening Bid</center>
-                    <center>₹ {{currentauction.property_id.pre_set_amount}}</center>
-                            <br/>
-                    <div class="login-text">To place a bid, Please <a href="{%url 'auctions:login'%}">Login</a> and <a href="#">Register</a> for Bidding this Property</div>
-                    <br/>
-                    <div>
-                        <ul >
-                            <li>
-                                <strong>Current Bid:</strong>
-                                    <strong>
-                                       ₹{{currentauction.current_amount}}
-                                    </strong>
-                                <hr>
-                            </li>
-                            <li>
-                                Bid Increments:
-                                {{currentauction.increment_ratio}}%
-                                <hr>
-                            </li>
-                            <li>
-                                Bid Deposit:
-                                ₹ {{currentauction.registration_fees}}
-                                <hr>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="event-detail-list">
-                        <form method="post" action="{%url 'auctions:auction_bid' pk=currentauction.pk%}">
-                            {%csrf_token%}
-
-                            <center><h5 class="title">Next Bid</h5><span class="doller">₹</span>
-                             <input type="text" id="user_bid" name="user_bid" placeholder="Your Bid Comes Here" value="{{currentauction.next_bid}}" autocomplete="off">
-                                <input type="hidden" value="{{user.pk}}" name="user">
-                                <button type="submit" id="place_bid_btn" class="btn btn-primary"  name="place_bid_btn" disabled>Bid Now</button></center>
-                        </form>
-                        {%for message in messages%}
-                        {%if 'problem' in message.tags%}
-                        <h6 style="color:red;">{{message}}</h6>
-                        {%endif%}
-                        {%endfor%}
-
-                    </div>
-                    <center><h5 class="title">Bidding Ends In<br/><a  id="demo" class="btn btn-primary"></a></h5></center>
-                </div>
-                         <h3>  Redirecting to duckdev.com after <span id="countdown">10</span> seconds</h3>
-                    <!--  user not logged in, redirect script current auction status true-->
-                        <script type="text/javascript">
-
-                                // Total seconds to wait
-                                var seconds123 = new Date("{{currentauction.auction_end_date|cut:""}}").getTime()/1000;
-                                var now123 = new Date().getTime()/1000;
-                                var distance123 = seconds123 - now123;
-
-                                function countdown() {
-                                    distance123 = distance123 - 1;
-                                    if (distance123< 0) {
-                                        // Chnage your redirection link here
-                                        window.location = "../../../auctions/checking_auction_status/{{currentauction.pk}}/";
-                                    } else {
-                                        // Update remaining seconds
-                                        document.getElementById("countdown").innerHTML = distance123;
-                                        // Count down using javascript
-                                        window.setTimeout("countdown()", 1000);
-                                    }
-                                }
-
-                                // Run countdown function
-                                countdown();
-
-                            </script>
-                        </div>
-                    {%endif%}
                 {%else%}
-            <!--        Script for counting down on startdate-->
-                    <script>
+
+                    {%if currentauction.current_auction_status%}
+
+                          <!--  script for counting down on ending date-->
+                                    <script>
+                                    {%if currentauction.auction_finished_status == False%}
+                                            // Set the date we're counting down to
+                                            var countDownDate = new Date("{{currentauction.current_ending_time|cut:""}}").getTime();
+                                            console.log(countDownDate)
+                                            // Update the count down every 1 second
+                                            var x = setInterval(function() {
+
+                                              // Get today's date and time
+                                              var now = new Date().getTime();
+
+                                              // Find the distance between now and the count down date
+                                              var distance = countDownDate - now;
+
+                                              // Time calculations for days, hours, minutes and seconds
+                                              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                                              // Output the result in an element with id="demo"
+                                              document.getElementById("demo").innerHTML = "<h5>"+days + "d " + hours + "h "
+                                              + minutes + "m " + seconds + "s "+"</h5>";
+
+                                              // If the count down is over, write some text
+                                              if (distance < 0) {
+                                                clearInterval(x);
+                                                document.getElementById("demo").innerHTML = "EXPIRED";
+                                                window.location='../../checking_auction_status/{{currentauction.pk}}';
+
+                                              }
+                                            }, 1000);
+                                    {%endif%}
+                            </script>
+
+
+
+                        {%if user.user.user_type == 'user'%}
+                               <!--  script for counting down on ending date-->
+                                    <script>
+                            // Set the date we're counting down to
+                            var countDownDate = new Date("{{currentauction.current_ending_time|cut:""}}").getTime();
+                            console.log(countDownDate)
+                            // Update the count down every 1 second
+                            var x = setInterval(function() {
+
+                              // Get today's date and time
+                              var now = new Date().getTime();
+
+                              // Find the distance between now and the count down date
+                              var distance = countDownDate - now;
+
+                              // Time calculations for days, hours, minutes and seconds
+                              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                              // Output the result in an element with id="demo"
+                              document.getElementById("demo").innerHTML = "<h5>"+days + "d " + hours + "h "
+                              + minutes + "m " + seconds + "s "+"</h5>";
+
+                              // If the count down is over, write some text
+                              if (distance < 0) {
+                                clearInterval(x);
+                                document.getElementById("demo").innerHTML = "EXPIRED";
+                                window.location='../../checking_auction_status/{{currentauction.pk}}';
+
+                              }
+                            }, 1000);
+                            </script>
+
+                        <div class="jumbotron">
+                                <center><h5>The auction has started.</h5></center>
+                                <center>Minimum Opening Bid</center>
+                                <center>₹ {{currentauction.property_id.pre_set_amount}}</center>
+                                        <br/>
+                                {% for users in registered_user %}
+
+                                            {%if auction == users.current_auction_id%}
+                                                    {%ifequal users.payment_status "Completed"%}
+                                                    <b><h4>Your have alredy registered for this auction.</h4>></b>
+                                                    {%endifequal%}
+                                                    {%ifequal users.payment_status "Pending"%}
+                                                        <div class="login-text"><b><h4>To place a bid, <a href="#">Register</a> for Bidding this Property</h4></b></div>
+                                                    {%endifequal%}
+                                            {%else%}
+                                                <div class="login-text"><b><h4>To place a bid, <a href="#">Register</a> for Bidding this Property</h4></b></div>
+                                            {%endif%}
+                                        {%endfor%}
+
+                                <br/>
+                                <div align="left">
+                                    <ul >
+                                        <li>
+                                            <strong>Current Bid:</strong>
+                                                <strong>
+                                                   ₹{{currentauction.current_amount}}
+                                                </strong>
+                                            <hr>
+                                        </li>
+                                        <li>
+                                            Bid Increments:
+                                            {{currentauction.increment_ratio}}%
+                                            <hr>
+                                        </li>
+                                        <li>
+                                            Bid Deposit:
+                                            ₹ {{currentauction.registration_fees}}
+                                            <hr>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="event-detail-list">
+                                    <form method="post" action="{%url 'auctions:auction_bid' pk=currentauction.pk%}">
+                                        {%csrf_token%}
+
+                                        <center><h5 class="title">Next Bid</h5><span class="doller">₹</span>
+                                         <input type="text" id="user_bid" name="user_bid" placeholder="Your Bid Comes Here" value="{{currentauction.next_bid}}" autocomplete="off">
+                                            <button type="submit" id="place_bid_btn" class="btn btn-primary"  name="place_bid_btn">Bid Now</button></center>
+                                    </form>
+                                    {%for message in messages%}
+                                    {%if 'bid_done' in message.tags%}
+                                    <h6 style="color:green;">{{message}}</h6>
+                                    {%endif%}
+                                    {%if 'problem' in message.tags%}
+                                    <h6 style="color:red;">{{message}}</h6>
+                                    {%endif%}
+                                    {%endfor%}
+
+                                </div>
+                                <center><h5 class="title">Bidding Ends In<br/><a  id="demo" class="btn btn-primary"></a></h5></center>
+                        </div>
+
+                        {%else%}
+
+                            <div class="jumbotron">
+                                            <center><h5>The auction has started.</h5></center>
+                                            <center>Minimum Opening Bid</center>
+                                            <center>₹ {{currentauction.property_id.pre_set_amount}}</center>
+                                                    <br/>
+                                            <div class="login-text">To place a bid, Please <a href="{%url 'auctions:signup'%}">SignUp</a> and <a href="{%url 'auctions:login'%}">Login</a> for Bidding this Property</div>
+                                            <br/>
+                                            <div>
+                                                <ul align="left" >
+                                                    <li>
+                                                        <strong>Current Bid:</strong>
+                                                            <strong>
+                                                               ₹{{currentauction.current_amount}}
+                                                            </strong>
+                                                        <hr>
+                                                    </li>
+                                                    <li>
+                                                        Bid Increments:
+                                                        {{currentauction.increment_ratio}}%
+                                                        <hr>
+                                                    </li>
+                                                    <li>
+                                                        Bid Deposit:
+                                                        ₹ {{currentauction.registration_fees}}
+                                                        <hr>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="event-detail-list">
+                                                <form method="post" action="{%url 'auctions:auction_bid' pk=currentauction.pk%}">
+                                                    {%csrf_token%}
+
+                                                    <center><h5 class="title">Next Bid</h5><span class="doller">₹</span>
+                                                     <input type="text" id="user_bid" name="user_bid" class="form-class" placeholder="Your Bid Comes Here" value="{{currentauction.next_bid}}" autocomplete="off">
+                                                        <input type="hidden" value="{{user.pk}}" name="user">
+                                                        <button type="submit" id="place_bid_btn"  class="btn btn-primary"  name="place_bid_btn" disabled>Bid Now</button></center>
+                                                </form>
+                                                {%for message in messages%}
+                                                {%if 'problem' in message.tags%}
+                                                <h6 style="color:red;">{{message}}</h6>
+                                                {%endif%}
+                                                {%endfor%}
+
+                                            </div>
+                                            <center><h5 class="title">Bidding Ends In<br/><a  id="demo" class="btn btn-primary"></a></h5></center>
+                                    </div>
+
+
+                        {%endif%}
+
+                    {%else%}
+
+                <!--        Script for counting down on startdate-->
+                            <script>
                         // Set the date we're counting down to
                         var countDownDate = new Date("{{currentauction.auction_start_date|cut:""}}").getTime();
                         console.log(countDownDate)
@@ -280,7 +307,7 @@ CURRENT AUCTION DETAIL
                           if (distance < 0) {
                             clearInterval(x);
                             document.getElementById("demo").innerHTML = "Auction Has Started. Refresh The Page.";
-                            document.getElementById("place_bid_btn").disabled =True;
+                            window.location='../../checking_auction_status/{{currentauction.pk}}';
                           }
                         }, 1000);
                         </script>
@@ -302,84 +329,18 @@ CURRENT AUCTION DETAIL
                         <div class="col">End Date<br/>{{currentauction.auction_end_date}}</div>
                     </div>
                         <center><p class="title">Auction Starts In<br/><a  id="demo" class="btn btn-primary"></a></p></center>
-     <h3>
-    Redirecting to duckdev.com after <span id="countdown">10</span> seconds</h3>
-                        <!--  user not logged in, redirect script current auction status false-->
-                        <script type="text/javascript">
 
-                                // Total seconds to wait
-                                var seconds1 = new Date("{{currentauction.auction_start_date|cut:""}}").getTime()/1000;
-                                var now1 = new Date().getTime()/1000;
-                                var distance1 = seconds1 - now1;
-
-                                function countdown() {
-                                    distance1 = distance1 - 1;
-                                    if (distance1< 0) {
-                                        // Chnage your redirection link here
-                                        window.location = "../../../auctions/checking_auction_status/{{currentauction.pk}}/";
-                                    } else {
-                                        // Update remaining seconds
-                                        document.getElementById("countdown").innerHTML = distance1;
-                                        // Count down using javascript
-                                        window.setTimeout("countdown()", 1000);
-                                    }
-                                }
-
-                                // Run countdown function
-                                countdown();
-
-                            </script>
                 </div>
-                {%else%}
-                        <div class="jumbotron">
-                <center><h5>The auction has Ended.</h5></center>
-                    <center>Minimum Opening Bid</center>
-                    <center>₹. {{currentauction.property_id.pre_set_amount}}
-                        <br>
-                        {%if user.is_authenticated%}
-                        <a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>
-                        {%else%}
-                        <a  class="btn">Login</a>
-                        {%endif%}
-                    </center>
-                    <hr>
-                    <div class="row" align="center">
-                        <div class="col">Bidding Opens On<br/>{{currentauction.auction_start_date}}</div>
-                        <div class="col">End Date<br/>{{currentauction.auction_end_date}}</div>
-                    </div>
-                        <center><p class="title">Auction Starts In<br/><a  id="demo" class="btn btn-primary"></a></p></center>
 
-   <h3> Redirecting to duckdev.com after <span id="countdown">10</span> seconds</h3>
-                        <!--  user not logged in, redirect script current auction status false-->
-                        <script type="text/javascript">
 
-                                // Total seconds to wait
-                                var seconds1 = new Date("{{currentauction.auction_start_date|cut:""}}").getTime()/1000;
-                                var now1 = new Date().getTime()/1000;
-                                var distance1 = seconds1 - now1;
+                    {%endif%}
 
-                                function countdown() {
-                                    distance1 = distance1 - 1;
-                                    if (distance1< 0) {
-                                        // Chnage your redirection link here
-                                        window.location = "../../../auctions/checking_auction_status/{{currentauction.pk}}/";
-                                    } else {
-                                        // Update remaining seconds
-                                        document.getElementById("countdown").innerHTML = distance1;
-                                        // Count down using javascript
-                                        window.setTimeout("countdown()", 1000);
-                                    }
-                                }
-
-                                // Run countdown function
-                                countdown();
-
-                            </script>
-                </div>
                 {%endif%}
-            </div>
+                </div>
+
         </div>
 </div>
+    </div>
     <div class="row">
     <div class="col-sm-7 jumbotron">
         <h5 class="title">Proprty Details</h5>
