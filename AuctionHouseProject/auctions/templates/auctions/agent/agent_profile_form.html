@@ -1,4 +1,5 @@
 {%extends 'auctions/agent/agent_base.html'%}
+{%load bootstrap4%}
 {%block title%}
 Profile Update
 {%endblock%}
@@ -21,29 +22,16 @@ Profile Update
 								<h6>Agent's Profile</h6>
 
                                 <div class="container">
-                                <h1 class="title">Please Setup Your Profile</h1>
+                                <h4 class="title">Please Setup Your Profile</h4>
                                     <div class="container">
-                                        <form method="post" enctype="multipart/form-data" >
+                                        <form method="post"  enctype="multipart/form-data" align="center">
                                             {%csrf_token%}
-                                             <div class="file-field input-field">
-                                                <h5 class="title">Select Your New Profile Image:
-                                              <div class="btn">
-                                                <span></span>
-                                                {{form.image}}
-                                              </div>
-<!--                                              <div class="file-path-wrapper">-->
-<!--                                                <input class="file-path validate" type="text">-->
-<!--                                              </div>-->
-                                                </h5>
-                                            </div>
 
-                                            <h5 class="title">Enter Your New Address: {{form.address}}</h5>
-                                            <h5 class="title">Enter Valid Mobile Number: {{form.mobile}}</h5>
-                                            <h5 class="title">Select City: {{form.city}}</h5>
-                                            <h5 class="title">Select State: {{form.state}}</h5>
-                                            <h5 class="title">Enter The Pincode: {{form.pincode}}</h5>
-                                            <input class="waves-effect waves-light btn" type="submit" value="Save Details">
-                                        </form>
+                                                <h5 class="title">Select Your New Profile Image:
+                                                {%bootstrap_form form%}
+                                                    <input type="submit " class="btn btn-default" value="Save">
+                                                </h5>
+                                             </div> </form>
                                     </div>
                                 </div>
 	                        </div>

@@ -31,10 +31,12 @@ class ProfileUpdateForm(forms.ModelForm):
         model=models.UserDetails
 
 class AgentProfileForm(forms.ModelForm):
+    image=forms.ImageField(widget=forms.FileInput(attrs={'class':'custom-file'}))
 
     class Meta():
         fields=('image','address','mobile','city','state','pincode')
         model =models.AgentUser
+
 
 class BecomeAgentForm(forms.ModelForm):
 
