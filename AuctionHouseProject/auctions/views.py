@@ -412,7 +412,10 @@ class CurrentAuctionList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data(**kwargs)
         context['image_list'] = models.PropertyImagesUpload.objects.all()
-        context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
+        try:
+            context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
+        except:
+            return context
         return context
 
 class CurrentAuctionDetails(DetailView):
@@ -427,7 +430,11 @@ class CurrentAuctionDetails(DetailView):
         context = super().get_context_data(**kwargs)
         context['form']=forms.MakeAnOffer
         auction_bid=models.BiddingOfProperty.objects.all().filter(current_auction_id=self.kwargs.get('pk')).order_by('-user_bid_amount')
-        context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
+        try:
+            context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
+            print(context['registered_user'])
+        except:
+            pass
         context['past_bids']=auction_bid
         try:
             context['highest_bidder']=auction_bid[0]
@@ -495,7 +502,10 @@ class UpcommingAuctionList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super().get_context_data(**kwargs)
         context['image_list'] = models.PropertyImagesUpload.objects.all()
-        context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
+        try:
+            context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
+        except:
+            return context
         return context
 
 
@@ -517,9 +527,6 @@ class CheckingAuctionStatus(View):
                 auction.save()
             else:
                 continue
-        # if self.kwargs.get('finished') == 1:
-        #     current_auction.auction_finished_status=True
-        #     current_auction.save()
         return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction.pk}))
 
 

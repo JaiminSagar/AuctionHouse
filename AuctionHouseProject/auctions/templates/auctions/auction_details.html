@@ -44,10 +44,11 @@ CURRENT AUCTION DETAIL
 
                     {%if currentauction.current_auction_status%}
                         <div class="jumbotron">
-                            <div style="overflow:scroll; height:130px;">
+                            <div style="overflow:scroll; height:260px;">
                             <center><h6 class=>
                                  <table class="table">
                                       <thead align="center">
+                                      <tr><th colspan="4">Bidding History</th></tr>
                                         <tr>
                                           <th scope="col">#</th>
                                           <th scope="col">Name</th>
@@ -74,14 +75,20 @@ CURRENT AUCTION DETAIL
 
                                   <center><h5><b>The auction has Ended.</b></h5></center>
                                                     <center>Minimum Opening Bid Was</center>
-                                                    <center>₹. {{currentauction.property_id.pre_set_amount}}
+                                  <center><b>₹. {{currentauction.property_id.pre_set_amount}}</b>
                                                         <br>
                                                     </center>
-                                            <center><p class="title">Auction Winner Is:<br/></p>
+                                            <center><p class="title">Auction Winner:<br/></p>
+                                                {%if user == highest_bidder.user%}
+
+                                                  <a  id="demo" class="btn btn-primary">Mr.{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}} You have won this auction</a><br/>
+                                              <a  id="demo" class="btn btn-primary"> ₹. {{highest_bidder.user_bid_amount}}</a>
+
+                                                {%else%}
 
                                                <a  id="demo" class="btn btn-primary">{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}}</a><br/>
                                               <a  id="demo" class="btn btn-primary"> ₹. {{highest_bidder.user_bid_amount}}</a>
-
+                                                {%endif%}
 
                                                 </center>
                                 </div>
@@ -164,27 +171,25 @@ CURRENT AUCTION DETAIL
                             </script>
 
                         <div class="jumbotron">
-                                <center><h5>The auction has started.</h5></center>
+                            <center><h5><b>The auction has started.</b></h5></center>
                                 <center>Minimum Opening Bid</center>
-                                <center>₹ {{currentauction.property_id.pre_set_amount}}</center>
+                            <center><b>₹ {{currentauction.property_id.pre_set_amount}}</b></center>
                                         <br/>
                                 {% for users in registered_user %}
 
-                                            {%if auction == users.current_auction_id%}
+                                            {%if currentauction == users.current_auction_id%}
                                                     {%ifequal users.payment_status "Completed"%}
-                                                    <b><h4>Your have alredy registered for this auction.</h4>></b>
+                                                    <b><h4>Your have alredy registered for this auction.</h4></b>
                                                     {%endifequal%}
                                                     {%ifequal users.payment_status "Pending"%}
                                                         <div class="login-text"><b><h4>To place a bid, <a href="#">Register</a> for Bidding this Property</h4></b></div>
                                                     {%endifequal%}
-                                            {%else%}
-                                                <div class="login-text"><b><h4>To place a bid, <a href="#">Register</a> for Bidding this Property</h4></b></div>
-                                            {%endif%}
+                                             {%endif%}
                                         {%endfor%}
 
                                 <br/>
                                 <div align="left">
-                                    <ul >
+                                   <b> <ul >
                                         <li>
                                             <strong>Current Bid:</strong>
                                                 <strong>
@@ -202,7 +207,7 @@ CURRENT AUCTION DETAIL
                                             ₹ {{currentauction.registration_fees}}
                                             <hr>
                                         </li>
-                                    </ul>
+                                    </ul></b>
                                 </div>
                                 <div class="event-detail-list">
                                     <form method="post" action="{%url 'auctions:auction_bid' pk=currentauction.pk%}">
@@ -228,14 +233,14 @@ CURRENT AUCTION DETAIL
                         {%else%}
 
                             <div class="jumbotron">
-                                            <center><h5>The auction has started.</h5></center>
+                                <center><h5><b>The auction has started.</b></h5></center>
                                             <center>Minimum Opening Bid</center>
-                                            <center>₹ {{currentauction.property_id.pre_set_amount}}</center>
+                                <center><b>₹ {{currentauction.property_id.pre_set_amount}}</b></center>
                                                     <br/>
                                             <div class="login-text">To place a bid, Please <a href="{%url 'auctions:signup'%}">SignUp</a> and <a href="{%url 'auctions:login'%}">Login</a> for Bidding this Property</div>
                                             <br/>
                                             <div>
-                                                <ul align="left" >
+                                               <b> <ul align="left" >
                                                     <li>
                                                         <strong>Current Bid:</strong>
                                                             <strong>
@@ -249,11 +254,11 @@ CURRENT AUCTION DETAIL
                                                         <hr>
                                                     </li>
                                                     <li>
-                                                        Bid Deposit:
+                                                        Bid Deposit:&nbsp;
                                                         ₹ {{currentauction.registration_fees}}
                                                         <hr>
                                                     </li>
-                                                </ul>
+                                               </ul></b>
                                             </div>
                                             <div class="event-detail-list">
                                                 <form method="post" action="{%url 'auctions:auction_bid' pk=currentauction.pk%}">
@@ -271,7 +276,7 @@ CURRENT AUCTION DETAIL
                                                 {%endfor%}
 
                                             </div>
-                                            <center><h5 class="title">Bidding Ends In<br/><a  id="demo" class="btn btn-primary"></a></h5></center>
+                                            <center><p class="title">Bidding Ends In<br/><a  id="demo" class="btn btn-primary"></a></p></center>
                                     </div>
 
 
@@ -313,7 +318,7 @@ CURRENT AUCTION DETAIL
                         </script>
 
                     <div class="jumbotron">
-                    <center><h5>The auction has not yet started</h5></center>
+                        <center><h5><b>The auction has not yet started</b></h5></center>
                     <center>Minimum Opening Bid</center>
                     <center>₹. {{currentauction.property_id.pre_set_amount}}
                         <br>

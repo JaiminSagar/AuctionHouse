@@ -8,6 +8,7 @@ Assets Available For Auction
 
 {%endblock%}
 {% block content %}
+<hr>
 <br/>
     <div class='container'>
 
@@ -52,10 +53,10 @@ Assets Available For Auction
                                                         <a class="btn btn-success">You are alredy Registered</a>
                                                     {%endifequal%}
                                                     {%ifequal users.payment_status "Pending"%}
-                                                        <a class="btn btn-success">Your payment is pending</a>
+                                                        <a class="btn btn-warning">Your payment is pending</a>
                                                     {%endifequal%}
                                             {%else%}
-                                                <a class="btn btn-danger">Register Your Self</a>
+                                                <a class="btn btn-danger">Register</a>
                                             {%endif%}
                                         {%endfor%}
                                     {%else%}

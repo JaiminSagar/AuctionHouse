@@ -4,9 +4,10 @@
     Auction List
 {% endblock title %}
 {%block heading%}
-Assets Available For Auction
+Upcomming Assets Available For Auction
 {%endblock%}
 {% block content %}
+<hr>
 <br/>
     <div class='container'>
 
@@ -41,7 +42,7 @@ Assets Available For Auction
 <!--                                <li class="list-group-item">Vestibulum at eros</li>-->
 <!--                            </ul>-->
                  <div class="card-body">
-                     <a href="{%url 'auctions:auction_detail' pk=auction.pk%}" class="btn btn-primary">View AUction</a>
+                     <a href="{%url 'auctions:check_auction_status' pk=auction.pk%}" class="btn btn-primary">View AUction</a>
                      {%if user.is_authenticated%}
                          {%if user.user.user_type == 'user' %}
                                 {% for users in registered_user %}
@@ -50,10 +51,10 @@ Assets Available For Auction
                                                         <a class="btn btn-success">You are alredy Registered</a>
                                                     {%endifequal%}
                                                     {%ifequal users.payment_status "Pending"%}
-                                                        <a class="btn btn-success">Your payment is pending</a>
+                                                        <a class="btn btn-warning">Your payment is pending</a>
                                                     {%endifequal%}
                                             {%else%}
-                                                <a class="btn btn-danger">Register Your Self</a>
+                                                <a class="btn btn-danger">Register</a>
                                             {%endif%}
                                         {%endfor%}
                          {%else%}

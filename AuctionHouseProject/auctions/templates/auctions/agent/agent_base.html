@@ -19,8 +19,8 @@
   <body><nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top navbar-expand-lg"  color-on-scroll="100">
   <div class="container">
       <div class="navbar-translate">
-        <a class="navbar-brand" href="https://demos.creative-tim.com/material-kit/index.html">
-          Material Kit </a>
+        <a class="navbar-brand" href="{%url 'home'%}">
+          AuctionHouse </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -101,13 +101,13 @@
 <!--		<div class="profile-content">-->
 
 
-    <div class="page-header header-filter" data-parallax="true" style="background-image: url('assets/img/bg3.jpg')">
+    <div class="page-header header-filter" data-parallax="true" style="background-image: url('https://images.alphacoders.com/435/thumb-1920-435117.jpg')">
       <div class="container">
         <div class="row">
           <div class="col-md-8 ml-auto mr-auto">
             <div class="brand text-center">
-              <h1>Your title here</h1>
-              <h3 class="title text-center">Subtitle</h3>
+              <h1>Welcome</h1>
+              <h3 class="title text-center">Agent {{user.first_name}}{{user.last_name}}</h3>
             </div>
           </div>
         </div>
@@ -128,8 +128,8 @@
     <nav class="float-left">
       <ul>
         <li>
-          <a href="https://www.creative-tim.com/">
-              Creative Tim
+          <a href="{%url 'home'%}">
+              AuctionHouse
           </a>
         </li>
       </ul>
@@ -138,8 +138,8 @@
         &copy;
         <script>
             document.write(new Date().getFullYear())
-        </script>, made with <i class="material-icons">favorite</i> by
-        <a href="https://www.creative-tim.com/" target="blank">Creative Tim</a> for a better web.
+        </script>, Developed By <i class="material-icons">favorite</i> by
+        <a href="#" target="blank">AuctionHouse Team</a>
     </div>
   </div>
 </footer>
@@ -186,29 +186,6 @@ $('.datetimepicker').datetimepicker({
 </html>
 
 
-<!--	<footer class="footer text-center ">-->
-<!--        <p><a href="#" target="_blank">Material Kit</a> By Auction House</p>-->
-<!--    </footer>-->
-
-<!--    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>-->
-<!--    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>-->
-
-<!--        </div>-->
 
 
 
-
-
-<!--    <link rel="stylesheet" href="{%static 'css/profile.css'%}">-->
-<!--    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">-->
-<!--    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">-->
-<!--    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">-->
-<!--    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">-->
-<!--    <link rel="stylesgeet" href="https://rawgit.com/creativetimofficial/material-kit/master/assets/css/material-kit.css">-->
-<!--    <script src="{%static 'js/profile.js'%}"></script>-->
-
-
-
-<!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
-<!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
-<!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
