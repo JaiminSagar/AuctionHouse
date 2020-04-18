@@ -217,7 +217,21 @@ class RegForAuction(models.Model):
     payment_status = models.CharField(max_length=12, default='Not Paid')
     user = models.ForeignKey(User,related_name='registered',on_delete=models.CASCADE)
 
+class ContactUs(models.Model):
+    name=models.CharField(max_length=50)
+    email=models.EmailField()
+    mobile=models.CharField(max_length=13)
+    message=models.TextField()
 
+    def __str__(self):
+        return self.email
+
+class AuctionManager(auth.models.User,auth.models.PermissionsMixin):
+    user_type=models.CharField(max_length=20,default='AuctionManager')
+
+    class Meta:
+        verbose_name=('AuctionManager')
+        verbose_name_plural =('AuctionManagers')
 
 # class AuctionAdmin(auth.models.User,auth.models.PermissionsMixin):
 

@@ -37,18 +37,29 @@
       <div class="collapse navbar-collapse">
           <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-      					<a class="nav-link" href="#">
-      						<i class="material-icons">cloud_download</i> Auction Guide
+      					<a class="nav-link" href="{%url 'auction_guide'%}">
+      						<i class="material-icons">dynamic_feed</i> Auction Guide
       					</a>
       				</li>
-                    <li class="nav-item">
-      					<a class="nav-link" href="{%url 'auctions:current_auction_list'%}">
-      						<i class="material-icons">cloud_download</i> Current Auctions
-      					</a>
-      				</li>
+                    <li class="dropdown nav-item">
+                              <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                                  <i class="material-icons">account_balance</i> Auctions
+                              </a>
+                              <div class="dropdown-menu dropdown-with-icons">
+                                <a class="nav-link" href="{%url 'auctions:upcomming_auction_list'%}">
+                                    <center><i class="material-icons">house</i> UpComming Auctions</center>
+      					        </a>
+                                  <a class="nav-link" href="{%url 'auctions:current_auction_list'%}">
+                                       <center> <i class="material-icons">account_balance</i> Current Auctions</center>
+                                  </a>
+                                  <a class="nav-link" href="{%url 'auctions:finished_auctions'%}">
+      						        <center><i class="material-icons">account_balance</i> Finished Auctions</center>
+      					        </a>
+                              </div>
+                    </li>
                     <li class="nav-item">
       					<a class="nav-link" href="{%url 'auctions:become_agent'%}">
-      						<i class="material-icons">cloud_download</i> Become Agent
+      						<i class="material-icons">person_add</i> Become Agent
       					</a>
       				</li>
                             <li class="dropdown nav-item">
@@ -57,11 +68,15 @@
                               </a>
 
                                 <div class="dropdown-menu dropdown-with-icons">
-                                <a href="{%url 'auction_approve_list'%}" class="dropdown-item">
-                                    <i class="material-icons">person</i> Auction Approvals
+                                    <a href="{%url 'agent_list'%}" class="dropdown-item">
+                                    <i class="material-icons">person_add</i> Agent List Approvals
                                 </a>
+                                <a href="{%url 'auction_approve_list'%}" class="dropdown-item">
+                                    <i class="material-icons">chrome_reader_mode</i> Auction Approvals
+                                </a>
+
                                     <a href="{%url 'schedule_list'%}" class="dropdown-item">
-                                    <i class="material-icons">exit_to_app</i> Auction Scheduling
+                                    <i class="material-icons">add_alarm</i> Auction Scheduling
                                 </a>
                                     <a href="{%url 'auctions:logout'%}" class="dropdown-item">
                                     <i class="material-icons">exit_to_app</i> Logout
@@ -94,6 +109,7 @@
     <div class="section text-center">
       <h2 class="title"  id="scroll">{%block heading%}{%endblock%}</h2>
         {%block content%}{%endblock%}
+        <br>
     </div>
   </div>
 </div>
@@ -105,6 +121,9 @@
         <li>
           <a href="{%url 'home'%}">
               AuctionHouse
+          </a>
+             <a href="{%url 'contact_us'%}">
+              Contact US
           </a>
         </li>
       </ul>

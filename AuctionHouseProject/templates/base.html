@@ -32,23 +32,36 @@
 
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-      					<a class="nav-link" href="{%url 'auctions:current_auction_list'%}">
-      						<i class="material-icons">cloud_download</i> Current Auctions
+                     <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auction_guide'%}">
+      						<i class="material-icons">dynamic_feed</i> Auction Guide
       					</a>
       				</li>
-                    <li class="nav-item">
-      					<a class="nav-link" href="{%url 'auctions:upcomming_auction_list'%}">
-      						<i class="material-icons">cloud_download</i> UpComming Auctions
-      					</a>
-      				</li>
-                    <li class="nav-item">
-      					<a class="nav-link" href="{%url 'auctions:become_agent'%}">
-      						<i class="material-icons">cloud_download</i> Become Agent
-      					</a>
-      				</li>
+                      <li class="dropdown nav-item">
+                              <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                                  <i class="material-icons">account_balance</i> Auctions
+                              </a>
+                              <div class="dropdown-menu dropdown-with-icons">
+                                <a class="nav-link" href="{%url 'auctions:upcomming_auction_list'%}">
+                                    <center><i class="material-icons">house</i> UpComming Auctions</center>
+      					        </a>
+                                  <a class="nav-link" href="{%url 'auctions:current_auction_list'%}">
+                                       <center> <i class="material-icons">account_balance</i> Current Auctions</center>
+                                  </a>
+                                  <a class="nav-link" href="{%url 'auctions:finished_auctions'%}">
+      						        <center><i class="material-icons">account_balance</i> Finished Auctions</center>
+      					        </a>
+                              </div>
+                    </li>
+
+
                     {% if user.is_authenticated %}
                         {%ifequal user.user.profile_setup True%}
+                             <li class="nav-item">
+                                <a class="nav-link" href="{%url 'auctions:become_agent'%}">
+                                    <i class="material-icons">person_add</i> Become Agent
+                                </a>
+                            </li>
                             <li class="dropdown nav-item">
                               <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
                                   <i class="material-icons">apps</i> Acitvity
@@ -67,12 +80,12 @@
                                     </a>
 
                                  <a href="#" class="dropdown-item">
-                                    <i class="material-icons">library_books</i> View Auctions
+                                    <i class="material-icons">library_books</i> Registred List
                                 </a>
 
-                                <a href="#" class="dropdown-item">
-                                    <i class="material-icons">star</i> Wish List
-                                </a>
+<!--                                <a href="#" class="dropdown-item">-->
+<!--                                    <i class="material-icons">star</i> Wish List-->
+<!--                                </a>-->
 
                                   <a href="{%url 'auctions:logout'%}" class="dropdown-item">
                                     <i class="material-icons">exit_to_app</i> Logout
@@ -81,6 +94,11 @@
                             </li>
                             {%endifequal%}
                             {%ifequal user.user.profile_setup False%}
+                                 <li class="nav-item">
+                                    <a class="nav-link" href="{%url 'auctions:become_agent'%}">
+                                        <i class="material-icons">person_add</i> Become Agent
+                                    </a>
+                                </li>
                                  <li class="dropdown nav-item">
                               <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
                                   <i class="material-icons">apps</i> Acitvity
@@ -98,13 +116,14 @@
                                         <i class="material-icons">library_books</i> Your Evaluation List
                                     </a>
 
-                                 <a href="#" class="dropdown-item">
-                                    <i class="material-icons">library_books</i> View Auctions
+                                  <a href="#" class="dropdown-item">
+                                    <i class="material-icons">library_books</i> Registred List
                                 </a>
 
-                                <a href="#" class="dropdown-item">
-                                    <i class="material-icons">star</i> Wish List
-                                </a>
+
+<!--                                <a href="#" class="dropdown-item">-->
+<!--                                    <i class="material-icons">star</i> Wish List-->
+<!--                                </a>-->
 
                                   <a href="{%url 'auctions:logout'%}" class="dropdown-item">
                                     <i class="material-icons">exit_to_app</i> Logout
@@ -114,8 +133,8 @@
                             {%endifequal%}
                         {%ifequal user.is_staff True%}
                             <li class="nav-item">
-      					<a class="nav-link" href="#">
-      						<i class="material-icons">cloud_download</i> Auction Guide
+      					<a class="nav-link" href="{%url 'auction_guide'%}">
+      						<i class="material-icons">dynamic_feed</i> Auction Guide
       					</a>
       				</li>
                     <li class="nav-item">
@@ -130,6 +149,11 @@
       				</li>
                     {%endifequal%}
                     {%if user.agentuser.user_type == 'agent'%}
+                     <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:become_agent'%}">
+      						<i class="material-icons">person_add</i> Become Agent
+      					</a>
+      				</li>
                     <li class="dropdown nav-item">
                       <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
                           <i class="material-icons">apps</i> Acitvity
@@ -142,23 +166,48 @@
                             <i class="material-icons">person</i> Profile
                         </a>
 
-                         <a href="#" class="dropdown-item">
-                            <i class="material-icons">library_books</i> View Auctions
-                        </a>
-
                           <a href="{%url 'auctions:logout'%}" class="dropdown-item">
                             <i class="material-icons">exit_to_app</i> Logout
                          </a>
                          </div>
                         </li>
                         {%endif%}
-                 {% else %}
-
-                    <li class="nav-item">
-      					<a class="nav-link" href="#">
-      						<i class="material-icons">cloud_download</i> Auction Guide
+                     {%if user.auctionmanager.user_type == 'AuctionManager'%}
+                     <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:become_agent'%}">
+      						<i class="material-icons">person_add</i> Become Agent
       					</a>
       				</li>
+                    <li class="dropdown nav-item">
+                              <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                                  <i class="material-icons">apps</i> Acitvity
+                              </a>
+
+                                <div class="dropdown-menu dropdown-with-icons">
+                                    <a href="{%url 'agent_list'%}" class="dropdown-item">
+                                    <i class="material-icons">person_add</i> Agent List Approvals
+                                </a>
+                                <a href="{%url 'auction_approve_list'%}" class="dropdown-item">
+                                    <i class="material-icons">chrome_reader_mode</i> Auction Approvals
+                                </a>
+
+                                    <a href="{%url 'schedule_list'%}" class="dropdown-item">
+                                    <i class="material-icons">add_alarm</i> Auction Scheduling
+                                </a>
+                                    <a href="{%url 'auctions:logout'%}" class="dropdown-item">
+                                    <i class="material-icons">exit_to_app</i> Logout
+                                </a>
+                                </div>
+
+                            </li>
+                        {%endif%}
+                 {% else %}
+                     <li class="nav-item">
+      					<a class="nav-link" href="{%url 'auctions:become_agent'%}">
+      						<i class="material-icons">person_add</i> Become Agent
+      					</a>
+      				</li>
+
                     <li class="nav-item">
       					<a class="nav-link" href="{%url 'auctions:signup'%}">
       						<i class="material-icons">account_box</i> Sign Up
@@ -207,7 +256,6 @@
 	</div>
   </div>
 </div>
-
 <footer class="footer footer-default" >
   <div class="container">
     <nav class="float-left">
@@ -215,6 +263,10 @@
         <li>
           <a href="{%url 'home'%}">
               AuctionHouse
+          </a>
+            <li>
+          <a href="{%url 'contact_us'%}">
+              Contact US
           </a>
         </li>
       </ul>

@@ -8,6 +8,11 @@ from django.urls import reverse_lazy
 from django.contrib.auth import settings,get_user,get_user_model
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from auctions.filters import AuctionFilter
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from auctions.tokens import account_activation_token
+from django.contrib.auth.mixins import  LoginRequiredMixin
 
 USER=get_user_model()
 
@@ -15,13 +20,12 @@ USER=get_user_model()
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
-#from django.utils.encoding import force_bytes, force_text
-#from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
-#from .tokens import account_activation_token
 #from django.contrib.auth.models import User as Signup_User
 from django.core.mail import EmailMessage
 from django.core.exceptions import ObjectDoesNotExist
+from auctions import forms
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -42,18 +46,19 @@ def checking(request):
                     else:
                         return HttpResponseRedirect(reverse('home'))
             except:
-                return HttpResponseRedirect(reverse('home'))
+                try:
+                    if user.auctionmanager.user_type == 'AuctionManager':
+                        return HttpResponseRedirect(reverse('auction_approve_list'))
+                except:
+                    return HttpResponseRedirect(reverse('home'))
         else:
             return HttpResponseRedirect("<h1>Something went Wrong</h1>")
 
-class HomePage(TemplateView):
-    template_name = 'index.html'
 
 # class AgentHome(TemplateView):
 #     template_name = 'auctions/agent/agent_dashboard.html'
 
-# class ThanksPage(TemplateView):
-#     template_name = 'thanks.html'
+
 
 def adminLogin(request):
     if request.method == "POST":
@@ -67,11 +72,12 @@ def adminLogin(request):
             return HttpResponse('Invalid Email or password')
     return render(request, 'auctions/admin/admin_login.html', {})
 
-class AgentList(ListView):
+
+class AgentList(LoginRequiredMixin,ListView):
     model = models.AgentUser
     template_name = 'auctions/admin/agent_approve_list.html'
 
-
+@login_required
 def approveAgent(request, pk):
     agent = get_object_or_404(models.AgentUser, pk=pk)
     agent.agent_approved()
@@ -88,7 +94,7 @@ def approveAgent(request, pk):
     email.send()
     return redirect('agent_list')
 
-class AuctionScheduling(UpdateView):
+class AuctionScheduling(LoginRequiredMixin,UpdateView):
     model = models.CurrentAuction
     template_name = 'auctions/admin/auction_scheduler.html'
     form_class = forms.SchedulAuctionForm
@@ -100,7 +106,7 @@ class AuctionScheduling(UpdateView):
         return super().form_valid(form)
 
 
-class AuctionApprovalList(ListView):
+class AuctionApprovalList(LoginRequiredMixin,ListView):
     model = models.PropertyReg
     template_name = 'auctions/admin/auctions_approve_list.html'
 
@@ -112,7 +118,7 @@ class AuctionApprovalList(ListView):
         return context
 
 
-class AuctionScheduleList(ListView):
+class AuctionScheduleList(LoginRequiredMixin,ListView):
     model = models.CurrentAuction
     template_name = 'auctions/admin/schedule_list.html'
 
@@ -122,6 +128,7 @@ class AuctionScheduleList(ListView):
         context['image_list']= models.PropertyImagesUpload.objects.all()
         return context
 
+@login_required
 def approve_auction(request,propertyid):
     propertyreg=get_object_or_404(models.PropertyReg,pk=propertyid)
     #print(propertyreg)
@@ -132,3 +139,47 @@ def approve_auction(request,propertyid):
     current_auction.save()
     propertyreg.save()
     return HttpResponseRedirect(reverse_lazy('auction_approve_list'))
+
+class AuctionGuide(TemplateView):
+    template_name = "auctions/AuctionGuide.html"
+
+
+class Contact_us(TemplateView):
+    template_name = 'auctions/contact_us.html'
+
+    def post(self,*args,**kwargs):
+        name=self.request.POST['name']
+        email=self.request.POST['email']
+        mobile=self.request.POST['phone']
+        message=self.request.POST['message']
+        contact_us_obj=models.ContactUs.objects.create(name=name,email=email,mobile=mobile,message=message)
+        contact_us_obj.save()
+        messages.success(self.request,"Form is Submitted.",extra_tags='form_submitted')
+        return HttpResponseRedirect(reverse_lazy('contact_us'))
+
+def AuctionManagerSignup(request):
+    if request.method == 'POST':
+        print("Entered")
+        form = forms.CreateAuctionManager(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            mail_subject = 'AuctionHouse.in | Activate Your Account '
+            message = render_to_string('auctions/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(
+                        mail_subject, message, to=[to_email]
+            )
+            email.send()
+            messages.success(request, "Please confirm your email address to complete the registration.")
+            return HttpResponseRedirect(reverse_lazy('auctions:login'))
+    else:
+        form = forms.CreateAuctionManager()
+    return render(request, 'auctions/signup_auction_manager.html', {'form': form})

@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 import datetime
 from django.utils import timezone
-
+from . filters import AuctionFilter
 from django.contrib.auth import get_user_model
 User=get_user_model()
 
@@ -567,3 +567,20 @@ def payment_done(request):
 @csrf_exempt
 def payment_canceled(request):
     return render(request, 'auctions/payment_cancelled.html')
+
+class FinishedAuctionList(ListView):
+    model = models.CurrentAuction
+    template_name = "auctions/finishedAuctions.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(current_auction_status=False, scheduled_status=True, auction_finished_status=True)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['image_list'] = models.PropertyImagesUpload.objects.all()
+        try:
+            context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
+        except:
+            return context
+        return context

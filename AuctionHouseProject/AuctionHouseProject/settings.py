@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'paypal.standard.ipn',
+    'django_filters',
     'auctions',
 
 ]

@@ -18,20 +18,26 @@ class UserCreateForm(UserCreationForm):
         self.fields['username'].label = 'Username'
         self.fields['email'].label='Email Address'
 
-class ProfileSetupForm(forms.ModelForm):
+class CreateAuctionManager(UserCreationForm):
 
+    class Meta():
+        fields=('username','first_name','last_name','email','password1','password2')
+        model =models.AuctionManager
+
+class ProfileSetupForm(forms.ModelForm):
+    image=forms.ImageField(widget=forms.FileInput(attrs={'class':'custom-file','style':'opacity:100;position:relative;z-index: 0;','class':'btn btn-default'}))
     class Meta():
         fields=('image','address','mobile','birth_date','city','state','pincode')
         model=models.UserDetails
 
 class ProfileUpdateForm(forms.ModelForm):
-
+    image=forms.ImageField(widget=forms.FileInput(attrs={'class':'custom-file','style':'opacity:100;position:relative;z-index: 0;','class':'btn btn-default'}))
     class Meta():
         fields=('image','address','mobile','city','state','pincode')
         model=models.UserDetails
 
 class AgentProfileForm(forms.ModelForm):
-    image=forms.ImageField(widget=forms.FileInput(attrs={'class':'custom-file'}))
+    image=forms.ImageField(widget=forms.FileInput(attrs={'class':'custom-file','style':'opacity:100;position:relative;z-index: 0;','class':'btn btn-default'}))
 
     class Meta():
         fields=('image','address','mobile','city','state','pincode')
@@ -39,6 +45,9 @@ class AgentProfileForm(forms.ModelForm):
 
 
 class BecomeAgentForm(forms.ModelForm):
+    image=forms.ImageField(widget=forms.FileInput(attrs={'style':'opacity:100;position:relative;z-index: 0;','class':'btn btn-default'}))
+    resume_document=forms.ImageField(widget=forms.FileInput(attrs={'style':'opacity:100;position:relative;z-index: 0;','class':'btn btn-default'}))
+    proof_document=forms.ImageField(widget=forms.FileInput(attrs={'style':'opacity:100;position:relative;z-index: 0;','class':'btn btn-default'}))
 
     class Meta():
         fields=('first_name','last_name','email','mobile','birth_date','address','city','state','pincode','image','resume_document','proof_document')
@@ -96,7 +105,7 @@ class PropertyDescriptionForm(forms.ModelForm):
 
 
 class PropertyFilesUploadForm(forms.ModelForm):
-    document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    document = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,'style':'opacity:100;position:relative;z-index: 0;','class':'btn btn-default'}))
 
     class Meta():
         model = models.PropertyFilesUpload
@@ -104,7 +113,7 @@ class PropertyFilesUploadForm(forms.ModelForm):
 
 
 class PropertyImagesUploadForm(forms.ModelForm):
-    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True,'style':'opacity:100;position:relative;z-index: 0;','class':'btn btn-default'}))
 
 
     class Meta():

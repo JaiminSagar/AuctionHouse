@@ -5,22 +5,68 @@
 Welcome To AuctionHouse
 {%endblock%}
 
-
+{%block heading%}
+Search The Property You Like
+{%endblock%}
 {%block content%}
 <br/>
 <br/>
-<center><img src="{%static 'Capture1.jpg'%}" width="800"/></center>
-    {%if user.is_authenticated%}
-<br/>
-<br/>
-<!--<h1>User is Authenticated</h1>>-->
+<center>
+    <div class="jumbotron" align="left">
+     <form method="get" >
+         {%csrf_token%}
+         {%bootstrap_form filter.form%}
+    <button type="submit" class="btn btn-rose">Search</button>
+  </form>
+        </div>
+</center>
+<br>
+    <br>
+    <hr>
+  {% for auction in filter.qs %}
+    {%if auction%}
+            {% if forloop.counter|divisibleby:3 or forloop.counter == 1 %}
+                <div class='row justify-content-between' style='padding-bottom:5%;'>
+            {% endif %}
+                    <div class='col-sm-4'>
+                        <div class="card" style="width: 18rem;">
+<!--                            <img class="card-img-top" src="{{auction.property_id.property_images}}" alt="Card image cap">-->
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" >
+                  <div class="carousel-inner">
+                      <div class="carousel-item active " >
+                          <img src="https://s3.amazonaws.com/mscwordpresscontent/wa/wp-content/uploads/2019/05/iStock-174197278-1240x696.jpg" width="598" height="250">
+                      </div>
+                      {%for images in auction.property_id.property_images.all%}
+                      <div class="carousel-item" >
+                          <img class="card-img-top" src="{{images.image.url}}" alt="Card image cap" width="100px" height="250px">
+                      </div>
+                      {%endfor%}
+                  </div>
+                </div>
+                            <div class="card-body">
+                                <h5>Property Type:</h5><h5 class="card-title">{{auction.property_id.property_type}}</h5>
+                                <p class="card-text"> </p>
+                                <h5>Auction Initial Value:</h5><h5 class="card-title">{{auction.property_id.pre_set_amount}}</h5>
+                            </div>
+                            <div class="card-body">
+                                <a href="{%url 'auctions:check_auction_status' pk=auction.pk%}" class="btn btn-primary">View AUction</a>
+                                {%if user.is_authenticated%}
+                                    {%if user.user.user_type == 'user' %}
 
-<br/>
-<br/><br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-    {%endif%}
+                                    {%else%}
+                                    <a href="{%url 'auctions:login'%}" class="btn btn-primary">Login</a>
+                                    {%endif%}
+                                {%else%}
+                                    <a href="{%url 'auctions:login'%}" class="btn btn-primary">Login</a>
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div>
+            {% if forloop.counter|divisibleby:3 %}
+                </div>
+            {% endif %}
+        {%endif%}
+  {% endfor %}
+
+
 {%endblock%}

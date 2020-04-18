@@ -1,6 +1,7 @@
 # from django.conf.urls import url,include
 from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
+from django.conf.urls import url
 from . import views
 
 app_name='auctions'
@@ -37,6 +38,9 @@ urlpatterns=[
     path('auction-details/<int:pk>/process_payment/', views.process_payment, name='process_payment'),
     path('payment-done/', views.payment_done, name='payment_done'),
     path('payment-cancelled/', views.payment_canceled, name='payment_cancelled'),
+    path('finished_auctions',views.FinishedAuctionList.as_view(),name='finished_auctions'),
+
+    # path('search/', FilterView.as_view(filterset_class=filters.AuctionFilter,template_name='index.html'), name='search'),
     # path('current_auctions/finsihed/<pk>/',views.AuctionFinished,name=''),
 
 
