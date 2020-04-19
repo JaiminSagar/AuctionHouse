@@ -62,7 +62,7 @@ Auction Approval List
         <tr>
             <th scope="col">Property Description:</th>
             <td width="30%">
-                    {{ property.property_description }}
+                    {{ property.property_description|safe|linebreaksbr }}
             </td>
         </tr>
     </tbody>

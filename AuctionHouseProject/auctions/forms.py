@@ -97,7 +97,7 @@ class ApplyEvaluationForm(forms.ModelForm):
 
 
 class PropertyDescriptionForm(forms.ModelForm):
-    property_description = forms.CharField(widget=forms.Textarea())
+    property_description = forms.CharField(widget=forms.Textarea(attrs={'class': 'editable medium-editor-textarea'}))
 
     class Meta():
         model = models.PropertyReg
