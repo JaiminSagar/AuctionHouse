@@ -18,9 +18,13 @@ Add Property Description
     <form method="post">
         {%csrf_token%}
         {%bootstrap_form form%}
+        {% comment %} {{ form.as_p }} {% endcomment %}
         <input type="submit" value="Add Description" class="btn btn-default">
     </form>
 </div>
+<script>
+        var editor = new MediumEditor('.editable');
+</script>
 <br/>
 <br/>
 <br/><br/>

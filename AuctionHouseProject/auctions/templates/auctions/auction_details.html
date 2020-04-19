@@ -9,7 +9,37 @@ CURRENT AUCTION DETAIL
 <hr/>
 {%endblock%}
 {%block content%}
+<script>
+function changeNumberFormat(number, decimals, recursiveCall) {
+    const decimalPoints = decimals || 2;
+    const noOfLakhs = number / 100000;
+    let displayStr;
+    let isPlural;
 
+    // Rounds off digits to decimalPoints decimal places
+    function roundOf(integer) {
+        return +integer.toLocaleString(undefined, {
+            minimumFractionDigits: decimalPoints,
+            maximumFractionDigits: decimalPoints,
+        });
+    }
+
+    if (noOfLakhs >= 1 && noOfLakhs <= 99) {
+        const lakhs = roundOf(noOfLakhs);
+        isPlural = lakhs > 1 && !recursiveCall;
+        displayStr = `${lakhs} Lakh${isPlural ? 's' : ''}`;
+    } else if (noOfLakhs >= 100) {
+        const crores = roundOf(noOfLakhs / 100);
+        const crorePrefix = crores >= 100000 ? changeNumberFormat(crores, decimals, true) : crores;
+        isPlural = crores > 1 && !recursiveCall;
+        displayStr = `${crorePrefix} Crore${isPlural ? 's' : ''}`;
+    } else {
+        displayStr = roundOf(+number);
+    }
+
+    return displayStr;
+}
+</script>
 <div class="container">
     <div class="row">
     <div class="col-sm-7 align-self-center">
@@ -75,19 +105,33 @@ CURRENT AUCTION DETAIL
 
                                   <center><h5><b>The auction has Ended.</b></h5></center>
                                                     <center>Minimum Opening Bid Was</center>
-                                  <center><b>₹. {{currentauction.property_id.pre_set_amount}}</b>
+                                  <center><b>₹. 
+                                                <script>
+                                                    document.write(changeNumberFormat({{currentauction.property_id.pre_set_amount}}, 2));
+                                                </script>
+                                  </b>
                                                         <br>
                                                     </center>
                                             <center><p class="title">Auction Winner:<br/></p>
                                                 {%if user == highest_bidder.user%}
-
-                                                  <a  id="demo" class="btn btn-primary">Mr.{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}} You have won this auction</a><br/>
-                                              <a  id="demo" class="btn btn-primary"> ₹. {{highest_bidder.user_bid_amount}}</a>
+                                                    <div class="alert alert-success" role="alert">
+                                                        <h4 class="alert-heading">Congratulations!</h4>
+                                                        <p>Mr.{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}} You have won this auction.</p>
+                                                        <hr>
+                                                        <p class="mb-0">The highest Bidding Amount is: ₹ {{ highest_bidder.user_bid_amount }}</p>
+                                                    </div>
+                                                  {% comment %} <a  id="demo" class="btn btn-primary">Mr.{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}} You have won this auction</a><br/>
+                                              <a  id="demo" class="btn btn-primary"> ₹. {{ highest_bidder.user_bid_amount }}</a> {% endcomment %}
 
                                                 {%else%}
-
-                                               <a  id="demo" class="btn btn-primary">{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}}</a><br/>
-                                              <a  id="demo" class="btn btn-primary"> ₹. {{highest_bidder.user_bid_amount}}</a>
+                                                    <div class="alert alert-success" role="alert">
+                                                        <p>{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}}</p>
+                                                        <hr>
+                                                        <p class="mb-0">The highest Bidding Amount is:</p>
+                                                        <p class="mb-0">₹ {{ highest_bidder.user_bid_amount }}</p>
+                                                    </div>
+                                               {% comment %} <a  id="demo" class="btn btn-primary"></a><br/>
+                                              <a  id="demo" class="btn btn-primary"> ₹. {{ highest_bidder.user_bid_amount }}</a> {% endcomment %}
                                                 {%endif%}
 
                                                 </center>
@@ -235,7 +279,11 @@ CURRENT AUCTION DETAIL
                             <div class="jumbotron">
                                 <center><h5><b>The auction has started.</b></h5></center>
                                             <center>Minimum Opening Bid</center>
-                                <center><b>₹ {{currentauction.property_id.pre_set_amount}}</b></center>
+                                <center><b>₹ 
+                                             <script>
+                                                    document.write(changeNumberFormat({{currentauction.property_id.pre_set_amount}}, 2));
+                                            </script>
+                                </b></center>
                                                     <br/>
                                             <div class="login-text">To place a bid, Please <a href="{%url 'auctions:signup'%}">SignUp</a> and <a href="{%url 'auctions:login'%}">Login</a> for Bidding this Property</div>
                                             <br/>
@@ -320,7 +368,9 @@ CURRENT AUCTION DETAIL
                     <div class="jumbotron">
                         <center><h5><b>The auction has not yet started</b></h5></center>
                     <center>Minimum Opening Bid</center>
-                    <center>₹. {{currentauction.property_id.pre_set_amount}}
+                    <center>₹.  <script>
+                                    document.write(changeNumberFormat({{currentauction.property_id.pre_set_amount}}, 2));
+                                </script>
                         <br>
                         {%if user.is_authenticated%}
                         <a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>
@@ -361,7 +411,11 @@ CURRENT AUCTION DETAIL
         </tr>
         <tr>
             <td ><h5 >Auction Initial Value:</h5></td>
-            <td><h5 >₹.{{currentauction.property_id.pre_set_amount}}</h5></td>
+            <td><h5 >₹. <script>
+                            document.write(changeNumberFormat({{currentauction.property_id.pre_set_amount}}, 2));
+                        </script>
+            
+            </h5></td>
         </tr>
         <tr>
             <td><h5 >Property Description:</h5></td>
