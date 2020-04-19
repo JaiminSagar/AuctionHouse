@@ -419,7 +419,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
         </tr>
         <tr>
             <td><h5 >Property Description:</h5></td>
-            <td width="400"><h5 > {{currentauction.property_id.property_description}}</h5></td>
+            <td width="400"><h5 > {{ currentauction.property_id.property_description|safe|linebreaksbr }}</h5></td>
         </tr>
         </tbody>
     </table>

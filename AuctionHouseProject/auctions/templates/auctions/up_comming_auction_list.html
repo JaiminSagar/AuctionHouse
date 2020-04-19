@@ -9,6 +9,37 @@ Upcomming Assets Available For Auction
 {% block content %}
 <hr>
 <br/>
+<script>
+function changeNumberFormat(number, decimals, recursiveCall) {
+    const decimalPoints = decimals || 2;
+    const noOfLakhs = number / 100000;
+    let displayStr;
+    let isPlural;
+
+    // Rounds off digits to decimalPoints decimal places
+    function roundOf(integer) {
+        return +integer.toLocaleString(undefined, {
+            minimumFractionDigits: decimalPoints,
+            maximumFractionDigits: decimalPoints,
+        });
+    }
+
+    if (noOfLakhs >= 1 && noOfLakhs <= 99) {
+        const lakhs = roundOf(noOfLakhs);
+        isPlural = lakhs > 1 && !recursiveCall;
+        displayStr = `${lakhs} Lakh${isPlural ? 's' : ''}`;
+    } else if (noOfLakhs >= 100) {
+        const crores = roundOf(noOfLakhs / 100);
+        const crorePrefix = crores >= 100000 ? changeNumberFormat(crores, decimals, true) : crores;
+        isPlural = crores > 1 && !recursiveCall;
+        displayStr = `${crorePrefix} Crore${isPlural ? 's' : ''}`;
+    } else {
+        displayStr = roundOf(+number);
+    }
+
+    return displayStr;
+}
+</script>
     <div class='container'>
 
         {% for auction in currentauction_list %}
@@ -34,7 +65,11 @@ Upcomming Assets Available For Auction
                  <div class="card-body">
                      <h5>Property Type:</h5><h5 class="card-title">{{auction.property_id.property_type}}</h5>
                          <p class="card-text"> </p>
-                          <h5>Auction Initial Value:</h5><h5 class="card-title">{{auction.property_id.pre_set_amount}}</h5>
+                          <h5>Auction Initial Value:</h5><h5 class="card-title">
+                                <script>
+                                    document.write(changeNumberFormat({{auction.property_id.pre_set_amount}}, 2));
+                                </script>
+                          </h5>
                  </div>
 <!--                            <ul class="list-group list-group-flush">-->
 <!--                                <li class="list-group-item">Cras justo odio</li>-->
