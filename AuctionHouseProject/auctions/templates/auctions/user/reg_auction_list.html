@@ -1,0 +1,45 @@
+{%extends 'base.html'%}
+
+{%load bootstrap4%}
+
+{% block title %}
+Registered List
+{% endblock %}
+{% block heading %}
+Your Registered Auctions List
+{% endblock heading %}
+{% block content %}
+<hr>
+<br>
+<div class="container">
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+        <th scope="col">Register Unique id</th>
+        <th scope="col">Auction id</th>
+        <th scope="col">User Email</th>
+        <th scope="col">Payment Status</th>
+        <th scope="col">Registered or Not</th>
+        {% comment %} <th scope="col">Resume</th>
+        <th scope="col">Approve</th> {% endcomment %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for reg in regforauction_list %}
+        <tr>
+        <th scope="row">{{ reg.pk }}</th>
+        <td><a href="{% url 'auctions:auction_detail' pk=reg.current_auction_id.pk %}">{{ reg.current_auction_id.pk }}</a></td>
+        <td>{{ reg.user.email }}</td>
+        {% if reg.payment_status == 'Completed' %}
+            <td>Paid Sucessfully</td>
+            <td>Registered</td>
+        {% else %} 
+            <td>Not Paid</td>
+            <td>Not Registered</td>
+        {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

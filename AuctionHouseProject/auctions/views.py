@@ -584,3 +584,12 @@ class FinishedAuctionList(ListView):
         except:
             return context
         return context
+
+
+class RegisteredAuctionsList(LoginRequiredMixin, ListView):
+    model = models.RegForAuction
+    template_name = "auctions/user/reg_auction_list.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user=self.request.user)
