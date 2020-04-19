@@ -383,7 +383,8 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                         <div class="col">Bidding Opens On<br/>{{currentauction.auction_start_date}}</div>
                         <div class="col">End Date<br/>{{currentauction.auction_end_date}}</div>
                     </div>
-                        <center><p class="title">Auction Starts In<br/><a  id="demo" class="btn btn-primary"></a></p></center>
+                        {% comment %} <center><p class="title">Auction Starts In<br/><a  id="demo" class="btn btn-primary"></a></p></center> {% endcomment %}
+                        <center><p class="title">Auction Starts In<br/><span class="badge badge-pill badge-success" id="demo"></span></p></center>
 
                 </div>
 
