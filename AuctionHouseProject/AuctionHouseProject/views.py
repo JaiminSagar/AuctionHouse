@@ -134,7 +134,7 @@ def approve_auction(request,propertyid):
     #print(propertyreg)
     propertyreg.approved_auction()
     current_auction=models.CurrentAuction.objects.create(property_id=propertyreg)
-    current_auction.registration_fees = current_auction.property_id.pre_set_amount * (0.00001)
+    current_auction.registration_fees = current_auction.property_id.pre_set_amount * (0.0001)
     current_auction.current_amount =current_auction.property_id.pre_set_amount
     current_auction.save()
     propertyreg.save()
