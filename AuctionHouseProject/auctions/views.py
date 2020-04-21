@@ -39,6 +39,7 @@ from django.conf import settings
 #from decimal import Decimal
 from paypal.standard.forms import PayPalPaymentsForm
 from django.views.decorators.csrf import csrf_exempt
+import uuid
 
 
 
@@ -104,7 +105,7 @@ class ApplyEvaluation(LoginRequiredMixin, CreateView):
         prop.user = models.User.objects.get(username=self.request.user)
         prop.save()
         return super().form_valid(form)
-    
+
 
 class UserEvalutionList(LoginRequiredMixin,ListView):
     model = models.PropertyReg
@@ -117,8 +118,8 @@ class UserEvalutionList(LoginRequiredMixin,ListView):
 class EvaluationListForAgent(LoginRequiredMixin, ListView):
     model = models.PropertyReg
     template_name = 'auctions/agent/agent_dashboard.html'
-    
-    
+
+
     def get_queryset(self):
         queryset = super().get_queryset()
         agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
@@ -139,12 +140,12 @@ class PropertyDetailsForAgent(LoginRequiredMixin, DetailView):
 
         if not models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
             context['file_list'] = []
-        else:    
+        else:
             context['file_list'] = models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
 
 
         if not models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
-            context['image_list'] =[]    
+            context['image_list'] =[]
         else:
             context['image_list'] = models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
         return context
@@ -241,7 +242,7 @@ def propertyImagesUploadView(request, pk):
     else:
         form = forms.PropertyImagesUploadForm()
     return render(request, 'auctions/agent/add_property_images.html', {'form': form})
-                
+
 
 # class PropertyImagesUploadView(FormView):
 #     form_class = forms.PropertyImagesUploadForm
@@ -265,18 +266,18 @@ def propertyImagesUploadView(request, pk):
 class PropertyDetailsForUser(LoginRequiredMixin, DetailView):
     model = models.PropertyReg
     template_name = 'auctions/user/property_details_user.html'
-    
+
     def get_context_data(self, **kwargs):
         context =super().get_context_data()
 
         if not models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
             context['file_list'] = []
-        else:    
+        else:
             context['file_list'] = models.PropertyFilesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
 
 
         if not models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk')):
-            context['image_list'] =[]    
+            context['image_list'] =[]
         else:
             context['image_list'] = models.PropertyImagesUpload.objects.all().filter(property_reg__id=self.kwargs.get('pk'))
         return context
@@ -285,7 +286,7 @@ class PropertyDetailsForUser(LoginRequiredMixin, DetailView):
         queryset = super().get_queryset()
         return queryset.filter(pk=self.kwargs.get('pk'))
 
-        
+
 
 
 # class PropertyDescriptionSetup(LoginRequiredMixin, UpdateView):
@@ -297,7 +298,7 @@ class PropertyDetailsForUser(LoginRequiredMixin, DetailView):
 #         # print(self.request.user)
 #         prop =form.save(commit=False)
 #         agent = get_object_or_404(models.AgentUser, pk=self.request.user.pk)
-#         prop.agent_id = agent 
+#         prop.agent_id = agent
 #         prop.save()
 #         return super().form_valid(form)
 
@@ -383,7 +384,7 @@ class ProfileSetup(LoginRequiredMixin, CreateView):
 
 def set_agent_password(request, pk):
     agent = get_object_or_404(models.AgentUser, pk=pk)
-    
+
     if agent.password == '':
         if request.method == "POST":
             password = request.POST.get('password')
@@ -430,8 +431,9 @@ class CurrentAuctionDetails(DetailView):
         context = super().get_context_data(**kwargs)
         context['form']=forms.MakeAnOffer
         auction_bid=models.BiddingOfProperty.objects.all().filter(current_auction_id=self.kwargs.get('pk')).order_by('-user_bid_amount')
+        current_auction=get_object_or_404(models.CurrentAuction,pk=self.kwargs.get('pk'))
         try:
-            context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user)
+            context['registered_user'] = models.RegForAuction.objects.all().filter(user=self.request.user, current_auction_id=current_auction)
             print(context['registered_user'])
         except:
             pass
@@ -472,21 +474,26 @@ class AuctionBid(LoginRequiredMixin,View):
         user = get_object_or_404(models.User, pk=self.request.user)
         for entry in register:
             if entry.user_id == user.user.pk:
-                if current_auction_data.next_bid <= float(self.request.POST['user_bid']):
-                    bid_of_user = models.BiddingOfProperty.objects.create(current_auction_id=current_auction_data,user=user)
-                    bid_of_user.user_bid_amount = float(self.request.POST['user_bid'])
-                    bid_of_user.bid_time=timezone.now()
-                    current_auction_data.current_amount = math.ceil(float(self.request.POST['user_bid']))
-                    current_auction_data.highest_bidder=user
-                    current_auction_data.bidding()
-                    current_auction_data.save()
-                    bid_of_user.save()
-                    messages.success(self.request, "Your Bid is Submitted Successfully,Pls checkout the table to see your entry.",extra_tags='bid_done')
-                    return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
+                if entry.payment_status == "Completed":
+                    if current_auction_data.next_bid <= float(self.request.POST['user_bid']):
+                        bid_of_user = models.BiddingOfProperty.objects.create(current_auction_id=current_auction_data,user=user)
+                        bid_of_user.user_bid_amount = float(self.request.POST['user_bid'])
+                        bid_of_user.bid_time=timezone.now()
+                        current_auction_data.current_amount = math.ceil(float(self.request.POST['user_bid']))
+                        current_auction_data.highest_bidder=user
+                        current_auction_data.bidding()
+                        current_auction_data.save()
+                        bid_of_user.save()
+                        messages.success(self.request, "Your Bid is Submitted Successfully,Pls checkout the table to see your entry.",extra_tags='bid_done')
+                        return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
+                    else:
+                        print("happend")
+                        messages.error(self.request, "Please Enter the correct amount based on increment ratio.",extra_tags='problem')
+                        return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
                 else:
-                    print("happend")
-                    messages.error(self.request, "Please Enter the correct amount based on increment ratio.",extra_tags='problem')
+                    messages.error(self.request,"You have to register for participating in auction. Click on the Register for participating.",extra_tags='problem')
                     return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
+
 
         messages.error(self.request,"You have to register for participating in auction. Click on the Register for participating.",extra_tags='problem')
         return HttpResponseRedirect(reverse_lazy('auctions:auction_detail', kwargs={'pk': current_auction_data.pk}))
@@ -522,7 +529,7 @@ class CheckingAuctionStatus(View):
         for auction in current_auction_all:
             print(auction.auction_start_date)
             print(timezone.now())
-            if auction.auction_start_date < timezone.now() and auction.auction_finished_status==False:
+            if auction.auction_start_date < timezone.now() and auction.auction_finished_status==False and auction.scheduled_status== True:
                 auction.current_auction_status=True
                 auction.save()
             else:
@@ -538,14 +545,17 @@ def process_payment(request, pk):
     user = get_object_or_404(models.User, pk=request.user.pk)
     # register_auc = models.RegForAuction.objects.create(current_auction_id=current_auction, user=user)
     register_auc, created = models.RegForAuction.objects.get_or_create(current_auction_id=current_auction, user=user)
+    if created == True:
+        no = uuid.uuid1()
+        register_auc.invoice_no = str(no.int)
     register_auc.save()
     host = request.get_host()
- 
+
     paypal_dict = {
         'business': settings.PAYPAL_RECEIVER_EMAIL,
         'amount': current_auction.registration_fees,
         'item_name': 'Register For Auction: {}'.format(register_auc.id),
-        'invoice': str(register_auc.id),
+        'invoice': str(register_auc.invoice_no),
         'currency_code': 'INR',
         'notify_url': 'http://{}{}'.format(host,
                                            reverse('paypal-ipn')),
@@ -554,7 +564,7 @@ def process_payment(request, pk):
         'cancel_return': 'http://{}{}'.format(host,
                                               reverse('auctions:payment_cancelled')),
     }
- 
+
     form = PayPalPaymentsForm(initial=paypal_dict)
     return render(request, 'auctions/process_payment.html', {'register_for_auction': register_auc, 'form': form})
 
@@ -562,8 +572,8 @@ def process_payment(request, pk):
 @csrf_exempt
 def payment_done(request):
     return render(request, 'auctions/payment_done.html')
- 
- 
+
+
 @csrf_exempt
 def payment_canceled(request):
     return render(request, 'auctions/payment_cancelled.html')

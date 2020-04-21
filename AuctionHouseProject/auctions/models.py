@@ -176,7 +176,7 @@ class MakeAnOffer(models.Model):
 class CurrentAuction(models.Model):
     property_id = models.ForeignKey(PropertyReg, related_name='property', on_delete=models.CASCADE)
     registration_fees =models.IntegerField(default=0)
-    auction_start_date = models.DateTimeField(null=True)
+    auction_start_date = models.DateTimeField(null=True,  default=timezone.now())
     auction_end_date = models.DateTimeField(null=True)
     scheduled_status = models.BooleanField(default=False)
     current_auction_status = models.BooleanField(default=False)
@@ -215,6 +215,7 @@ class BiddingOfProperty(models.Model):
 class RegForAuction(models.Model):
     current_auction_id = models.ForeignKey(CurrentAuction, related_name='current_auction', on_delete=models.CASCADE)
     payment_status = models.CharField(max_length=12, default='Not Paid')
+    invoice_no = models.CharField(max_length=50, null=True)
     user = models.ForeignKey(User,related_name='registered',on_delete=models.CASCADE)
 
 class ContactUs(models.Model):

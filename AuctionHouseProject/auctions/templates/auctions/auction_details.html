@@ -99,13 +99,14 @@ function changeNumberFormat(number, decimals, recursiveCall) {
     <div class="col-sm-5">
         <div class="row">
             <div class="col">
+
                 {%if currentauction.auction_finished_status%}
 
                               <div class="jumbotron">
 
                                   <center><h5><b>The auction has Ended.</b></h5></center>
                                                     <center>Minimum Opening Bid Was</center>
-                                  <center><b>₹. 
+                                  <center><b>₹.
                                                 <script>
                                                     document.write(changeNumberFormat({{currentauction.property_id.pre_set_amount}}, 2));
                                                 </script>
@@ -223,13 +224,17 @@ function changeNumberFormat(number, decimals, recursiveCall) {
 
                                             {%if currentauction == users.current_auction_id%}
                                                     {%ifequal users.payment_status "Completed"%}
-                                                    <b><h4>Your have alredy registered for this auction.</h4></b>
+                                                    <b><h4>Your have registered for this auction.</h4></b>
                                                     {%endifequal%}
-                                                    {%ifequal users.payment_status "Pending"%}
-                                                        <div class="login-text"><b><h4>To place a bid, <a href="#">Register</a> for Bidding this Property</h4></b></div>
+                                                    {%ifequal users.payment_status "Not Paid"%}
+                                                        <div class="login-text"><b><h4>Sorry, You have not registered for this Auction</h4></b></div>
                                                     {%endifequal%}
                                              {%endif%}
-                                        {%endfor%}
+                                {% empty %}
+
+                                    <div class="login-text"><b><h4>Sorry, You have not registered for this Auction</h4></b></div>
+
+                                {%endfor%}
 
                                 <br/>
                                 <div align="left">
@@ -256,7 +261,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                                 <div class="event-detail-list">
                                     <form method="post" action="{%url 'auctions:auction_bid' pk=currentauction.pk%}">
                                         {%csrf_token%}
-
+                                        <h5> Refreshing The page in: <span id="countdown">10</span> seconds</h5>
                                         <center><h5 class="title">Next Bid</h5><span class="doller">₹</span>
                                          <input type="text" id="user_bid" name="user_bid" placeholder="Your Bid Comes Here" value="{{currentauction.next_bid}}" autocomplete="off">
                                             <button type="submit" id="place_bid_btn" class="btn btn-primary"  name="place_bid_btn">Bid Now</button></center>
@@ -279,7 +284,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                             <div class="jumbotron">
                                 <center><h5><b>The auction has started.</b></h5></center>
                                             <center>Minimum Opening Bid</center>
-                                <center><b>₹ 
+                                <center><b>₹
                                              <script>
                                                     document.write(changeNumberFormat({{currentauction.property_id.pre_set_amount}}, 2));
                                             </script>
@@ -311,7 +316,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                                             <div class="event-detail-list">
                                                 <form method="post" action="{%url 'auctions:auction_bid' pk=currentauction.pk%}">
                                                     {%csrf_token%}
-
+                                                    <h5> Refreshing The page in: <span id="countdown">10</span> s
                                                     <center><h5 class="title">Next Bid</h5><span class="doller">₹</span>
                                                      <input type="text" id="user_bid" name="user_bid" class="form-class" placeholder="Your Bid Comes Here" value="{{currentauction.next_bid}}" autocomplete="off">
                                                         <input type="hidden" value="{{user.pk}}" name="user">
@@ -329,6 +334,28 @@ function changeNumberFormat(number, decimals, recursiveCall) {
 
 
                         {%endif%}
+                        <script type="text/javascript">
+
+                                // Total seconds to wait
+                                var seconds4 = 10;
+
+                                function countdown() {
+                                    seconds4 = seconds4 - 1;
+                                    if (seconds4 < 0) {
+                                        // Chnage your redirection link here
+                                        window.location = "../../checking_auction_status/{{currentauction.pk}}";
+                                    } else {
+                                        // Update remaining seconds
+                                        document.getElementById("countdown").innerHTML = seconds4;
+                                        // Count down using javascript
+                                        window.setTimeout("countdown()", 1000);
+                                    }
+                                }
+
+                                // Run countdown function
+                                countdown();
+
+                            </script>
 
                     {%else%}
 
@@ -373,7 +400,28 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                                 </script>
                         <br>
                         {%if user.is_authenticated%}
-                        <a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>
+                                        {% for users in registered_user %}
+
+                                            {%if currentauction == users.current_auction_id%}
+                                                    {% if users.payment_status == "Completed" %}
+                                                    <b><h4>Your have registered for this auction.</h4></b>
+
+                                                    {% else %}
+                                                        <div class="login-text"><b><h4>To place a bid, <i>Register</i> for Bidding this Property</h4></b></div>
+                                                        <a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>
+                                                    {% endif %}
+                                                    <!--{%ifequal users.payment_status "Not Paid"%}-->
+                                                    <!--    <div class="login-text"><b><h4>To place a bid, <a href="#">Register</a> for Bidding this Property</h4></b></div>-->
+                                                    <!--    <a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>-->
+                                                    <!--{%endifequal%}-->
+
+                                             {%endif%}
+                                        {% empty %}
+                                            <div class="login-text"><b><h4>To place a bid, <i>Register</i> for Bidding this Property</h4></b></div>
+                                            <a class="btn btn-primary" href="{% url 'auctions:process_payment' pk=currentauction.pk %}">Register for Bid</a>
+
+                                        {%endfor%}
+
                         {%else%}
                         <a  class="btn">Login</a>
                         {%endif%}
@@ -415,7 +463,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
             <td><h5 >₹. <script>
                             document.write(changeNumberFormat({{currentauction.property_id.pre_set_amount}}, 2));
                         </script>
-            
+
             </h5></td>
         </tr>
         <tr>
