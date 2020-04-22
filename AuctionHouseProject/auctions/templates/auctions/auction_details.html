@@ -40,6 +40,14 @@ function changeNumberFormat(number, decimals, recursiveCall) {
     return displayStr;
 }
 </script>
+
+<script>
+function addCommas(x) {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
+</script>
 <div class="container">
     <div class="row">
     <div class="col-sm-7 align-self-center">
@@ -88,7 +96,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                                       </thead>
                                      <tbody>
                                  {%for bids in past_bids%}
-                                 <tr align="center"><td></td><td>{{bids.user.first_name}} {{bids.user.last_name}}</td><td>{{bids.user_bid_amount}}</td><td>{{bids.bid_time}}</td></tr>
+                                 <tr align="center"><td></td><td>{{bids.user.first_name}} {{bids.user.last_name}}</td><td>₹ <script>document.write(addCommas({{bids.user_bid_amount}}));</script></td><td>{{bids.bid_time}}</td></tr>
                                 {%endfor%}
                                      </tbody>
                                  </table>
@@ -119,7 +127,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                                                         <h4 class="alert-heading">Congratulations!</h4>
                                                         <p>Mr.{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}} You have won this auction.</p>
                                                         <hr>
-                                                        <p class="mb-0">The highest Bidding Amount is: ₹ {{ highest_bidder.user_bid_amount }}</p>
+                                                        <p class="mb-0">The highest Bidding Amount is: ₹ <script>document.write(addCommas({{ highest_bidder.user_bid_amount }}));</script></p>
                                                     </div>
                                                   {% comment %} <a  id="demo" class="btn btn-primary">Mr.{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}} You have won this auction</a><br/>
                                               <a  id="demo" class="btn btn-primary"> ₹. {{ highest_bidder.user_bid_amount }}</a> {% endcomment %}
@@ -129,7 +137,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                                                         <p>{{highest_bidder.user.first_name}} {{highest_bidder.user.last_name}}</p>
                                                         <hr>
                                                         <p class="mb-0">The highest Bidding Amount is:</p>
-                                                        <p class="mb-0">₹ {{ highest_bidder.user_bid_amount }}</p>
+                                                        <p class="mb-0">₹ <script>document.write(addCommas({{ highest_bidder.user_bid_amount }}));</script></p>
                                                     </div>
                                                {% comment %} <a  id="demo" class="btn btn-primary"></a><br/>
                                               <a  id="demo" class="btn btn-primary"> ₹. {{ highest_bidder.user_bid_amount }}</a> {% endcomment %}
@@ -218,7 +226,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                         <div class="jumbotron">
                             <center><h5><b>The auction has started.</b></h5></center>
                                 <center>Minimum Opening Bid</center>
-                            <center><b>₹ {{currentauction.property_id.pre_set_amount}}</b></center>
+                            <center><b>₹ <script>document.write(addCommas({{currentauction.property_id.pre_set_amount}}));</script></b></center>
                                         <br/>
                                 {% for users in registered_user %}
 
@@ -242,7 +250,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                                         <li>
                                             <strong>Current Bid:</strong>
                                                 <strong>
-                                                   ₹{{currentauction.current_amount}}
+                                                   ₹ <script>document.write(addCommas({{currentauction.current_amount}}));</script>
                                                 </strong>
                                             <hr>
                                         </li>
@@ -253,11 +261,12 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                                         </li>
                                         <li>
                                             Bid Deposit:
-                                            ₹ {{currentauction.registration_fees}}
+                                            ₹ <script>document.write(addCommas({{currentauction.registration_fees}}));</script>
                                             <hr>
                                         </li>
                                     </ul></b>
                                 </div>
+
                                 <div class="event-detail-list">
                                     <form method="post" action="{%url 'auctions:auction_bid' pk=currentauction.pk%}">
                                         {%csrf_token%}

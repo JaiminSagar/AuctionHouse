@@ -83,15 +83,15 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                                 {% for users in registered_user %}
                                             {%if auction == users.current_auction_id%}
                                                     {%ifequal users.payment_status "Completed"%}
-                                                        {% comment %} <a class="btn btn-success">You are Registered</a> {% endcomment %}
+                                                        <!--{% comment %} <a class="btn btn-success">You are Registered</a> {% endcomment %}-->
                                                         <span class="badge badge-pill badge-success">You are Registered</span>
                                                     {%endifequal%}
                                                     {%ifequal users.payment_status "Not Paid"%}
-                                                        {% comment %} <a class="btn btn-warning">Your payment is pending</a> {% endcomment %}
+                                                         <!--<a class="btn btn-warning">Your payment is pending</a>-->
                                                         <span class="badge badge-pill badge-danger">Your payment is pending</span>
                                                     {%endifequal%}
-                                            {%else%}
-                                                <a class="btn btn-danger">Register</a>
+                                            <!--{%else%}-->
+                                            <!--    <a class="btn btn-danger">Register</a>-->
                                             {%endif%}
                                         {%endfor%}
                          {%else%}

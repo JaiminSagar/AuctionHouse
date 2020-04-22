@@ -85,15 +85,15 @@ function changeNumberFormat(number, decimals, recursiveCall) {
 
                                             {%if auction == users.current_auction_id%}
                                                     {%ifequal users.payment_status "Completed"%}
-                                                        <a class="btn btn-success">You are Registered</a>
+                                                        <!--<a class="btn btn-success">You are Registered</a>-->
                                                         <span class="badge badge-pill badge-success">You are Registered</span>
                                                     {%endifequal%}
                                                     {%ifequal users.payment_status "Not Paid"%}
-                                                        <a class="btn btn-warning">Your payment is pending</a>
+                                                        <!--<a class="btn btn-warning">Your payment is pending</a>-->
                                                         <span class="badge badge-pill badge-danger">Your payment is pending</span>
                                                     {%endifequal%}
                                             {%else%}
-                                                <a class="btn btn-danger">Register</a>
+                                                <!--<a class="btn btn-danger">Register</a>-->
                                             {%endif%}
                                         {%endfor%}
                                     {%else%}
@@ -105,7 +105,7 @@ function changeNumberFormat(number, decimals, recursiveCall) {
                             </div>
                         </div>
                     </div>
-            {% if forloop.counter|divisibleby:3 %} 
+            {% if forloop.counter|divisibleby:3 %}
                 </div>
             {% endif %}
         {%endif%}
