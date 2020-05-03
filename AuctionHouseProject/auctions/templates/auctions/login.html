@@ -1,4 +1,5 @@
 {%extends 'base.html'%}
+{% load static %}
 {%load bootstrap4%}
 {%block title%}LogIn{%endblock%}
 {%block heading%}
@@ -10,10 +11,11 @@ Log In
     {%for message in messages%}
     <h6 style="color:red;">{{message}}</h6>
     {%endfor%}
-    <form method="post">
+    <form method="post" align="left">
         {%csrf_token%}
         {%bootstrap_form form%}
-        <input type="submit" value="LogIn" class="btn btn-primary">
+        If you have forgotten your password you can reset it here - <a href="{% url 'auctions:forgot_password_email' %}">Forgot Password!</a><br/>
+        <input type="submit" value="LogIn" class="btn btn-success">
     </form>
     <br/>
     <br/>

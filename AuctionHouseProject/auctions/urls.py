@@ -11,6 +11,9 @@ urlpatterns=[
     path('signup/',views.signup,name='signup'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate, name='activate'),
+    path('forgot_password/email', views.forgot_password_email, name='forgot_password_email'),
+    path('forgot_password/otp', views.forgot_password_otp, name='forgot_password_otp'),
+    path('forgot_password/new_password', views.new_password, name='new_password'),
     
     path('login/',auth_views.LoginView.as_view(template_name='auctions/login.html'),name='login'),
     path('logout/',auth_views.LogoutView.as_view(),name='logout'),
