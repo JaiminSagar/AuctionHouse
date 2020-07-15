@@ -32,6 +32,8 @@ from .tokens import account_activation_token
 from django.contrib.auth.models import User as Signup_User
 from django.core.mail import EmailMessage
 from django.core.exceptions import ObjectDoesNotExist
+import random
+import math
 
 
 # paypal imports.....
@@ -59,7 +61,7 @@ def signup(request):
             user.is_active = False
             user.save()
             current_site = get_current_site(request)
-            mail_subject = 'AuctionHouse.in | Activate Your Account '
+            mail_subject = 'AuctionHouse.in | Activate Your Account'
             message = render_to_string('auctions/acc_active_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -603,3 +605,69 @@ class RegisteredAuctionsList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(user=self.request.user)
+
+
+def forgot_password_email(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        print(email)
+        try:
+            user_object = User.objects.get(email=email)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Invaid Email!')
+            return HttpResponseRedirect(reverse_lazy('auctions:forgot_password_email'))
+        request.session['email'] = email
+        request.session['user_id'] = user_object.id
+
+        otp = ""
+
+        for i in range(6):
+            otp += str(random.randint(0,9))
+
+        print(otp)
+        request.session['otp'] = otp
+        mail_subject = 'AuctionHouse.in | Forgot Password'
+        message = render_to_string('auctions/render_forgot_password_email.html', {
+            'user': user_object,
+            'otp': otp
+        })
+        email = EmailMessage(
+                    mail_subject, message, to=[email]
+        )
+        email.send()
+        return HttpResponseRedirect(reverse_lazy('auctions:forgot_password_otp'))
+
+    return render(request, 'auctions/user/forgot_password_email.html')
+
+def forgot_password_otp(request):
+    if request.method == "POST":
+        otp = request.POST.get('otp')
+        print(otp)
+
+        if otp == request.session['otp']:
+            return HttpResponseRedirect(reverse_lazy('auctions:new_password'))
+        else:
+            messages.error(request, 'Invalid OTP!')
+            return HttpResponseRedirect(reverse_lazy('auctions:forgot_password_otp'))
+    return render(request, "auctions/user/forgot_password_otp.html")
+
+def new_password(request):
+    if request.method == "POST":
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm password')
+
+        if password == confirm_password:
+            user_id = request.session['user_id']
+            user = User.objects.get(pk=user_id)
+            print(user.email)
+            print(user.password)
+            user.password = make_password(password)
+            print(user.password)
+            user.save()
+            messages.success(request, 'Password Updated! Now do Login')
+            return HttpResponseRedirect(reverse_lazy('auctions:login'))
+        else:
+            messages.error(request, 'Password does not match!')
+            return HttpResponseRedirect(reverse_lazy('auctions:new_password'))
+    return render(request, "auctions/user/new_password.html")
+
